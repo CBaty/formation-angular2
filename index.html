@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Arnaud Tournier - @ltearno - LTE Consulting - GWT Con 2016 - Firenze"><title>Angular 2 Boot</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/moon.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Angular 2 Boot</h1><p><small>Arnaud Tournier - @ltearno - LTE Consulting - GWT Con 2016 - Firenze</small></p></section><section id="_arnaud_tournier"><h2>Arnaud Tournier</h2><div class="paragraph"><p><strong>LTE Consulting</strong> founder.</p></div>
+<div class="paragraph"><p>Speaker: <strong>Java One</strong>, <strong>Devoxx France</strong>, <strong>GWT.create</strong>, <strong>GWTCon</strong>, <strong>JUGs</strong>, etc&#8230;&#8203;</p></div>
+<div class="paragraph"><p>Training: Java, C#, .net, Typescript, GWT, Angular 2, JavaEE, Spring, git&#8230;&#8203;</p></div>
+<div class="paragraph"><p>Email: <a href="mailto:ltearno@gmail.com">ltearno@gmail.com</a></p></div>
+<div class="paragraph"><p>Twitter: <a href="https://twitter.com/ltearno">@ltearno</a></p></div>
+<div class="paragraph"><p>Web: <a href="http://www.lteconsulting.fr">www.lteconsulting.fr</a></p></div>
+<div class="paragraph"><p>Full stack (x86_64 to JavaScript)</p></div></section>
+<section id="_this_presentation_is_online"><h2>This presentation is online!</h2><div class="paragraph"><p><a href="http://lteconsulting.fr/angular2boot-gwtcon2016/">lteconsulting.fr/angular2boot-gwtcon2016</a></p></div>
+<div class="paragraph"><p><em>works on your phone too ;)</em></p></div>
+<div class="paragraph"><p>Demo code available at</p></div>
+<div class="ulist"><ul><li><p><a href="https://github.com/ltearno/tour-of-heroes">github.com/ltearno/tour-of-heroes</a></p></li><li><p><a href="https://github.com/ltearno/angular2boot-demos">github.com/ltearno/angular2boot-demos</a></p></li></ul></div></section>
+<section><section id="_angular_2_boot"><h2>Angular 2 Boot?</h2><div class="paragraph"><p>A new RIA paradigm for Java : programming Angular 2 with Java 8.</p></div><div class="paragraph"><p><strong>The coolest Java 8 RIA framework in the place ;)</strong></p></div><div class="paragraph"><p><a href="http://lteconsulting.fr/angular2boot/">lteconsulting.fr/angular2boot</a></p></div></section><section id="_a_more_technical_title"><h2>A more technical title&#8230;&#8203;</h2><div class="paragraph"><p>Integrating Angular 2 and GWT 2.8:</p></div>
+<div class="paragraph"><p><strong>problems</strong> and <strong>solutions</strong>&#8230;&#8203;</p></div></section><section id="_why_do_that"><h2>Why do that?</h2><div class="paragraph"><p>I want to benefit from the <strong>best UI coding paradigms</strong> (Data binding, DI, &#8230;&#8203;).</p></div>
+<div class="paragraph"><p>I want <strong>strong typing</strong> and <strong>powerful IDE</strong> tools.</p></div>
+<div class="paragraph"><p>I want to be <strong>more productive</strong>.</p></div>
+<div class="paragraph"><p>I want to be in phase with the <strong>future</strong>.</p></div>
+<div class="paragraph"><p><em>(I may want to progressively migrate an existing app)</em></p></div></section><section id="_the_problem"><h2>The problem</h2><div class="paragraph"><p>Angular 2 natively supports Typescript, Javascript and Dart.</p></div>
+<div class="paragraph"><p>But Java is not in the party, <strong>let&#8217;s remedy!</strong></p></div>
+<div class="imageblock" style=""><div class="content"><img src="images/angular-languages.png" alt="angular languages"></div></div></section></section>
+<section><section id="_the_recipe" data-background="images/ingredients.jpg"><h2>The recipe</h2><div class="paragraph"><p>&nbsp;</p></div></section><section id="_angular_2"><h2>Angular 2</h2><div class="ulist"><ul><li><p>non invasive,</p></li><li><p>modern architecture, simple and effective.</p></li></ul></div></section><section id="_gwt_2_8_core"><h2>GWT 2.8 Core</h2><div class="ulist"><ul><li><p><strong>Java 8</strong> (strong typing, lambdas, streams, &#8230;&#8203;)</p></li><li><p><strong>JsInterop</strong> (easy integration with JS)</p></li><li><p><strong>SuperDevMode</strong> (incremental fast compile on reload)</p></li><li><p>Optimized compilation for production (js size, efficiency)</p></li></ul></div></section><section id="_jsr_269"><h2>JSR 269</h2><div class="ulist"><ul><li><p>Java Annotation Processing API,</p></li><li><p>Code generation integrated within Java compilation,</p></li><li><p>Boilerplate code generation.</p></li></ul></div></section><section id="_spring_boot"><h2>Spring Boot</h2><div class="ulist"><ul><li><p>Standalone server application (µ-service friendly),</p></li><li><p>Easy to start with,</p></li><li><p>Rich API,</p></li><li><p><em>Note: Angular2Gwt works with <strong>any</strong> backend</em>.</p></li></ul></div></section></section>
+<section><section id="_angular"><h2>Angular</h2><div class="paragraph"><p>Angular 1 was released in 2009.</p></div><div class="paragraph"><p>A full rewrite gave birth to Angular 2 in 2016.</p></div><div class="paragraph"><p>Much better and simpler architecture !</p></div></section><section id="_angular_2_fundamentals"><h2>Angular 2 fundamentals</h2><div class="ulist"><ul><li><p>Components,</p></li><li><p>Dependency Injection,</p></li><li><p>Data binding and change detection.</p></li></ul></div></section><section id="_components"><h2>Components</h2><div class="paragraph"><p>Most basic building block of the application.</p></div>
+<div class="paragraph"><p>A component is a class with:</p></div>
+<div class="ulist"><ul><li><p>a <em>view</em> (an HTML template),</p></li><li><p>and a <em>model</em> (data and methods).</p></li></ul></div>
+<div class="paragraph"><p>Interaction between view and model through <em>data binding</em>.</p></div></section><section id="_components_2"><h2>Components</h2><div class="paragraph"><p>Each component is responsible for a part of the DOM tree.</p></div>
+<div class="paragraph"><p>Components also form a tree.</p></div>
+<div class="paragraph"><p><em>A bit like the GWT Widgets&#8230;&#8203;</em></p></div>
+<div class="paragraph"><p>Components interacts with each other through cleanly defined ways.</p></div></section><section id="_components_tree"><h2>Components tree</h2><div class="imageblock" style=""><div class="content"><img src="images/angular-components.png" alt="angular components"></div></div></section><section id="_dependency_injection"><h2>Dependency Injection</h2><div class="paragraph"><p>Sharing services between components.</p></div>
+<div class="paragraph"><p>Lifecycle and dependencies are managed by Angular.</p></div>
+<div class="paragraph"><p>Each component has a Dependency Injector.</p></div>
+<div class="paragraph"><p>Those also form a tree.</p></div></section><section id="_data_binding"><h2>Data binding</h2><div class="paragraph"><p>Angular uses Zone.js to track changes.</p></div>
+<div class="paragraph"><p>Zones == <em>asynchronous TLS</em>.</p></div>
+<div class="paragraph"><p>Preserve an execution context across asynchronous calls.</p></div>
+<div class="paragraph"><p><em>(done by patching most of the browsers async functions)</em></p></div></section></section>
+<section id="_gwt_in_angular2boot"><h2>GWT in Angular2Boot</h2><div class="ulist"><ul><li><p>Only uses the compiler,</p></li><li><p>JsInterop used a lot,</p></li><li><p>No widgets, no <code>User</code> module (unless you want to mix legacy GWT and Angular).</p></li></ul></div>
+<div class="paragraph"><p>Because that&#8217;s how future will look like.</p></div></section>
+<section><section id="_jsr_269_pluggable_annotation_processing_api"><h2>JSR 269 - Pluggable Annotation Processing API</h2><div class="paragraph"><p><em>Shown here last year!</em></p></div><div class="paragraph"><p>Standard API for code generation in Java.</p></div><div class="paragraph"><p><em>(Used to generate the boiler plate code Angular requires.)</em></p></div><div class="paragraph"><p>Registered <em>annotation processors</em> receive the program&#8217;s AST
+and can then generate files (sources, byte-code or resources) which are part of the compilation.</p></div><div class="paragraph"><p>Integrated with the Java compiler.</p></div></section><section id="_good_points"><h2>GOOD POINTS</h2><div class="paragraph"><p>Generated code is visible and debuggable,</p></div>
+<div class="paragraph"><p>You can reference the generated code in your code.</p></div>
+<div class="paragraph"><p>No overhead at runtime.</p></div>
+<div class="paragraph"><p>(Does not depend on byte code: GWT compatible)</p></div></section><section id="_just_one_more_thing"><h2>Just one more thing</h2><div class="paragraph"><p>A processor can break the compilation by outputting errors.</p></div>
+<div class="paragraph"><p>It can also provide the user with tips by outputting warnings.</p></div>
+<div class="imageblock" style=""><div class="content"><img src="images/error-in-eclipse.png" alt="error in eclipse"></div></div></section></section>
+<section><section id="_angular2boot"><h2>Angular2Boot</h2></section><section id="_the_basics"><h2>The basics</h2></section><section id="_java_javascript_communication"><h2>Java/Javascript communication</h2><div class="paragraph"><p>We need to make the java application communicate with the javascript Angular 2 runtime.</p></div>
+<div class="paragraph"><p>JsInterop can do that.</p></div></section><section id="_feeding_angular_with_metadatas"><h2>Feeding Angular with metadatas</h2><div class="paragraph"><p>Angular requires metadata on components (<em>DI, routing, inputs/ouputs, &#8230;&#8203;</em>)
+and uses ES7/Typescript <strong>decorators</strong> (ex <strong>@Component()</strong>) for this purpose.</p></div>
+<div class="paragraph"><p>Those decorators alter component&#8217;s constructor at runtime so that less <em>boilerplate</em> code is required.</p></div></section><section id="_in_java"><h2>In Java?</h2><div class="paragraph"><p>Annotations can play the role of decorators (ex <strong>@Component</strong>).</p></div>
+<div class="paragraph"><p>Those are processed at <strong>compile</strong> time.</p></div>
+<div class="paragraph"><p>And generate RTTI code for Angular.</p></div></section><section id="_how"><h2>How?</h2><div class="ulist"><ul><li><p>JSR-269 is used to generate RTTI,</p></li><li><p>Use Angular JS API through JsInterop to provide the RTTI.</p></li><li><p>Fetch Java class compiled JS constructor at runtime,</p></li><li><p>Patch it with Angular required metadata,</p></li><li><p>Provide the patched constructor function to Angular.</p></li></ul></div></section><section id="_typescript_written_component"><h2>Typescript written component</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">@Component( { selector: "my-hero-detail",
+  templateUrl: "hero-detail.component.html",
+  styleUrls: "hero-detail.component.css" } )
+export class HeroDetailComponent
+{
+  @Input() hero = null;
+  @Output() updated = new EventEmitter();
+
+  HeroDetailComponent( private HeroService heroService ) {}
+
+  ngOnInit() { ... }
+
+  // ...
+}</code></pre></div></div></section><section id="_java_equivalent"><h2>Java equivalent</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">@Component( selector = "my-hero-detail",
+  templateUrl = "hero-detail.component.html",
+  styleUrls = "hero-detail.component.css" )
+@JsType
+public class HeroDetailComponent implements OnInit
+{
+  @Input public Hero hero = null;
+  @Output public EventEmitter&lt;Hero&gt; updated = new EventEmitter&lt;&gt;();
+
+  private HeroService heroService;
+
+  public HeroDetailComponent( HeroService heroService )
+  {
+    this.heroService = heroService;
+  }
+
+  @Override
+  public void ngOnInit() { ... }
+
+  // ...
+}</code></pre></div></div></section><section id="_consistent_syntax"><h2>Consistent syntax</h2><div class="paragraph"><p>The developper should be able to read JS documentation and know <em>how</em> to code in Java.</p></div>
+<div class="paragraph"><p>In brief, we want syntax consistency.</p></div></section><section id="_architecture"><h2>Architecture</h2></section><section id="_" data-transition="none" data-background="images/archi-survol.png" data-background-size="contain"></section><section id="__2" data-transition="none" data-background="images/archi-compil.png" data-background-size="contain"></section><section id="__3" data-transition="none" data-background="images/archi-runtime.png" data-background-size="contain"></section><section id="__4" data-transition="none" data-background="images/archi-sdm.png" data-background-size="contain"></section><section id="_now_the_problems"><h2>Now, the problems</h2></section><section id="_module_loading_problem"><h2>Module loading problem</h2><div class="paragraph"><p>GWT is not SystemJS (ES7 modules) friendly.</p></div>
+<div class="paragraph"><p>Need to generate a bundle with all Angular inside (you can choose/build your bundle depending on what you need).</p></div></section><section id="_the_instanceof_problem"><h2>The instanceof problem</h2><div class="paragraph"><p>Angular checks at runtime that components are valid.</p></div>
+<div class="paragraph"><p>With SuperDevMode, code is loaded in an external frame thus breaking <code>instanceof</code> operator.</p></div>
+<div class="paragraph"><p>Few places needed to be patched <em>(for dev mode only)</em>.</p></div></section><section id="_building_angular"><h2>Building Angular</h2><div class="paragraph"><p>Angular 2 requires a strict environment to be built.</p></div>
+<div class="paragraph"><p>Docker to the rescue!</p></div>
+<div class="paragraph"><p>&#8658; From RC6 to 2.0 final: 1 hour of work!</p></div></section><section id="_legacy_gwt_widgets_integration"><h2>Legacy GWT Widgets integration</h2><div class="paragraph"><p>Works both ways :</p></div>
+<div class="ulist"><ul><li><p>GWT widgets inside an Angular2Boot application: <code>WidgetAdapterPanel</code>.</p></li><li><p>Angular 2 components in a legacy GWT application: <code>AngularComponentContainerWidget</code>.</p></li></ul></div></section><section id="_testing"><h2>Testing</h2><div class="ulist"><ul><li><p>Unit tests,</p></li><li><p>Integration tests.</p></li></ul></div></section><section id="_unit_tests"><h2>Unit tests</h2><div class="paragraph"><p>Difficult to use the <code>GWTTestCase</code> facility</p></div>
+<div class="paragraph"><p>HTMLUnit does not support Angular 2 runtime (not ES6 compatible)</p></div>
+<div class="paragraph"><p>More, GWT uses Jetty as a testing backend but we want to be able to use <strong>any</strong> backend (eg. SpringBoot).</p></div>
+<div class="paragraph"><p>No real solution yet&#8230;&#8203;</p></div></section><section id="_integration_tests"><h2>Integration tests</h2><div class="paragraph"><p>Using <strong>Selenium WebDriver</strong> and <strong>Spring</strong> integration testing facilities, it is done easily!</p></div></section></section>
+<section><section id="_future_work_ideas"><h2>Future work, ideas</h2></section><section id="_pwa_application"><h2>PWA application</h2><div class="paragraph"><p>Thanks Mañolo, you inspired me ;)</p></div></section><section id="_generate_ui_code_from_model_objects"><h2>Generate UI code from model objects</h2><div class="paragraph"><p>Code generation is not easy in Javascript but really easy in Java.</p></div>
+<div class="paragraph"><p>(see last year <a href="http://www.lteconsulting.fr/annotation-processing/#/">GWTCon talk on JSR-269</a>).</p></div></section><section id="_generate_service_access_code_from_backend_interface"><h2>Generate service access code from backend interface</h2><div class="paragraph"><p>Code generation, again&#8230;&#8203;</p></div></section><section id="_ts_definitions_generation"><h2>TS definitions generation</h2><div class="paragraph"><p>Generate TS descriptions of Java components for easy integration of Java components into a TS Angular application.</p></div></section><section id="_angular_in_nashorn_for_server_side_rendering_angular_universal"><h2>Angular in Nashorn for server-side rendering (Angular Universal)</h2></section><section id="_angular2boot_with_nativescript"><h2>Angular2Boot with NativeScript</h2></section><section id="_module_loading"><h2>Module loading</h2><div class="paragraph"><p>Not easy!</p></div>
+<div class="paragraph"><p>Best is maybe to wait for GWT3 (J2Cl) which will be more ES7 module friendly.</p></div>
+<div class="paragraph"><p>Will allow more AOT compilation optimizations (Angular AOT compiler may be able to work on the generated code).</p></div>
+<div class="paragraph"><p>Better integration with JS build and packaging tools.</p></div></section></section>
+<section><section id="_conclusions"><h2>Conclusions</h2></section><section id="_javascript_and_java_commmunities_need_to_exchange"><h2>Javascript and Java commmunities need to exchange!</h2><div class="ulist"><ul><li><p>WebPack inspired by GWT&#8217;s code splitting,</p></li><li><p>Problems solved by Java since 20 years should inspire JS!</p></li><li><p>Dynamism of the JS ecosystem should inpire Java!</p></li></ul></div></section><section id="_use_cases"><h2>Use cases</h2><div class="ulist"><ul><li><p>100% Java applications (small or big),</p></li><li><p>Service implementations in Java (strongly typed Web service interfacing),</p></li><li><p>JS, Typescript and Java integration,</p></li><li><p>Would fit well with JBoss Forge and JHipster&#8230;&#8203;</p></li></ul></div></section><section id="_how_cool_is_that"><h2>How cool is that?</h2><div class="ulist"><ul><li><p>Tested on few projects, was very impressive! Workflow is really comfortable.</p></li><li><p>Dead simple bootstrapping (only one maven dep, simpler than Angular 2 itself!).</p></li><li><p>GWT compilation without User module (Widgets) is dead fast.</p></li><li><p>Gives GWT a second youth! (only uses the core).</p></li><li><p>Optimizations done by GWT are still very powerful: fast application, small download.</p></li></ul></div></section><section id="_easy_to_try"><h2>Easy to try</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>mvn archetype:generate \
+  -DarchetypeGroupId=fr.lteconsulting \
+  -DarchetypeArtifactId=angular2-gwt.archetype \
+  -DarchetypeVersion=1.6
+
+mvn clean install # produces an executable fat jar
+
+java -jar target/YOUR_ARTIFACT_ID.jar</code></pre></div></div>
+<div class="paragraph"><p><em>No excuse not to try !!!</em></p></div></section><section id="_compile_on_reload"><h2>Compile on reload</h2><div class="listingblock"><div class="content"><pre class="highlight"><code># Backend
+mvn spring-boot:run
+
+# Frontend
+mvn gwt:run-codeserver</code></pre></div></div></section></section>
+<section id="_demo"><h2>Demo</h2></section>
+<section id="_thanks_it_was_a_pleasure"><h2>Thanks, it was a pleasure!</h2><div class="paragraph"><p>Maybe you have questions?</p></div>
+<div class="paragraph"><p>Try it!</p></div>
+<div class="paragraph"><p><a href="http://lteconsulting.fr/angular2boot/">lteconsulting.fr/angular2boot</a></p></div>
+<div class="paragraph"><p>Twitter: <a href="https://twitter.com/ltearno">@ltearno</a></p></div></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'moon',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>
