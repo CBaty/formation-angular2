@@ -150,6 +150,17 @@ Liste des exercices NinjaSquad : https://angular-exercises.ninja-squad.com/
 
 
 
+== Forms
+
+DOCUMENTATION OFFICIELLE
+
+Form by template https://angular.io/docs/ts/latest/guide/forms.html
+
+NgForm directive API https://angular.io/docs/ts/latest/api/forms/index/NgForm-directive.html
+
+Form reactive (code-driven) https://angular.io/docs/ts/latest/guide/reactive-forms.html
+
+Form validation https://angular.io/docs/ts/latest/cookbook/form-validation.html
 
 
 
