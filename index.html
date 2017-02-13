@@ -1,124 +1,441 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Arnaud Tournier - @ltearno - LTE Consulting - GWT Con 2016 - Firenze"><title>Angular 2 Boot</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/moon.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Angular 2 Boot</h1><p><small>Arnaud Tournier - @ltearno - LTE Consulting - GWT Con 2016 - Firenze</small></p></section><section id="_arnaud_tournier"><h2>Arnaud Tournier</h2><div class="paragraph"><p><strong>LTE Consulting</strong> founder.</p></div>
-<div class="paragraph"><p>Speaker: <strong>Java One</strong>, <strong>Devoxx France</strong>, <strong>GWT.create</strong>, <strong>GWTCon</strong>, <strong>JUGs</strong>, etc&#8230;&#8203;</p></div>
-<div class="paragraph"><p>Training: Java, C#, .net, Typescript, GWT, Angular 2, JavaEE, Spring, git&#8230;&#8203;</p></div>
-<div class="paragraph"><p>Email: <a href="mailto:ltearno@gmail.com">ltearno@gmail.com</a></p></div>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse"><title>Angular 2</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Angular 2</h1><p><small>Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse</small></p></section><section id="_arnaud_tournier"><h2>Arnaud Tournier</h2><div class="paragraph"><p>Email: <a href="mailto:ltearno@gmail.com">ltearno@gmail.com</a></p></div>
 <div class="paragraph"><p>Twitter: <a href="https://twitter.com/ltearno">@ltearno</a></p></div>
-<div class="paragraph"><p>Web: <a href="http://www.lteconsulting.fr">www.lteconsulting.fr</a></p></div>
-<div class="paragraph"><p>Full stack (x86_64 to JavaScript)</p></div></section>
-<section id="_this_presentation_is_online"><h2>This presentation is online!</h2><div class="paragraph"><p><a href="http://lteconsulting.fr/angular2boot-gwtcon2016/">lteconsulting.fr/angular2boot-gwtcon2016</a></p></div>
-<div class="paragraph"><p><em>works on your phone too ;)</em></p></div>
-<div class="paragraph"><p>Demo code available at</p></div>
-<div class="ulist"><ul><li><p><a href="https://github.com/ltearno/tour-of-heroes">github.com/ltearno/tour-of-heroes</a></p></li><li><p><a href="https://github.com/ltearno/angular2boot-demos">github.com/ltearno/angular2boot-demos</a></p></li></ul></div></section>
-<section><section id="_angular_2_boot"><h2>Angular 2 Boot?</h2><div class="paragraph"><p>A new RIA paradigm for Java : programming Angular 2 with Java 8.</p></div><div class="paragraph"><p><strong>The coolest Java 8 RIA framework in the place ;)</strong></p></div><div class="paragraph"><p><a href="http://lteconsulting.fr/angular2boot/">lteconsulting.fr/angular2boot</a></p></div></section><section id="_a_more_technical_title"><h2>A more technical title&#8230;&#8203;</h2><div class="paragraph"><p>Integrating Angular 2 and GWT 2.8:</p></div>
-<div class="paragraph"><p><strong>problems</strong> and <strong>solutions</strong>&#8230;&#8203;</p></div></section><section id="_why_do_that"><h2>Why do that?</h2><div class="paragraph"><p>I want to benefit from the <strong>best UI coding paradigms</strong> (Data binding, DI, &#8230;&#8203;).</p></div>
-<div class="paragraph"><p>I want <strong>strong typing</strong> and <strong>powerful IDE</strong> tools.</p></div>
-<div class="paragraph"><p>I want to be <strong>more productive</strong>.</p></div>
-<div class="paragraph"><p>I want to be in phase with the <strong>future</strong>.</p></div>
-<div class="paragraph"><p><em>(I may want to progressively migrate an existing app)</em></p></div></section><section id="_the_problem"><h2>The problem</h2><div class="paragraph"><p>Angular 2 natively supports Typescript, Javascript and Dart.</p></div>
-<div class="paragraph"><p>But Java is not in the party, <strong>let&#8217;s remedy!</strong></p></div>
-<div class="imageblock" style=""><div class="content"><img src="images/angular-languages.png" alt="angular languages"></div></div></section></section>
-<section><section id="_the_recipe" data-background="images/ingredients.jpg"><h2>The recipe</h2><div class="paragraph"><p>&nbsp;</p></div></section><section id="_angular_2"><h2>Angular 2</h2><div class="ulist"><ul><li><p>non invasive,</p></li><li><p>modern architecture, simple and effective.</p></li></ul></div></section><section id="_gwt_2_8_core"><h2>GWT 2.8 Core</h2><div class="ulist"><ul><li><p><strong>Java 8</strong> (strong typing, lambdas, streams, &#8230;&#8203;)</p></li><li><p><strong>JsInterop</strong> (easy integration with JS)</p></li><li><p><strong>SuperDevMode</strong> (incremental fast compile on reload)</p></li><li><p>Optimized compilation for production (js size, efficiency)</p></li></ul></div></section><section id="_jsr_269"><h2>JSR 269</h2><div class="ulist"><ul><li><p>Java Annotation Processing API,</p></li><li><p>Code generation integrated within Java compilation,</p></li><li><p>Boilerplate code generation.</p></li></ul></div></section><section id="_spring_boot"><h2>Spring Boot</h2><div class="ulist"><ul><li><p>Standalone server application (µ-service friendly),</p></li><li><p>Easy to start with,</p></li><li><p>Rich API,</p></li><li><p><em>Note: Angular2Gwt works with <strong>any</strong> backend</em>.</p></li></ul></div></section></section>
-<section><section id="_angular"><h2>Angular</h2><div class="paragraph"><p>Angular 1 was released in 2009.</p></div><div class="paragraph"><p>A full rewrite gave birth to Angular 2 in 2016.</p></div><div class="paragraph"><p>Much better and simpler architecture !</p></div></section><section id="_angular_2_fundamentals"><h2>Angular 2 fundamentals</h2><div class="ulist"><ul><li><p>Components,</p></li><li><p>Dependency Injection,</p></li><li><p>Data binding and change detection.</p></li></ul></div></section><section id="_components"><h2>Components</h2><div class="paragraph"><p>Most basic building block of the application.</p></div>
-<div class="paragraph"><p>A component is a class with:</p></div>
-<div class="ulist"><ul><li><p>a <em>view</em> (an HTML template),</p></li><li><p>and a <em>model</em> (data and methods).</p></li></ul></div>
-<div class="paragraph"><p>Interaction between view and model through <em>data binding</em>.</p></div></section><section id="_components_2"><h2>Components</h2><div class="paragraph"><p>Each component is responsible for a part of the DOM tree.</p></div>
-<div class="paragraph"><p>Components also form a tree.</p></div>
-<div class="paragraph"><p><em>A bit like the GWT Widgets&#8230;&#8203;</em></p></div>
-<div class="paragraph"><p>Components interacts with each other through cleanly defined ways.</p></div></section><section id="_components_tree"><h2>Components tree</h2><div class="imageblock" style=""><div class="content"><img src="images/angular-components.png" alt="angular components"></div></div></section><section id="_dependency_injection"><h2>Dependency Injection</h2><div class="paragraph"><p>Sharing services between components.</p></div>
-<div class="paragraph"><p>Lifecycle and dependencies are managed by Angular.</p></div>
-<div class="paragraph"><p>Each component has a Dependency Injector.</p></div>
-<div class="paragraph"><p>Those also form a tree.</p></div></section><section id="_data_binding"><h2>Data binding</h2><div class="paragraph"><p>Angular uses Zone.js to track changes.</p></div>
-<div class="paragraph"><p>Zones == <em>asynchronous TLS</em>.</p></div>
-<div class="paragraph"><p>Preserve an execution context across asynchronous calls.</p></div>
-<div class="paragraph"><p><em>(done by patching most of the browsers async functions)</em></p></div></section></section>
-<section id="_gwt_in_angular2boot"><h2>GWT in Angular2Boot</h2><div class="ulist"><ul><li><p>Only uses the compiler,</p></li><li><p>JsInterop used a lot,</p></li><li><p>No widgets, no <code>User</code> module (unless you want to mix legacy GWT and Angular).</p></li></ul></div>
-<div class="paragraph"><p>Because that&#8217;s how future will look like.</p></div></section>
-<section><section id="_jsr_269_pluggable_annotation_processing_api"><h2>JSR 269 - Pluggable Annotation Processing API</h2><div class="paragraph"><p><em>Shown here last year!</em></p></div><div class="paragraph"><p>Standard API for code generation in Java.</p></div><div class="paragraph"><p><em>(Used to generate the boiler plate code Angular requires.)</em></p></div><div class="paragraph"><p>Registered <em>annotation processors</em> receive the program&#8217;s AST
-and can then generate files (sources, byte-code or resources) which are part of the compilation.</p></div><div class="paragraph"><p>Integrated with the Java compiler.</p></div></section><section id="_good_points"><h2>GOOD POINTS</h2><div class="paragraph"><p>Generated code is visible and debuggable,</p></div>
-<div class="paragraph"><p>You can reference the generated code in your code.</p></div>
-<div class="paragraph"><p>No overhead at runtime.</p></div>
-<div class="paragraph"><p>(Does not depend on byte code: GWT compatible)</p></div></section><section id="_just_one_more_thing"><h2>Just one more thing</h2><div class="paragraph"><p>A processor can break the compilation by outputting errors.</p></div>
-<div class="paragraph"><p>It can also provide the user with tips by outputting warnings.</p></div>
-<div class="imageblock" style=""><div class="content"><img src="images/error-in-eclipse.png" alt="error in eclipse"></div></div></section></section>
-<section><section id="_angular2boot"><h2>Angular2Boot</h2></section><section id="_the_basics"><h2>The basics</h2></section><section id="_java_javascript_communication"><h2>Java/Javascript communication</h2><div class="paragraph"><p>We need to make the java application communicate with the javascript Angular 2 runtime.</p></div>
-<div class="paragraph"><p>JsInterop can do that.</p></div></section><section id="_feeding_angular_with_metadatas"><h2>Feeding Angular with metadatas</h2><div class="paragraph"><p>Angular requires metadata on components (<em>DI, routing, inputs/ouputs, &#8230;&#8203;</em>)
-and uses ES7/Typescript <strong>decorators</strong> (ex <strong>@Component()</strong>) for this purpose.</p></div>
-<div class="paragraph"><p>Those decorators alter component&#8217;s constructor at runtime so that less <em>boilerplate</em> code is required.</p></div></section><section id="_in_java"><h2>In Java?</h2><div class="paragraph"><p>Annotations can play the role of decorators (ex <strong>@Component</strong>).</p></div>
-<div class="paragraph"><p>Those are processed at <strong>compile</strong> time.</p></div>
-<div class="paragraph"><p>And generate RTTI code for Angular.</p></div></section><section id="_how"><h2>How?</h2><div class="ulist"><ul><li><p>JSR-269 is used to generate RTTI,</p></li><li><p>Use Angular JS API through JsInterop to provide the RTTI.</p></li><li><p>Fetch Java class compiled JS constructor at runtime,</p></li><li><p>Patch it with Angular required metadata,</p></li><li><p>Provide the patched constructor function to Angular.</p></li></ul></div></section><section id="_typescript_written_component"><h2>Typescript written component</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">@Component( { selector: "my-hero-detail",
-  templateUrl: "hero-detail.component.html",
-  styleUrls: "hero-detail.component.css" } )
-export class HeroDetailComponent
-{
-  @Input() hero = null;
-  @Output() updated = new EventEmitter();
+<div class="paragraph"><p>Web: <a href="http://www.lteconsulting.fr">www.lteconsulting.fr</a></p></div></section>
+<section><section id="_ecmascript_6"><h2>ECMASCRIPT 6</h2><div class="paragraph"><p>Spécification standardisée du Javascript : ECMAScript.</p></div><div class="paragraph"><p>La version 5 est la plus largement répandue aujourd&#8217;hui.</p></div><div class="paragraph"><p>La version suivante est ECMAScript 6 (ou ES6, ou ECMASCRIPT 2015). Elle propose de nombreuses fonctionnalités comme les <em>classes</em>, les <em>constantes</em>, les <em>arrow functions</em>, les <em>générateurs</em>&#8230;&#8203;</p></div><div class="paragraph"><p>Angular se base sur cette version d&#8217;ECMAScript, bien qu&#8217;une API existe pour écrire des applications en ECMAScript 5.</p></div><div class="paragraph"><p>Les navigateurs modernes sont déjà à jour pour cette version. Il existe des transpileurs (Babeljs, Traceur par exemple) pour générer du code ECMAScript 5 à partir de code en version 6.</p></div><div class="paragraph"><p>Nous allons découvrir les nouveautés d&#8217;ECMAScript à connaître impérativement pour avoir une expérience de développement optimale avec Angular.</p></div><div class="paragraph"><p>Ces nouveautés permettent en général soit de corriger un défaut du langage javascript, soit d&#8217;amener un <em>sucre syntaxique</em> permettant d&#8217;exprimer des constructions issues des languages <em>POO</em>. D&#8217;autres améliorations permettent tout simplement d&#8217;être plus efficace dans son développement. Enfin, l&#8217;ensemble des améliorations permet un meilleur traitement des sources dans les environnements de développement (IDE).</p></div></section><section id="__code_code_optionnel"><h2><code>;</code> optionnel</h2><div class="paragraph"><p>Le point-virgule <code>;</code> est désormais optionnel dans les sources Javascript.</p></div>
+<div class="paragraph"><p>Sauf rares cas, il est pratiquement possible de purement et simplement les supprimer de vos sources.</p></div></section><section id="__code_let_code"><h2><code>let</code></h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let maVariable = 5</code></pre></div></div>
+<div class="paragraph"><p>Le mot-clé <code>let</code> corrige les défauts de <code>var</code> utilisé pour déclarer des variables en Javascript, notamment :</p></div>
+<div class="ulist"><ul><li><p>la portée des variable. Les variables <code>let</code> ont une durée de vie limitée au bloc dans lequel elles se trouvent. Et non à la <em>fonction</em> dans laquelle elles se trouvent.</p></li><li><p>le <em>hoisting</em>. Les variables <code>let</code> ne sont pas accessibles avant la ligne qui les déclare.</p></li></ul></div>
+<div class="paragraph"><p>La déclaration de variable en Javascript se comporte enfin de la manière attendue !</p></div></section><section id="__code_const_code"><h2><code>const</code></h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">const maConstante = 53
 
-  HeroDetailComponent( private HeroService heroService ) {}
+// provoque une erreur :
+maConstante = 42</code></pre></div></div>
+<div class="paragraph"><p>Le mot-clé <code>const</code> permet de déclarer une constante, c&#8217;est à dire une variable dont on ne peut pas changer la valeur.</p></div>
+<div class="paragraph"><p>C&#8217;est une fonctionnalité de language qui manquait à Javascript.</p></div></section><section id="_construction_rapide_d_objets"><h2>Construction rapide d&#8217;objets</h2><div class="paragraph"><p>Une nouvelle forme de syntaxe pour créer des objets rapidement :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function creerUser( nom, prenom ) {
+  return {
+    nom, <b>(1)</b>
+    prenom
+  }
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>La propriété de l&#8217;objet aura le même nom que la variable utilisée comme valeur</p></li></ol></div>
+<div class="paragraph"><p>est équivalent à :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function creerUser( nom, prenom ) {
+  return {
+    nom: nom,
+    prenom: prenom
+  }
+}</code></pre></div></div></section><section id="_affectations_destructurées"><h2>Affectations destructurées</h2><div class="paragraph"><p>Nouvelle syntaxe qui permet de facilement affecter des variables à partir de propriétés d&#8217;objets ou d&#8217;éléments de tableaux.</p></div>
+<div class="paragraph"><p>En ES5, pour extraire des variables à partir d&#8217;un objet, on écrit souvent :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">// en entrée un objet data = { id: 3, name: 'toto' }
+var id = data.id;
+var name = data.name;</code></pre></div></div>
+<div class="paragraph"><p>L&#8217;affectation destructurée permet ceci :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let { id, name } = data <b>(1)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p>L&#8217;affectation destructurée déclare et initialise les variables <code>id</code> et <code>name</code>.</p></li></ol></div>
+<div class="paragraph"><p>Si on souhaite affecter des variables avec des noms différents des propriétés de l&#8217;objet, on peut faire ainsi :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let { id: userId, name: userName } = data <b>(1)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p>L&#8217;affectation destructurée déclare et initialise les variables <code>userId</code> et <code>userName</code>.</p></li></ol></div>
+<div class="paragraph"><p>Ceci fonctionne aussi avec les objets imbriqués :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let { id: userId, address: { street: userStreet } } = data</code></pre></div></div>
+<div class="paragraph"><p>Cette syntaxe fonctionne aussi avec les tableaux :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">// avec un tableau t = [3, 6, 4, 7]
 
-  ngOnInit() { ... }
-
-  // ...
-}</code></pre></div></div></section><section id="_java_equivalent"><h2>Java equivalent</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">@Component( selector = "my-hero-detail",
-  templateUrl = "hero-detail.component.html",
-  styleUrls = "hero-detail.component.css" )
-@JsType
-public class HeroDetailComponent implements OnInit
-{
-  @Input public Hero hero = null;
-  @Output public EventEmitter&lt;Hero&gt; updated = new EventEmitter&lt;&gt;();
-
-  private HeroService heroService;
-
-  public HeroDetailComponent( HeroService heroService )
-  {
-    this.heroService = heroService;
+let [ premier, deuxieme ] = t</code></pre></div></div></section><section id="_l_opérateur_de_reste"><h2>L&#8217;opérateur de reste</h2><div class="paragraph"><p>Cet opérateur permet d&#8217;accepter facilement un nombre de paramètres variable dans une fonction :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function ajouterProduits( ...produits ) {
+  for(let produit of produits) {
+    ...
+  }
+}</code></pre></div></div>
+<div class="paragraph"><p>On peut aussi utiliser cet opérateur avec les affectations destructurées :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let [head, ...tail] = list <b>(1)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p><code>head</code> contient le premier élément et <code>tail</code> la suite de la liste</p></li></ol></div></section><section id="_l_opérateur_d_étalement"><h2>L&#8217;opérateur d&#8217;étalement</h2><div class="paragraph"><p>C&#8217;est le complémentaire de l&#8217;opérateur de reste. Il permet de <em>convertir</em> un tableau en liste d&#8217;arguments :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let coordonnees = [12, 32]
+let point = new Point(...coordonnees)</code></pre></div></div></section><section id="_valeurs_par_défaut"><h2>Valeurs par défaut</h2><div class="paragraph"><p>Il est maintenant possible de donner des valeurs par défaut aux paramètres de fonctions et éléments d&#8217;affectation destructurée.</p></div>
+<div class="paragraph"><p>Au lieu d&#8217;écrire :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function faireChose( size, value ) {
+  value = value || 0 // valeur par défaut
+}</code></pre></div></div>
+<div class="paragraph"><p>On préfèrera :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function faireChose( size, value = 0 ) {
+}</code></pre></div></div>
+<div class="paragraph"><p>La valeur par défaut peut aussi être un appel de fonction, ou même une expression faisant référence à d&#8217;autres paramètres de la fonction (<em>quand ils sont à gauche de là où on les utilise</em>). Voyez cet exemple :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function autreChose( factory = defaultFactory(), type = factory.type ) { <b>(1)</b>
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>la fonction <code>defaultFactory</code> ne sera appelée que lorsque l&#8217;appelant ne fournit pas de valeur au paramètre. Si le deuxième paramètre n&#8217;est pas fourni, sa valeur sera affectée à l&#8217;expression <code>factory.type</code>.</p></li></ol></div>
+<div class="paragraph"><p>Utilisée avec l&#8217;affectation destructurée des variables, cette construction s&#8217;écrit :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">const { timeout = 1000 } = httpOptions</code></pre></div></div></section><section id="_les_classes"><h2>Les classes</h2><div class="paragraph"><p>L&#8217;introduction des classes en Javascript se fait par l&#8217;ajout d&#8217;une syntaxe équivalente à un <em>sucre syntaxique</em> pour le moteur d&#8217;exécution JS. En effet javascript repose sur un modèle d&#8217;héritage par prototype qui permet de simuler l&#8217;héritage de classes.</p></div>
+<div class="paragraph"><p>Voici un exemple de classe :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">class Livre {
+  constructor(private titre) { <b>(1)</b> <b>(2)</b>
   }
 
-  @Override
-  public void ngOnInit() { ... }
+  description() {
+    return `Livre: ${this.titre}`
+  }
 
-  // ...
-}</code></pre></div></div></section><section id="_consistent_syntax"><h2>Consistent syntax</h2><div class="paragraph"><p>The developper should be able to read JS documentation and know <em>how</em> to code in Java.</p></div>
-<div class="paragraph"><p>In brief, we want syntax consistency.</p></div></section><section id="_architecture"><h2>Architecture</h2></section><section id="_" data-transition="none" data-background="images/archi-survol.png" data-background-size="contain"></section><section id="__2" data-transition="none" data-background="images/archi-compil.png" data-background-size="contain"></section><section id="__3" data-transition="none" data-background="images/archi-runtime.png" data-background-size="contain"></section><section id="__4" data-transition="none" data-background="images/archi-sdm.png" data-background-size="contain"></section><section id="_now_the_problems"><h2>Now, the problems</h2></section><section id="_module_loading_problem"><h2>Module loading problem</h2><div class="paragraph"><p>GWT is not SystemJS (ES7 modules) friendly.</p></div>
-<div class="paragraph"><p>Need to generate a bundle with all Angular inside (you can choose/build your bundle depending on what you need).</p></div></section><section id="_the_instanceof_problem"><h2>The instanceof problem</h2><div class="paragraph"><p>Angular checks at runtime that components are valid.</p></div>
-<div class="paragraph"><p>With SuperDevMode, code is loaded in an external frame thus breaking <code>instanceof</code> operator.</p></div>
-<div class="paragraph"><p>Few places needed to be patched <em>(for dev mode only)</em>.</p></div></section><section id="_building_angular"><h2>Building Angular</h2><div class="paragraph"><p>Angular 2 requires a strict environment to be built.</p></div>
-<div class="paragraph"><p>Docker to the rescue!</p></div>
-<div class="paragraph"><p>&#8658; From RC6 to 2.0 final: 1 hour of work!</p></div></section><section id="_legacy_gwt_widgets_integration"><h2>Legacy GWT Widgets integration</h2><div class="paragraph"><p>Works both ways :</p></div>
-<div class="ulist"><ul><li><p>GWT widgets inside an Angular2Boot application: <code>WidgetAdapterPanel</code>.</p></li><li><p>Angular 2 components in a legacy GWT application: <code>AngularComponentContainerWidget</code>.</p></li></ul></div></section><section id="_testing"><h2>Testing</h2><div class="ulist"><ul><li><p>Unit tests,</p></li><li><p>Integration tests.</p></li></ul></div></section><section id="_unit_tests"><h2>Unit tests</h2><div class="paragraph"><p>Difficult to use the <code>GWTTestCase</code> facility</p></div>
-<div class="paragraph"><p>HTMLUnit does not support Angular 2 runtime (not ES6 compatible)</p></div>
-<div class="paragraph"><p>More, GWT uses Jetty as a testing backend but we want to be able to use <strong>any</strong> backend (eg. SpringBoot).</p></div>
-<div class="paragraph"><p>No real solution yet&#8230;&#8203;</p></div></section><section id="_integration_tests"><h2>Integration tests</h2><div class="paragraph"><p>Using <strong>Selenium WebDriver</strong> and <strong>Spring</strong> integration testing facilities, it is done easily!</p></div></section></section>
-<section><section id="_future_work_ideas"><h2>Future work, ideas</h2></section><section id="_pwa_application"><h2>PWA application</h2><div class="paragraph"><p>Thanks Mañolo, you inspired me ;)</p></div></section><section id="_generate_ui_code_from_model_objects"><h2>Generate UI code from model objects</h2><div class="paragraph"><p>Code generation is not easy in Javascript but really easy in Java.</p></div>
-<div class="paragraph"><p>(see last year <a href="http://www.lteconsulting.fr/annotation-processing/#/">GWTCon talk on JSR-269</a>).</p></div></section><section id="_generate_service_access_code_from_backend_interface"><h2>Generate service access code from backend interface</h2><div class="paragraph"><p>Code generation, again&#8230;&#8203;</p></div></section><section id="_ts_definitions_generation"><h2>TS definitions generation</h2><div class="paragraph"><p>Generate TS descriptions of Java components for easy integration of Java components into a TS Angular application.</p></div></section><section id="_angular_in_nashorn_for_server_side_rendering_angular_universal"><h2>Angular in Nashorn for server-side rendering (Angular Universal)</h2></section><section id="_angular2boot_with_nativescript"><h2>Angular2Boot with NativeScript</h2></section><section id="_module_loading"><h2>Module loading</h2><div class="paragraph"><p>Not easy!</p></div>
-<div class="paragraph"><p>Best is maybe to wait for GWT3 (J2Cl) which will be more ES7 module friendly.</p></div>
-<div class="paragraph"><p>Will allow more AOT compilation optimizations (Angular AOT compiler may be able to work on the generated code).</p></div>
-<div class="paragraph"><p>Better integration with JS build and packaging tools.</p></div></section></section>
-<section><section id="_conclusions"><h2>Conclusions</h2></section><section id="_javascript_and_java_commmunities_need_to_exchange"><h2>Javascript and Java commmunities need to exchange!</h2><div class="ulist"><ul><li><p>WebPack inspired by GWT&#8217;s code splitting,</p></li><li><p>Problems solved by Java since 20 years should inspire JS!</p></li><li><p>Dynamism of the JS ecosystem should inpire Java!</p></li></ul></div></section><section id="_use_cases"><h2>Use cases</h2><div class="ulist"><ul><li><p>100% Java applications (small or big),</p></li><li><p>Service implementations in Java (strongly typed Web service interfacing),</p></li><li><p>JS, Typescript and Java integration,</p></li><li><p>Would fit well with JBoss Forge and JHipster&#8230;&#8203;</p></li></ul></div></section><section id="_how_cool_is_that"><h2>How cool is that?</h2><div class="ulist"><ul><li><p>Tested on few projects, was very impressive! Workflow is really comfortable.</p></li><li><p>Dead simple bootstrapping (only one maven dep, simpler than Angular 2 itself!).</p></li><li><p>GWT compilation without User module (Widgets) is dead fast.</p></li><li><p>Gives GWT a second youth! (only uses the core).</p></li><li><p>Optimizations done by GWT are still very powerful: fast application, small download.</p></li></ul></div></section><section id="_easy_to_try"><h2>Easy to try</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>mvn archetype:generate \
-  -DarchetypeGroupId=fr.lteconsulting \
-  -DarchetypeArtifactId=angular2-gwt.archetype \
-  -DarchetypeVersion=1.6
+  static fonctionStatique(toto) {
+    return toto
+  }
+}
 
-mvn clean install # produces an executable fat jar
+let livre = new Livre('Les frameworks JS')</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>la fonction spéciale <code>constructor</code> est appelée lorsque l&#8217;objet est créé.</p></li><li><p>l&#8217;utilisation de <code>private</code> ou <code>public</code> crée automatiquement un attribut dans la classe (Typescript seulement ?).</p></li></ol></div></section><section id="_accesseurs"><h2>Accesseurs</h2><div class="paragraph"><p>Une classe peut fournir des fonctions <em>getter</em> et/ou <em>setter</em> en plus des attributs classiques.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">class EditionService {
+  get description() { <b>(1)</b>
+    return `service ${this.name}`
+  }
 
-java -jar target/YOUR_ARTIFACT_ID.jar</code></pre></div></div>
-<div class="paragraph"><p><em>No excuse not to try !!!</em></p></div></section><section id="_compile_on_reload"><h2>Compile on reload</h2><div class="listingblock"><div class="content"><pre class="highlight"><code># Backend
-mvn spring-boot:run
+  private value
 
-# Frontend
-mvn gwt:run-codeserver</code></pre></div></div></section></section>
-<section id="_demo"><h2>Demo</h2></section>
-<section id="_thanks_it_was_a_pleasure"><h2>Thanks, it was a pleasure!</h2><div class="paragraph"><p>Maybe you have questions?</p></div>
-<div class="paragraph"><p>Try it!</p></div>
-<div class="paragraph"><p><a href="http://lteconsulting.fr/angular2boot/">lteconsulting.fr/angular2boot</a></p></div>
-<div class="paragraph"><p>Twitter: <a href="https://twitter.com/ltearno">@ltearno</a></p></div></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+  set longueur(value) { <b>(2)</b>
+    if(value.charAt(value.length-1)=='k')
+      this._value = value * 1000
+    else
+      this.value = value
+  }
+}
+
+let service = new EditionService()
+
+console.log(service.description)
+
+service.longueur = '100k'
+service.longueur = 24</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>le mot-clé <code>get</code> permet de déclarer un accesseur <em>getter</em> pour la propriété <code>description</code>.</p></li><li><p>le mot-clé <code>set</code> permet de déclarer un accesseur <em>setter</em> pour la propriété <code>longueur</code>.</p></li></ol></div></section><section id="_héritage"><h2>Héritage</h2><div class="paragraph"><p>L&#8217;héritage de classe est possible avec le mot-clé <code>extends</code> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">class Animal {
+  constructor(private name) {}
+}
+
+class Mamifere extends Animal {
+  constructor() {
+    super('baleine') <b>(1)</b>
+  }
+
+  affiche() {
+    console.log('je suis une baleine')
+
+    super.affiche() <b>(2)</b>
+  }
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>le mot-clé <code>super</code> permet de faire référence au constructeur de la classe parente.</p></li><li><p>le mot-clé <code>super</code> permet de faire référence à l&#8217;implémentation de la fonction dans la classe parente.</p></li></ol></div></section><section id="_les_promises"><h2>Les promises</h2><div class="paragraph"><p>Avec les versions précédentes de Javascript et l&#8217;utilisation intensive des traitements asynchrones, de nombreuses bibliothèques de <em>promises</em> ont vu le jour ces dernières années. Avec même la création de certains standards <em>de-facto</em>.</p></div>
+<div class="paragraph"><p>ES5 apporte une normalisation de la gestion des traitements asynchrones avec les <em>Promises</em>. Cette API permet d&#8217;éviter le <em>callback hell</em>.</p></div>
+<div class="paragraph"><p>Une <em>promise</em> est un objet qui représente la mise à disposition d&#8217;un résultat <em>plus tard</em> dans le temps. On peut dire qu&#8217;il s&#8217;agit de la représentation d&#8217;un traitement asynchrone.</p></div>
+<div class="paragraph"><p>On peut chainer les traitements asynchrones grâce à la fonction <code>then</code> des <code>Promise</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">this.userService.getUser(id) <b>(1)</b>
+  .then( function(user) { return this.userService.getRights() } ) <b>(2)</b>
+  .then( function(rights) { this.doSomething(rights) } ) <b>(3)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p>la fonction <code>getUser()</code> retourne une <code>Promise</code>.</p></li><li><p>l&#8217;appel à la fonction <code>then</code> permet de spécifier la fonction qui sera appelée quand la première promesse aura fourni son résultat. Le traitement suivant est retourné, c&#8217;est-à-dire la promesse retournée par la fonction <code>getRights()</code>. Une valeur aurait pu être directement retournée.</p></li><li><p>on peut chaîner les appels à <code>then</code> pour faire des traitements successifs. Chaque fonction de rappel reçoit le résultat du traitement précédent. Ici aucune valeur n&#8217;est retournée pour le potentiel prochain traitement.</p></li></ol></div></section><section id="_les_promises_2"><h2>Les promises</h2><div class="paragraph"><p>Une promesse peut être dans un des trois états suivants : <em>pending</em>, <em>fulfilled</em> ou <em>rejected</em>.</p></div>
+<div class="paragraph"><p>Lorsqu&#8217;une promesse est rejetée, on peut récupérer l&#8217;erreur en passant une fonction de rappel en deuxième paramètre de <code>then</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">this.userService.getUser(id)
+  .then( function(user) { ... },
+         function(error) { ... } )</code></pre></div></div>
+<div class="paragraph"><p>On peut aussi laisser les erreurs se propager automatiquement au fil de la chaîne de traitement et les récupérer avec la fonction <code>catch</code>.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">this.userService.getUser(id)
+  .then( function(user) { ... } )
+  .then( function(rights) { ... } )
+  .catch( function(error) { ... } )</code></pre></div></div></section><section id="_création_d_une_code_promise_code"><h2>Création d&#8217;une <code>Promise</code></h2><div class="ulist"><ul><li><p>fournir un traitement :</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function getUser(id) {
+  return new Promise(function(resolve, reject) { <b>(1)</b>
+    let request = new XMLHttpRequest(...)
+    request.onStateChange = function(...) {
+      resolve(data) <b>(2)</b>
+      reject('unknown error') <b>(3)</b>
+    }
+  })
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>création de la promesse. L&#8217;exécution de la fonction passée en paramètre se produit aussitôt.</p></li><li><p>résolution de la promesse avec la valeur obtenu après un traitement asynchrone.</p></li><li><p>rejet de la promesse après erreur dans le traitement asynchrone.</p></li></ol></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let resolvedPromise = Promise.resolve(55) <b>(1)</b>
+let rejectedPromise = Promise.reject('description de l erreur') <b>(2)</b></code></pre></div></div>
+<div class="colist arabic"><ol><li><p>promesse résolue avec la valeur <code>55</code>.</p></li><li><p>promesse rejetée avec l&#8217;erreur passée en paramètre.</p></li></ol></div></section><section id="_plus_loin_avec_les_promise_s"><h2>Plus loin avec les `Promise`s</h2><div class="paragraph"><p>L&#8217;API des promesses est plus riche et flexible que le seul aperçu montré ici. Une documentation plus complète est disponible ici : <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="bare">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise</a>.</p></div>
+<div class="paragraph"><p>Combinées avec les <em>fat arrow functions</em> décrites dans le chapitre suivant, les <em>Promises</em> sont très puissantes pour clarifier l&#8217;enchainement de traitements asynchrones.</p></div></section><section id="__em_fat_arrow_functions_em"><h2><em>fat arrow functions</em></h2><div class="paragraph"><p>Comme il est extrêmement fréquent d&#8217;écrire des fonctions de rappel (<em>callbacks</em>), la syntaxe d&#8217;ES6 intègre un nouvel élément permettant de déclarer des fonctions de manière plus concise. C&#8217;est l&#8217;opérateur <em>fat arrow</em> :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let maFonction = (arg1, arg2) =&gt; arg1 + arg2 <b>(1)</b>
+
+let autreFonction = (arg1) =&gt; { <b>(2)</b>
+  ...
+  return result
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>pas besoin du mot-clé <code>return</code> si la valeur retournée est directe.</p></li><li><p>sinon on déclare un bloc comme d&#8217;habitude.</p></li></ol></div>
+<div class="paragraph"><p>ATTENTION Les fonctions <em>fat arrow</em> présentent un différence notable avec les fonctions traditionnelles : le mot-clé <code>this</code> garde sa valeur au moment où la <em>fat arrow</em> function est créée. Aucun <code>this</code> particulier n&#8217;est attaché aux <em>fat arrow functions</em>&#8230;&#8203;</p></div></section><section id="__code_set_code_et_code_map_code"><h2><code>Set</code> et <code>Map</code></h2><div class="paragraph"><p>Javascript intègre désormais les structures de données <code>Set</code> et <code>Map</code>.</p></div></section><section id="_interpolation_dans_les_chaines_de_caractères"><h2>Interpolation dans les chaines de caractères</h2><div class="paragraph"><p>L&#8217;interpolation de chaines est maintenant facilitée en ES6 grâce aux patrons de chaine :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">var description = user.name.toUpperCase() + ' (' + user.id + ')';
+
+// devient
+
+let description = `${user.name.toUpperCase()} (${user.id})`</code></pre></div></div></section><section id="_les_modules"><h2>Les modules</h2><div class="paragraph"><p>Plusieurs problèmes :</p></div>
+<div class="ulist"><ul><li><p>tout le monde a besoin de charger des bibliothèques</p></li><li><p>différentes bibliothèques de chargement de modules ont vu le jour</p></li><li><p>différentes bibliothèques sont apparues en fonction de l&#8217;utilisation (front avec <em>AMD</em> ou back avec <em>CommonJS</em>)</p></li><li><p>le chargement de modules en ES5 fonctionne mais est encombrant et non optimal.</p></li></ul></div>
+<div class="paragraph"><p>Les nouveaux modules ES6 répondent à ces problèmes et unifient en une seule spécification le chargement de modules dans les mondes serveur et client.</p></div>
+<div class="paragraph"><p>Le chargement des modules (c&#8217;est-à-dire des dépendances de votre application) se fait de façon asynchrone en fonction des déclarations de dépendance faites au début du module.</p></div>
+<div class="paragraph"><p>La syntaxe d&#8217;importation des modules est stricte de façon à permettre aux outils de développement d&#8217;exécuter des analyses perfectionnées.</p></div>
+<div class="paragraph"><p>Les modules ES6 permettent également de définir clairement et facilement les parties d&#8217;un module que l&#8217;on souhaite <em>exporter</em>.</p></div></section><section id="_les_modules_2"><h2>Les modules</h2><div class="paragraph"><p>Exporter une fonction, une variable ou une classe :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">export class BookService {
+  ...
+}
+
+export function ean(value) { ... }</code></pre></div></div>
+<div class="paragraph"><p>Pour importer ces fonctions dans un autre module, on procède ainsi :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">import {BookService, ean} from './book_service'
+
+let svc = new BookService()
+ean('12355')</code></pre></div></div>
+<div class="paragraph"><p>On peut également donner des alias aux éléments importés :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">import {ean as EAN} from './book_service'
+
+let ean = EAN('634')</code></pre></div></div>
+<div class="paragraph"><p>Ou importer tout le module avec :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">import * from './book_service'</code></pre></div></div>
+<div class="paragraph"><p>Les modules en ES6 permettent de séparer son code en petites parties, dont la responsabilité est limitée et clairement établie.</p></div>
+<div class="paragraph"><p>Ils facilitent également le travail des usines logicielles.</p></div></section></section>
+<section><section id="_typescript"><h2>Typescript</h2><div class="paragraph"><p>Nécessité du typage dans les grosses applications maintenues par de grandes équipes.</p></div><div class="paragraph"><p>Typescript est un sur-ensemble de Javascript qui lui ajoute un typage flexible (<em>duck typing</em>).</p></div><div class="paragraph"><p>Le compilateur Typescript analyse les fichiers source Typescript et produit des fichiers Javascript exécutables dans n&#8217;importe quel navigateur (ou NodeJS pour le serveur).</p></div><div class="paragraph"><p>Participe maintenant à l&#8217;élaboration des futures versions d&#8217;ECMAScript.</p></div><div class="paragraph"><p>La philosophie de Typescript est d&#8217;ajouter dans le code source Javascript des annotations de type permettant au compilateur de garantir l&#8217;absence d&#8217;erreurs vérifiables par le système de typage.</p></div><div class="paragraph"><p>Typescript est écrit et maintenu par <em>Microsoft</em>. C&#8217;est un outil open source. Il est le langage préféré lorsqu&#8217;on écrit une application <em>Angular</em> (bien qu&#8217;il soit aussi possible d&#8217;écrire des applications <em>Angular</em> en <em>Java</em>, en <em>Dart</em> et en <em>ES5/6</em>).</p></div><div class="paragraph"><p>Documentation disponible ici <a href="https://www.typescriptlang.org/docs/tutorial.html" class="bare">https://www.typescriptlang.org/docs/tutorial.html</a>.</p></div></section><section id="_les_annotations_de_type"><h2>Les annotations de type</h2><div class="paragraph"><p>Le compilateur Typescript propage les informations de typage dont il dispose. Il procède à l&#8217;inférence de type au maximum pour vérifier la cohérence du code et fournir aux IDE les informations nécessaires aux fonctionnalités d'<em>auto-complétion</em>.</p></div>
+<div class="paragraph"><p>Néanmoins, le compilateur Typescript a besoin d&#8217;informations que seul le développeur connaît.</p></div>
+<div class="paragraph"><p>Le typage dans Typescript est complètement débrayable et on se retrouve avec le langage ECMAScript 6.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function greeter(person: string) {
+  return "Hello, " + person
+}
+
+greeter("Jane")
+greeter(42) // COMPILATION ERROR</code></pre></div></div>
+<div class="paragraph"><p>Typescript possède un système de typage complet, comprenant la généricité, les types optionels, etc. Une liste d&#8217;objets implémentant l&#8217;interface <code>Utilisateur</code> est typée :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let list : Array&lt;Utilisateur&gt; = []</code></pre></div></div></section><section id="_les_types_de_base"><h2>Les types de base</h2><div class="paragraph"><p>Les types de bases sont :</p></div>
+<div class="ulist"><ul><li><p>les mêmes que ceux de Javascript : <code>boolean</code>, <code>number</code>, <code>string</code>, <code>Array&lt;&gt;</code> ou <code>[]</code>, <code>null</code>, <code>undefined</code>.</p></li><li><p>Et des types <em>augmentés</em> : les <em>tuples</em>, <code>enum</code>, <code>void</code>, <code>never</code>.</p></li></ul></div>
+<div class="paragraph"><p>Le type <code>any</code> décrit des variables dont le type n&#8217;est pas connu à l&#8217;avance. Lorsqu&#8217;une variable est de ce type, le compilateur Typescript désctive la vérification de type dans les expressions qui l&#8217;utilisent.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let notSure: any = 4;
+notSure.ifItExists(); // okay, ifItExists might exist at runtime
+notSure.toFixed(); // okay, toFixed exists (but the compiler doesn't check)
+
+let prettySure: Object = 4;
+prettySure.toFixed(); // Error: Property 'toFixed' doesn't exist on type 'Object'.</code></pre></div></div></section><section id="_assertions_de_type_em_cast_em"><h2>Assertions de type (<em>cast</em>)</h2><div class="paragraph"><p>Il est possible de <em>transtyper</em> les variables, c&#8217;est-à-dire les utiliser comme un autre type que celui qui est inféré par Typescript. Ceci se fait avec l&#8217;opérateur d&#8217;assertion de type, qui contrairement aux opérateurs <code>cast</code> d&#8217;autres langages ne réalise aucune opération sur les opérandes.</p></div>
+<div class="paragraph"><p>Il existe deux formes d&#8217;assertion de type :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">let someValue: any = "this is a string";
+
+let strLength: number = (&lt;string&gt;someValue).length;
+
+let strLength2: number = (someValue as string).length;</code></pre></div></div></section><section id="_interfaces"><h2>Interfaces</h2><div class="paragraph"><p>Les interfaces permettent de décrire les variables que l&#8217;on manipule dans un programme. Le langage Typescript utilise le <em>duck typing</em>, ce qui signifie que deux types sont considérés équivalents s&#8217;ils ont la même forme.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function printLabel(labelledObj: { label: string }) { <b>(1)</b>
+    console.log(labelledObj.label);
+}
+
+let myObj = {size: 10, label: "Size 10 Object"};
+printLabel(myObj);</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>l&#8217;interface du paramètre <code>labelledObj</code> est décrite comme un objet possédant au moins une propriété <code>label</code> de type <code>string</code>.</p></li></ol></div>
+<div class="paragraph"><p>Il est bien sûr possible de nommer les interfaces :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">interface Person { <b>(1)</b>
+  firstName: string; <b>(2)</b>
+  lastName: string;
+}
+
+function greeter(person: Person) {
+  return "Hello, " + person.firstName + " " + person.lastName
+}
+
+greeter({ firstName: "Jane", lastName: "User" })
+greeter({ firstName: "Toto"}) // COMPILATION ERROR</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>déclaration de l&#8217;interface <code>Person</code></p></li><li><p>description de l&#8217;attibut <code>firstName</code>. Il est de type <code>string</code></p></li></ol></div>
+<div class="paragraph"><p>Dans une interface, les propriétés peuvent être <em>optionnelles</em> (mot-clé <code>?</code>), en lecture seule (mot-clé <code>readonly</code>).</p></div></section><section id="_décrire_une_fonction"><h2>Décrire une fonction</h2><div class="paragraph"><p>Une interface peut aussi décrire les fonctions.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">interface SearchFunc {
+    (source: string, subString: string): boolean;
+}
+
+let mySearch: SearchFunc;
+mySearch = function(src: string, subString: string) { <b>(1)</b>
+    let result = src.search(subString);
+    return result &gt; -1;
+}</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>les annotations de type peuvent être retirées car la variable est de type <code>SearchFunc</code> qui les contient déjà.</p></li></ol></div></section><section id="_décrire_un_objet_em_indexable_em"><h2>Décrire un objet <em>indexable</em></h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">interface StringArray {
+    [index: number]: string;
+}
+
+let myArray: StringArray;
+myArray = ["Bob", "Fred"];
+
+let myStr: string = myArray[0];</code></pre></div></div></section><section id="_implémenter_une_interface"><h2>Implémenter une interface</h2><div class="paragraph"><p>Les <em>classes</em> Typescript peuvent implémenter des interfaces. Cela permet au compilateur de vérifier que la classe possède bien les méthodes et attributs spécifiés par l&#8217;interface, et de générer des erreurs de compilation si ce n&#8217;est pas le cas.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">interface ClockInterface {
+    currentTime: Date;
+    setTime(d: Date);
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date;
+    setTime(d: Date) {
+        this.currentTime = d;
+    }
+    constructor(h: number, m: number) { }
+}</code></pre></div></div>
+<div class="paragraph"><p>L&#8217;héritage fonctionne aussi entre interfaces (une interface peut hériter d&#8217;une autre).</p></div></section><section id="_types_hybrides"><h2>Types hybrides</h2><div class="paragraph"><p>En Javascript il est possible de définir toutes sortes d&#8217;objets bizarres. Typescript prend cet état de fait en compte et permet de décrire un maximum des possibilités offertes par Javascript.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">interface Counter {
+    (start: number): string;
+    interval: number;
+    reset(): void;
+}
+
+function getCounter(): Counter {
+    let counter = &lt;Counter&gt;function (start: number) { };
+    counter.interval = 123;
+    counter.reset = function () { };
+    return counter;
+}
+
+let c = getCounter();
+c(10);
+c.reset();
+c.interval = 5.0;</code></pre></div></div>
+<div class="paragraph"><p>Pouvoir décrire des types ainsi permet aussi de décrire le fonctionnement des bibliothèques Javascript que vous intégrez dans vos projet. Ceci permet de les utiliser de façon sure et prouvée par le compilateur !</p></div></section><section id="_les_génériques"><h2>Les génériques</h2><div class="paragraph"><p>Typescript supporte l&#8217;utilisation des types génériques. Cette fonctionnalité permet de décrire un type en fonction d&#8217;autres types.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function identity&lt;T&gt;(arg: T): T {
+    return arg;
+}
+
+let myIdentity: &lt;U&gt;(arg: U) =&gt; U = identity;</code></pre></div></div>
+<div class="paragraph"><p>Voici un exemple plus avancé de l&#8217;utilisation des génériques :</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">class BeeKeeper {
+    hasMask: boolean;
+}
+
+class ZooKeeper {
+    nametag: string;
+}
+
+class Animal {
+    numLegs: number;
+}
+
+class Bee extends Animal {
+    keeper: BeeKeeper;
+}
+
+class Lion extends Animal {
+    keeper: ZooKeeper;
+}
+
+function findKeeper&lt;A extends Animal, K&gt; (a: {new(): A;
+    prototype: {keeper: K}}): K {
+
+    return a.prototype.keeper;
+}
+
+findKeeper(Lion).nametag;  // typechecks!</code></pre></div></div></section><section id="_typage_avancé"><h2>Typage avancé</h2><div class="paragraph"><p>D&#8217;autres éléments du système de type de Typescript existent comme :</p></div>
+<div class="ulist"><ul><li><p>les <em>intersections</em>,</p></li><li><p>les <em>unions</em>,</p></li><li><p>les <em>types de protection</em> (type guards),</p></li><li><p>les types <em>nullable</em>,</p></li><li><p>les <em>alias</em>,</p></li><li><p>les <em>string literals</em>,</p></li><li><p>les unions <em>discriminées</em> (discriminated unions),</p></li><li><p>le <code>this</code> <em>polymorphique</em>,</p></li><li><p><em>index types</em>,</p></li><li><p>types <em>mappés</em>,
+&#8230;&#8203;</p></li></ul></div>
+<div class="paragraph"><p>Voir la page de documentation officielle ici <a href="https://www.typescriptlang.org/docs/handbook/advanced-types.html" class="bare">https://www.typescriptlang.org/docs/handbook/advanced-types.html</a>.</p></div></section><section id="_décorateurs"><h2>Décorateurs</h2><div class="paragraph"><p>Un décorateur est une déclaration qui peut être attachée à une <em>classe</em>, une <em>fonction</em>, un <em>accesseur</em>, une <em>propriété</em> ou un <em>paramètre</em>.</p></div>
+<div class="paragraph"><p>Les décorateurs utilisent la forme <code>@expression</code>, dans laquelle <code>expression</code> est une fonction qui sera appelée avec les les informations sur la déclaration décorée.</p></div>
+<div class="paragraph"><p>Utilisés intensément par Angular pour décrire des méta données sur les composants. En conjonction avec la bibliothèque <code>reflect-metadata</code> qui devrait être incessament sous peu intégrée dans le standard Javascript.</p></div>
+<div class="paragraph"><p>Pour plus d&#8217;informations, consultez cette page <a href="https://www.typescriptlang.org/docs/handbook/decorators.html" class="bare">https://www.typescriptlang.org/docs/handbook/decorators.html</a>.</p></div>
+<div class="paragraph"><p>Un décorateur peut avoir la forme</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">function decorator(target: any, name: string, descriptor: any) {
+  logger.log(`call to ${name}`)
+  return descriptor
+}</code></pre></div></div></section><section id="_fichiers_de_déclaration_de_type"><h2>Fichiers de déclaration de type</h2><div class="paragraph"><p>Il est courant d&#8217;utiliser à partir d&#8217;un programme Typescript des bibliothèques écrites en Javascript.</p></div>
+<div class="paragraph"><p>Typescript permet de fournir un fichier de déclaration de type qui décrit au compilateur comment la bibliothèque externe fonctionne.</p></div>
+<div class="paragraph"><p>Voici une page avec plus d&#8217;information <a href="https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html" class="bare">https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html</a>.</p></div>
+<div class="paragraph"><p>Un projet très connu recense un grand nombre de fichiers de déclarations de types pour de nombreuses bibliothèques javascript. Il s&#8217;agit du projet <em>Definitely Typed</em>.</p></div></section></section>
+<section><section id="_angular"><h2>Angular</h2></section><section id="_kezaco"><h2>Kezaco ?</h2><div class="paragraph"><p>Angular est un framework RIA orienté composant.</p></div>
+<div class="paragraph"><p>La brique élémentaire d&#8217;une application Angular est le composant. Il est responsable d&#8217;une partie du DOM. Il peut contenir d&#8217;autres composants et donc être contenu par son parent. Le mode de communication entre les différents composants est imposé par Angular. De multiples possibilités sont offertes.</p></div>
+<div class="paragraph"><p>Un composant possède deux facettes :</p></div>
+<div class="ulist"><ul><li><p>la vue (<em>template</em>) : du code HTML spécifiant le rendu du composant,</p></li><li><p>le modèle : le code Typescript ou Javascript manipulant les données.</p></li></ul></div>
+<div class="paragraph"><p>Les intéractions entre vue et modèle sont gérées par le framework grâce au <em>data-binding</em>. Celui-ci est assuré grâce au mécanisme des <em>zones</em> hérité du monde <em>Dart</em>.</p></div>
+<div class="paragraph"><p>Une application est donc un arbre de composants.</p></div>
+<div class="paragraph"><p>Les composants sont regroupés en modules pour former des entités cohérentes traitées par le runtime Angular.</p></div>
+<div class="paragraph"><p>La mise en place des composants dans une application Angular est prise en charge par le mécanisme d'<em>injection de dépendance</em>. Angular fournit aux composants les objets nécessaires à leur fonctionnement. Ainsi chaque composant est naturellement aisément testable, et la structure de l&#8217;application reste claire.</p></div>
+<div class="paragraph"><p>Angular fournit aussi de nombreuses bibliothèques permettant de faire notamment des requêtes <em>http</em>, le <em>routage</em>, les <em>animations</em> etc.</p></div>
+<div class="paragraph"><p>Angular offre aussi des outils d'<em>AOT</em> qui consistent à optimiser la phase de compilation pour générer des fichiers javascript les plus légers possible.</p></div></section><section id="_exercice"><h2>Exercice</h2><div class="paragraph"><p>Faire l&#8217;exercice de création d&#8217;un projet Angular dans les Travaux Pratiques.</p></div></section><section id="_gestion_d_une_appli_angular"><h2>Gestion d&#8217;une appli Angular</h2><div class="paragraph"><p>Il est possible de configurer un projet Angular entièrement à la main (voir exercice 1 dans Travaux Pratiques).</p></div>
+<div class="paragraph"><p>Angular fournit aussi un outil en ligne de commande pour gérer les différents aspects d&#8217;un projet : <code>angular-cli</code>.</p></div>
+<div class="paragraph"><p>Description | Commande
+===========|============
+Création d&#8217;un projet | <code>ng new NOM_PROJET</code>
+Démarrage de l&#8217;application | <code>ng serve</code>
+Créer un nouveau composant | <code>ng generate component COMPONENT_NAME</code>
+Plugin Github Pages | <code>ng github-pages:deploy</code></p></div></section></section>
+<section id="_les_templates"><h2>Les templates</h2></section>
+<section id="_programme"><h2>Programme</h2><div class="ulist"><ul><li><p>Jour 1
+Installation / introduction
+Philosophie du framework
+Installation minimale
+Ecosystème
+TypeScript et ES2015, Modules ES6
+Types
+Classes
+Modules&#8201;&#8212;&#8201;déclaration d&#8217;un module : imports et exports&#8201;&#8212;&#8201;lazy loading des modules avec le router&#8201;&#8212;&#8201;les providers d&#8217;un module
+Promesses
+Décorateurs
+Outils
+Composants
+Définition
+Décorateur
+Vue
+Contrôleur
+Composants natifs
+Cycle de vie
+Directives : structurelles et d&#8217;attribut
+IOC : injection de dépendances : par type et hiérarchique
+Providers</p></li><li><p>Jour 2
+Pipes
+Pipes natifs
+Écrire un pipe
+Formulaires&#8201;&#8212;&#8201;créer un formulaire&#8201;&#8212;&#8201;validation et erreurs&#8201;&#8212;&#8201;template-driven forms&#8201;&#8212;&#8201;model-driven forms&#8201;&#8212;&#8201;formulaires dynamiques&#8201;&#8212;&#8201;créer ses propres validateurs&#8201;&#8212;&#8201;Control et ControlGroup&#8201;&#8212;&#8201;FormBuilder
+Contrôles
+Validateurs
+Observateurs
+ngModel
+Reactive Programming
+Concept
+RxJS : introduction&#8201;&#8212;&#8201;Observables&#8201;&#8212;&#8201;principes des opérations sur les Observables&#8201;&#8212;&#8201;ReactiveX avec RxJS&#8201;&#8212;&#8201;lien avec les promesses
+Services
+Créer un service
+Injection de service
+Template : interpolation/expression, "Binding" et filtres.
+Directives de transformation : ngIf, ngFor, ngSwitch&#8230;&#8203;
+Evènements utilisateur.</p></li><li><p>Jour 3
+Service HTTP
+Communication avec une API&#8201;&#8212;&#8201;requetes HTTP vers un serveur&#8201;&#8212;&#8201;WebSockets
+Options
+Routeur&#8201;&#8212;&#8201;<code>router-outlet</code>&#8201;&#8212;&#8201;configuration des routes et URLs&#8201;&#8212;&#8201;définition des routes, liens et redirections, paramètres&#8201;&#8212;&#8201;hiérarchie des routes&#8201;&#8212;&#8201;vues imbriquées&#8201;&#8212;&#8201;Cycle de vie du routage&#8201;&#8212;&#8201;Route guards
+Principe
+Composant de route
+Paramètres
+Routes imbriqués
+Tests : Karma et Jasmine
+Tests asynchrones
+Tests end-to-end avec protractor
+Injection de dépendance
+Recettes de tests
+Concepts avancés
+Webworkers
+Rendus alternatifs
+Injection de dépendance avancée
+Animations
+Web Components
+Authentification&#8201;&#8212;&#8201;faire des requêtes HTTP, recevoir ou envoyer des données au format JSON</p></li></ul></div>
+<div class="paragraph"><p>Rendu côté serveur
+Rendu dans les Web Workers
+Application mobile</p></div>
+<div class="paragraph"><p>Zones
+Directives avancées
+Injection de dépendances avancée</p></div>
+<div class="paragraph"><p>OPTIONNELS (5 jours)</p></div>
+<div class="paragraph"><p>Animations : états, transitions et animations avec le routeur
+Material design
+Bibliothèques de Composants
+Server-side rendering avec Angular Universal
+Compilation statique des templates (AOT)</p></div></section>
+<section id="_objectifs"><h2>Objectifs</h2><div class="paragraph"><p>● Découvrir les fonctionnalités du framework Angular2
+● Savoir développer une nouvelle application Web de façon autonome
+● Savoir concevoir une application Angular2 avec JavaScript et TypeScript
+● Connaître les mécanismes avancés du framework
+Savoir commmuniquer avec un serveur
+Savoir tester son application
+Connaître les bonnes pratiques de développement</p></div>
+<div class="paragraph"><p>Théorique</p></div>
+<div class="paragraph"><p>Pratique : TP pour être sur d&#8217;avoir compris chaque point.</p></div>
+<div class="paragraph"><p>Liste des exercices NinjaSquad : <a href="https://angular-exercises.ninja-squad.com/" class="bare">https://angular-exercises.ninja-squad.com/</a></p></div></section>
+<section id="_forms"><h2>Forms</h2><div class="paragraph"><p>DOCUMENTATION OFFICIELLE</p></div>
+<div class="paragraph"><p>Form by template <a href="https://angular.io/docs/ts/latest/guide/forms.html" class="bare">https://angular.io/docs/ts/latest/guide/forms.html</a></p></div>
+<div class="paragraph"><p>NgForm directive API <a href="https://angular.io/docs/ts/latest/api/forms/index/NgForm-directive.html" class="bare">https://angular.io/docs/ts/latest/api/forms/index/NgForm-directive.html</a></p></div>
+<div class="paragraph"><p>Form reactive (code-driven) <a href="https://angular.io/docs/ts/latest/guide/reactive-forms.html" class="bare">https://angular.io/docs/ts/latest/guide/reactive-forms.html</a></p></div>
+<div class="paragraph"><p>Form validation <a href="https://angular.io/docs/ts/latest/cookbook/form-validation.html" class="bare">https://angular.io/docs/ts/latest/cookbook/form-validation.html</a></p></div></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
 Reveal.initialize({
   // Display controls in the bottom right corner
   controls: true,
   // Display a presentation progress bar
   progress: true,
   // Display the page number of the current slide
-  slideNumber: false,
+  slideNumber: true,
   // Push each slide change to the browser history
   history: true,
   // Enable keyboard shortcuts for navigation
@@ -145,18 +462,18 @@ Reveal.initialize({
   // Stop auto-sliding after user input
   autoSlideStoppable: true,
   // Enable slide navigation via mouse wheel
-  mouseWheel: false,
+  mouseWheel: true,
   // Hides the address bar on mobile devices
   hideAddressBar: true,
   // Opens links in an iframe preview overlay
   previewLinks: false,
   // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
   // NOTE setting the theme in the config no longer works in reveal.js 3.x
-  //theme: Reveal.getQueryHash().theme || 'moon',
+  //theme: Reveal.getQueryHash().theme || 'white',
   // Transition style (e.g., none, fade, slide, convex, concave, zoom)
   transition: Reveal.getQueryHash().transition || 'slide',
   // Transition speed (e.g., default, fast, slow)
-  transitionSpeed: 'default',
+  transitionSpeed: 'fast',
   // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
   backgroundTransition: 'fade',
   // Number of slides away from the current that are visible
@@ -169,8 +486,8 @@ Reveal.initialize({
   // The "normal" size of the presentation, aspect ratio will be preserved
   // when the presentation is scaled to fit different resolutions. Can be
   // specified using percentage units.
-  width: 960,
-  height: 700,
+  width: 1600,
+  height: 1200,
 
   // Factor of the display size that should remain empty around the content
   margin: 0.1,

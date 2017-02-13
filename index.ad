@@ -2,11 +2,17 @@
 :author: Arnaud Tournier - @ltearno - LTE Consulting - 2017 - Toulouse
 :email: ltearno@gmail.com
 :backend: revealjs
-:deckjs_theme: neon
-:revealjs_theme: moon
-:revealjs_history: true
 :imagesdir: images
+:revealjs_theme: white
+:revealjs_history: true
 :source-highlighter: highlightjs
+:revealjs_width: 1600
+:revealjs_height: 1200
+:revealjs_hideaddressbar: true
+:revealjs_mousewheel: true
+:revealjs_slidenumber: true
+:revealjs_transitionspeed: fast
+:revealjs_fragments: true
 ////
 :source-highlighter: coderay
 :revealjs_transition: zoom
@@ -20,6 +26,800 @@ Email: ltearno@gmail.com
 Twitter: https://twitter.com/ltearno[@ltearno]
 
 Web: http://www.lteconsulting.fr[www.lteconsulting.fr]
+
+== ECMASCRIPT 6
+
+Spécification standardisée du Javascript : ECMAScript.
+
+La version 5 est la plus largement répandue aujourd'hui.
+
+La version suivante est ECMAScript 6 (ou ES6, ou ECMASCRIPT 2015). Elle propose de nombreuses fonctionnalités comme les _classes_, les _constantes_, les _arrow functions_, les _générateurs_...
+
+Angular se base sur cette version d'ECMAScript, bien qu'une API existe pour écrire des applications en ECMAScript 5.
+
+Les navigateurs modernes sont déjà à jour pour cette version. Il existe des transpileurs (Babeljs, Traceur par exemple) pour générer du code ECMAScript 5 à partir de code en version 6.
+
+Nous allons découvrir les nouveautés d'ECMAScript à connaître impérativement pour avoir une expérience de développement optimale avec Angular.
+
+Ces nouveautés permettent en général soit de corriger un défaut du langage javascript, soit d'amener un _sucre syntaxique_ permettant d'exprimer des constructions issues des languages _POO_. D'autres améliorations permettent tout simplement d'être plus efficace dans son développement. Enfin, l'ensemble des améliorations permet un meilleur traitement des sources dans les environnements de développement (IDE).
+
+=== `;` optionnel
+
+Le point-virgule `;` est désormais optionnel dans les sources Javascript.
+
+Sauf rares cas, il est pratiquement possible de purement et simplement les supprimer de vos sources.
+
+=== `let`
+
+[source,language=javascript]
+----
+let maVariable = 5
+----
+
+Le mot-clé `let` corrige les défauts de `var` utilisé pour déclarer des variables en Javascript, notamment :
+
+- la portée des variable. Les variables `let` ont une durée de vie limitée au bloc dans lequel elles se trouvent. Et non à la _fonction_ dans laquelle elles se trouvent.
+- le _hoisting_. Les variables `let` ne sont pas accessibles avant la ligne qui les déclare.
+
+La déclaration de variable en Javascript se comporte enfin de la manière attendue !
+
+=== `const`
+
+[source,language=javascript]
+----
+const maConstante = 53
+
+// provoque une erreur :
+maConstante = 42
+----
+
+Le mot-clé `const` permet de déclarer une constante, c'est à dire une variable dont on ne peut pas changer la valeur.
+
+C'est une fonctionnalité de language qui manquait à Javascript.
+
+=== Construction rapide d'objets
+
+Une nouvelle forme de syntaxe pour créer des objets rapidement :
+
+[source,language=javascript]
+----
+function creerUser( nom, prenom ) {
+  return {
+    nom, <1>
+    prenom
+  }
+}
+----
+<1> La propriété de l'objet aura le même nom que la variable utilisée comme valeur
+
+est équivalent à :
+
+[source,language=javascript]
+----
+function creerUser( nom, prenom ) {
+  return {
+    nom: nom,
+    prenom: prenom
+  }
+}
+----
+
+=== Affectations destructurées
+
+Nouvelle syntaxe qui permet de facilement affecter des variables à partir de propriétés d'objets ou d'éléments de tableaux.
+
+En ES5, pour extraire des variables à partir d'un objet, on écrit souvent :
+
+[source,language=javascript]
+----
+// en entrée un objet data = { id: 3, name: 'toto' }
+var id = data.id;
+var name = data.name;
+----
+
+L'affectation destructurée permet ceci :
+
+[source,language=javascript]
+----
+let { id, name } = data <1>
+----
+<1> L'affectation destructurée déclare et initialise les variables `id` et `name`.
+
+Si on souhaite affecter des variables avec des noms différents des propriétés de l'objet, on peut faire ainsi :
+
+[source,language=javascript]
+----
+let { id: userId, name: userName } = data <1>
+----
+<1> L'affectation destructurée déclare et initialise les variables `userId` et `userName`.
+
+Ceci fonctionne aussi avec les objets imbriqués :
+
+[source,language=javascript]
+----
+let { id: userId, address: { street: userStreet } } = data
+----
+
+Cette syntaxe fonctionne aussi avec les tableaux :
+
+[source,language=javascript]
+----
+// avec un tableau t = [3, 6, 4, 7]
+
+let [ premier, deuxieme ] = t
+----
+
+=== L'opérateur de reste
+
+Cet opérateur permet d'accepter facilement un nombre de paramètres variable dans une fonction :
+
+[source,language=javascript]
+----
+function ajouterProduits( ...produits ) {
+  for(let produit of produits) {
+    ...
+  }
+}
+----
+
+On peut aussi utiliser cet opérateur avec les affectations destructurées :
+
+[source,language=javascript]
+----
+let [head, ...tail] = list <1>
+----
+<1> `head` contient le premier élément et `tail` la suite de la liste
+
+=== L'opérateur d'étalement
+
+C'est le complémentaire de l'opérateur de reste. Il permet de _convertir_ un tableau en liste d'arguments :
+
+[source,language=javascript]
+----
+let coordonnees = [12, 32]
+let point = new Point(...coordonnees)
+----
+
+=== Valeurs par défaut
+
+Il est maintenant possible de donner des valeurs par défaut aux paramètres de fonctions et éléments d'affectation destructurée.
+
+Au lieu d'écrire :
+
+[source,language=javascript]
+----
+function faireChose( size, value ) {
+  value = value || 0 // valeur par défaut
+}
+----
+
+On préfèrera :
+
+[source,language=javascript]
+----
+function faireChose( size, value = 0 ) {
+}
+----
+
+La valeur par défaut peut aussi être un appel de fonction, ou même une expression faisant référence à d'autres paramètres de la fonction (_quand ils sont à gauche de là où on les utilise_). Voyez cet exemple :
+
+[source,language=javascript]
+----
+function autreChose( factory = defaultFactory(), type = factory.type ) { <1>
+}
+----
+<1> la fonction `defaultFactory` ne sera appelée que lorsque l'appelant ne fournit pas de valeur au paramètre. Si le deuxième paramètre n'est pas fourni, sa valeur sera affectée à l'expression `factory.type`.
+
+Utilisée avec l'affectation destructurée des variables, cette construction s'écrit :
+
+[source,language=javascript]
+----
+const { timeout = 1000 } = httpOptions
+----
+
+=== Les classes
+
+L'introduction des classes en Javascript se fait par l'ajout d'une syntaxe équivalente à un _sucre syntaxique_ pour le moteur d'exécution JS. En effet javascript repose sur un modèle d'héritage par prototype qui permet de simuler l'héritage de classes.
+
+Voici un exemple de classe :
+
+[source,language=javascript]
+----
+class Livre {
+  constructor(private titre) { <1> <2>
+  }
+  
+  description() {
+    return `Livre: ${this.titre}`
+  }
+
+  static fonctionStatique(toto) {
+    return toto
+  }
+}
+
+let livre = new Livre('Les frameworks JS')
+
+----
+<1> la fonction spéciale `constructor` est appelée lorsque l'objet est créé.
+<2> l'utilisation de `private` ou `public` crée automatiquement un attribut dans la classe (Typescript seulement ?).
+
+=== Accesseurs
+
+Une classe peut fournir des fonctions _getter_ et/ou _setter_ en plus des attributs classiques.
+
+[source,language=javascript]
+----
+class EditionService {
+  get description() { <1>
+    return `service ${this.name}`
+  }
+
+  private value
+
+  set longueur(value) { <2>
+    if(value.charAt(value.length-1)=='k')
+      this._value = value * 1000
+    else
+      this.value = value
+  }
+}
+
+let service = new EditionService()
+
+console.log(service.description)
+
+service.longueur = '100k'
+service.longueur = 24
+----
+<1> le mot-clé `get` permet de déclarer un accesseur _getter_ pour la propriété `description`.
+<2> le mot-clé `set` permet de déclarer un accesseur _setter_ pour la propriété `longueur`.
+
+=== Héritage
+
+L'héritage de classe est possible avec le mot-clé `extends` :
+
+[source,language=javascript]
+----
+class Animal {
+  constructor(private name) {}
+}
+
+class Mamifere extends Animal {
+  constructor() {
+    super('baleine') <1>
+  }
+
+  affiche() {
+    console.log('je suis une baleine')
+
+    super.affiche() <2>
+  }
+}
+----
+<1> le mot-clé `super` permet de faire référence au constructeur de la classe parente.
+<2> le mot-clé `super` permet de faire référence à l'implémentation de la fonction dans la classe parente.
+
+=== Les promises
+
+Avec les versions précédentes de Javascript et l'utilisation intensive des traitements asynchrones, de nombreuses bibliothèques de _promises_ ont vu le jour ces dernières années. Avec même la création de certains standards _de-facto_.
+
+ES5 apporte une normalisation de la gestion des traitements asynchrones avec les _Promises_. Cette API permet d'éviter le _callback hell_.
+
+Une _promise_ est un objet qui représente la mise à disposition d'un résultat _plus tard_ dans le temps. On peut dire qu'il s'agit de la représentation d'un traitement asynchrone.
+
+On peut chainer les traitements asynchrones grâce à la fonction `then` des `Promise`.
+
+[source,language=javascript]
+----
+this.userService.getUser(id) <1>
+  .then( function(user) { return this.userService.getRights() } ) <2>
+  .then( function(rights) { this.doSomething(rights) } ) <3>
+----
+<1> la fonction `getUser()` retourne une `Promise`.
+<2> l'appel à la fonction `then` permet de spécifier la fonction qui sera appelée quand la première promesse aura fourni son résultat. Le traitement suivant est retourné, c'est-à-dire la promesse retournée par la fonction `getRights()`. Une valeur aurait pu être directement retournée.
+<3> on peut chaîner les appels à `then` pour faire des traitements successifs. Chaque fonction de rappel reçoit le résultat du traitement précédent. Ici aucune valeur n'est retournée pour le potentiel prochain traitement.
+
+=== Les promises
+
+Une promesse peut être dans un des trois états suivants : _pending_, _fulfilled_ ou _rejected_.
+
+Lorsqu'une promesse est rejetée, on peut récupérer l'erreur en passant une fonction de rappel en deuxième paramètre de `then`.
+
+[source,language=javascript]
+----
+this.userService.getUser(id)
+  .then( function(user) { ... },
+         function(error) { ... } )
+----
+
+On peut aussi laisser les erreurs se propager automatiquement au fil de la chaîne de traitement et les récupérer avec la fonction `catch`.
+
+[source,language=javascript]
+----
+this.userService.getUser(id)
+  .then( function(user) { ... } )
+  .then( function(rights) { ... } )
+  .catch( function(error) { ... } )
+----
+
+=== Création d'une `Promise`
+
+- fournir un traitement :
+
+[source,language=javascript]
+----
+function getUser(id) {
+  return new Promise(function(resolve, reject) { <1>
+    let request = new XMLHttpRequest(...)
+    request.onStateChange = function(...) {
+      resolve(data) <2>
+      reject('unknown error') <3>
+    }
+  })
+}
+----
+<1> création de la promesse. L'exécution de la fonction passée en paramètre se produit aussitôt.
+<2> résolution de la promesse avec la valeur obtenu après un traitement asynchrone.
+<3> rejet de la promesse après erreur dans le traitement asynchrone.
+
+- fournir une promesse réalisée ou rejetée :
+
+[source,language=javascript]
+----
+let resolvedPromise = Promise.resolve(55) <1>
+let rejectedPromise = Promise.reject('description de l erreur') <2>
+----
+<1> promesse résolue avec la valeur `55`.
+<2> promesse rejetée avec l'erreur passée en paramètre.
+
+=== Plus loin avec les `Promise`s
+
+L'API des promesses est plus riche et flexible que le seul aperçu montré ici. Une documentation plus complète est disponible ici : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise.
+
+Combinées avec les _fat arrow functions_ décrites dans le chapitre suivant, les _Promises_ sont très puissantes pour clarifier l'enchainement de traitements asynchrones.
+
+=== _fat arrow functions_
+
+Comme il est extrêmement fréquent d'écrire des fonctions de rappel (_callbacks_), la syntaxe d'ES6 intègre un nouvel élément permettant de déclarer des fonctions de manière plus concise. C'est l'opérateur _fat arrow_ :
+
+[source,language=javascript]
+----
+let maFonction = (arg1, arg2) => arg1 + arg2 <1>
+
+let autreFonction = (arg1) => { <2>
+  ...
+  return result
+}
+----
+<1> pas besoin du mot-clé `return` si la valeur retournée est directe.
+<2> sinon on déclare un bloc comme d'habitude.
+
+ATTENTION Les fonctions _fat arrow_ présentent un différence notable avec les fonctions traditionnelles : le mot-clé `this` garde sa valeur au moment où la _fat arrow_ function est créée. Aucun `this` particulier n'est attaché aux _fat arrow functions_...
+
+=== `Set` et `Map`
+
+Javascript intègre désormais les structures de données `Set` et `Map`.
+
+=== Interpolation dans les chaines de caractères
+
+L'interpolation de chaines est maintenant facilitée en ES6 grâce aux patrons de chaine :
+
+[source,language=javascript]
+----
+var description = user.name.toUpperCase() + ' (' + user.id + ')';
+
+// devient
+
+let description = `${user.name.toUpperCase()} (${user.id})`
+----
+
+=== Les modules
+
+Plusieurs problèmes :
+
+- tout le monde a besoin de charger des bibliothèques
+- différentes bibliothèques de chargement de modules ont vu le jour
+- différentes bibliothèques sont apparues en fonction de l'utilisation (front avec _AMD_ ou back avec _CommonJS_)
+- le chargement de modules en ES5 fonctionne mais est encombrant et non optimal.
+
+Les nouveaux modules ES6 répondent à ces problèmes et unifient en une seule spécification le chargement de modules dans les mondes serveur et client.
+
+Le chargement des modules (c'est-à-dire des dépendances de votre application) se fait de façon asynchrone en fonction des déclarations de dépendance faites au début du module.
+
+La syntaxe d'importation des modules est stricte de façon à permettre aux outils de développement d'exécuter des analyses perfectionnées.
+
+Les modules ES6 permettent également de définir clairement et facilement les parties d'un module que l'on souhaite _exporter_.
+
+=== Les modules
+
+Exporter une fonction, une variable ou une classe :
+
+[source,language=javascript]
+----
+export class BookService {
+  ...
+}
+
+export function ean(value) { ... }
+----
+
+Pour importer ces fonctions dans un autre module, on procède ainsi :
+
+[source,language=javascript]
+----
+import {BookService, ean} from './book_service'
+
+let svc = new BookService()
+ean('12355')
+----
+
+On peut également donner des alias aux éléments importés :
+
+[source,language=javascript]
+----
+import {ean as EAN} from './book_service'
+
+let ean = EAN('634')
+----
+
+Ou importer tout le module avec :
+
+[source,language=javascript]
+----
+import * from './book_service'
+----
+
+Les modules en ES6 permettent de séparer son code en petites parties, dont la responsabilité est limitée et clairement établie.
+
+Ils facilitent également le travail des usines logicielles.
+
+
+
+
+
+
+
+== Typescript
+
+Nécessité du typage dans les grosses applications maintenues par de grandes équipes.
+
+Typescript est un sur-ensemble de Javascript qui lui ajoute un typage flexible (_duck typing_).
+
+Le compilateur Typescript analyse les fichiers source Typescript et produit des fichiers Javascript exécutables dans n'importe quel navigateur (ou NodeJS pour le serveur).
+
+Participe maintenant à l'élaboration des futures versions d'ECMAScript.
+
+La philosophie de Typescript est d'ajouter dans le code source Javascript des annotations de type permettant au compilateur de garantir l'absence d'erreurs vérifiables par le système de typage.
+
+Typescript est écrit et maintenu par _Microsoft_. C'est un outil open source. Il est le langage préféré lorsqu'on écrit une application _Angular_ (bien qu'il soit aussi possible d'écrire des applications _Angular_ en _Java_, en _Dart_ et en _ES5/6_).
+
+Documentation disponible ici https://www.typescriptlang.org/docs/tutorial.html.
+
+=== Les annotations de type
+
+Le compilateur Typescript propage les informations de typage dont il dispose. Il procède à l'inférence de type au maximum pour vérifier la cohérence du code et fournir aux IDE les informations nécessaires aux fonctionnalités d'_auto-complétion_.
+
+Néanmoins, le compilateur Typescript a besoin d'informations que seul le développeur connaît.
+
+Le typage dans Typescript est complètement débrayable et on se retrouve avec le langage ECMAScript 6.
+
+[source,language=javascript]
+----
+function greeter(person: string) {
+  return "Hello, " + person
+}
+
+greeter("Jane")
+greeter(42) // COMPILATION ERROR
+----
+
+Typescript possède un système de typage complet, comprenant la généricité, les types optionels, etc. Une liste d'objets implémentant l'interface `Utilisateur` est typée :
+
+[source,language=javascript]
+----
+let list : Array<Utilisateur> = []
+----
+
+=== Les types de base
+
+Les types de bases sont :
+
+- les mêmes que ceux de Javascript : `boolean`, `number`, `string`, `Array<>` ou `[]`, `null`, `undefined`.
+- Et des types _augmentés_ : les _tuples_, `enum`, `void`, `never`.
+
+Le type `any` décrit des variables dont le type n'est pas connu à l'avance. Lorsqu'une variable est de ce type, le compilateur Typescript désctive la vérification de type dans les expressions qui l'utilisent.
+
+[source,language=javascript]
+----
+let notSure: any = 4;
+notSure.ifItExists(); // okay, ifItExists might exist at runtime
+notSure.toFixed(); // okay, toFixed exists (but the compiler doesn't check)
+
+let prettySure: Object = 4;
+prettySure.toFixed(); // Error: Property 'toFixed' doesn't exist on type 'Object'.
+----
+
+=== Assertions de type (_cast_)
+
+Il est possible de _transtyper_ les variables, c'est-à-dire les utiliser comme un autre type que celui qui est inféré par Typescript. Ceci se fait avec l'opérateur d'assertion de type, qui contrairement aux opérateurs `cast` d'autres langages ne réalise aucune opération sur les opérandes.
+
+Il existe deux formes d'assertion de type :
+
+[source,language=javascript]
+----
+let someValue: any = "this is a string";
+
+let strLength: number = (<string>someValue).length;
+
+let strLength2: number = (someValue as string).length;
+----
+
+=== Interfaces
+
+Les interfaces permettent de décrire les variables que l'on manipule dans un programme. Le langage Typescript utilise le _duck typing_, ce qui signifie que deux types sont considérés équivalents s'ils ont la même forme.
+
+[source,language=javascript]
+----
+function printLabel(labelledObj: { label: string }) { <1>
+    console.log(labelledObj.label);
+}
+
+let myObj = {size: 10, label: "Size 10 Object"};
+printLabel(myObj);
+----
+<1> l'interface du paramètre `labelledObj` est décrite comme un objet possédant au moins une propriété `label` de type `string`.
+
+Il est bien sûr possible de nommer les interfaces :
+
+[source,language=javascript]
+----
+interface Person { <1>
+  firstName: string; <2>
+  lastName: string;
+}
+
+function greeter(person: Person) {
+  return "Hello, " + person.firstName + " " + person.lastName
+}
+
+greeter({ firstName: "Jane", lastName: "User" })
+greeter({ firstName: "Toto"}) // COMPILATION ERROR
+----
+<1> déclaration de l'interface `Person`
+<2> description de l'attibut `firstName`. Il est de type `string`
+
+Dans une interface, les propriétés peuvent être _optionnelles_ (mot-clé `?`), en lecture seule (mot-clé `readonly`).
+
+=== Décrire une fonction
+
+Une interface peut aussi décrire les fonctions.
+
+[source,language=javascript]
+----
+interface SearchFunc {
+    (source: string, subString: string): boolean;
+}
+
+let mySearch: SearchFunc;
+mySearch = function(src: string, subString: string) { <1>
+    let result = src.search(subString);
+    return result > -1;
+}
+----
+<1> les annotations de type peuvent être retirées car la variable est de type `SearchFunc` qui les contient déjà.
+
+=== Décrire un objet _indexable_
+
+[source,language=javascript]
+----
+interface StringArray {
+    [index: number]: string;
+}
+
+let myArray: StringArray;
+myArray = ["Bob", "Fred"];
+
+let myStr: string = myArray[0];
+----
+
+=== Implémenter une interface
+
+Les _classes_ Typescript peuvent implémenter des interfaces. Cela permet au compilateur de vérifier que la classe possède bien les méthodes et attributs spécifiés par l'interface, et de générer des erreurs de compilation si ce n'est pas le cas.
+
+[source,language=javascript]
+----
+interface ClockInterface {
+    currentTime: Date;
+    setTime(d: Date);
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date;
+    setTime(d: Date) {
+        this.currentTime = d;
+    }
+    constructor(h: number, m: number) { }
+}
+----
+
+L'héritage fonctionne aussi entre interfaces (une interface peut hériter d'une autre).
+
+=== Types hybrides
+
+En Javascript il est possible de définir toutes sortes d'objets bizarres. Typescript prend cet état de fait en compte et permet de décrire un maximum des possibilités offertes par Javascript.
+
+[source,language=javascript]
+----
+interface Counter {
+    (start: number): string;
+    interval: number;
+    reset(): void;
+}
+
+function getCounter(): Counter {
+    let counter = <Counter>function (start: number) { };
+    counter.interval = 123;
+    counter.reset = function () { };
+    return counter;
+}
+
+let c = getCounter();
+c(10);
+c.reset();
+c.interval = 5.0;
+----
+
+Pouvoir décrire des types ainsi permet aussi de décrire le fonctionnement des bibliothèques Javascript que vous intégrez dans vos projet. Ceci permet de les utiliser de façon sure et prouvée par le compilateur !
+
+=== Les génériques
+
+Typescript supporte l'utilisation des types génériques. Cette fonctionnalité permet de décrire un type en fonction d'autres types.
+
+[source,language=javascript]
+----
+function identity<T>(arg: T): T {
+    return arg;
+}
+
+let myIdentity: <U>(arg: U) => U = identity;
+----
+
+Voici un exemple plus avancé de l'utilisation des génériques :
+
+[source,language=javascript]
+----
+class BeeKeeper {
+    hasMask: boolean;
+}
+
+class ZooKeeper {
+    nametag: string;
+}
+
+class Animal {
+    numLegs: number;
+}
+
+class Bee extends Animal {
+    keeper: BeeKeeper;
+}
+
+class Lion extends Animal {
+    keeper: ZooKeeper;
+}
+
+function findKeeper<A extends Animal, K> (a: {new(): A;
+    prototype: {keeper: K}}): K {
+
+    return a.prototype.keeper;
+}
+
+findKeeper(Lion).nametag;  // typechecks!
+----
+
+=== Typage avancé
+
+D'autres éléments du système de type de Typescript existent comme :
+
+- les _intersections_,
+- les _unions_,
+- les _types de protection_ (type guards),
+- les types _nullable_,
+- les _alias_,
+- les _string literals_,
+- les unions _discriminées_ (discriminated unions),
+- le `this` _polymorphique_,
+- _index types_,
+- types _mappés_,
+...
+
+Voir la page de documentation officielle ici https://www.typescriptlang.org/docs/handbook/advanced-types.html.
+
+=== Décorateurs
+
+Un décorateur est une déclaration qui peut être attachée à une _classe_, une _fonction_, un _accesseur_, une _propriété_ ou un _paramètre_.
+
+Les décorateurs utilisent la forme `@expression`, dans laquelle `expression` est une fonction qui sera appelée avec les les informations sur la déclaration décorée.
+
+Utilisés intensément par Angular pour décrire des méta données sur les composants. En conjonction avec la bibliothèque `reflect-metadata` qui devrait être incessament sous peu intégrée dans le standard Javascript.
+
+Pour plus d'informations, consultez cette page https://www.typescriptlang.org/docs/handbook/decorators.html.
+
+Un décorateur peut avoir la forme
+[source,language=javascript]
+----
+function decorator(target: any, name: string, descriptor: any) {
+  logger.log(`call to ${name}`)
+  return descriptor
+}
+----
+
+=== Fichiers de déclaration de type
+
+Il est courant d'utiliser à partir d'un programme Typescript des bibliothèques écrites en Javascript.
+
+Typescript permet de fournir un fichier de déclaration de type qui décrit au compilateur comment la bibliothèque externe fonctionne.
+
+Voici une page avec plus d'information https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html.
+
+Un projet très connu recense un grand nombre de fichiers de déclarations de types pour de nombreuses bibliothèques javascript. Il s'agit du projet _Definitely Typed_.
+
+
+
+
+
+
+
+
+
+
+
+
+
+== Angular
+
+=== Kezaco ?
+
+Angular est un framework RIA orienté composant.
+
+La brique élémentaire d'une application Angular est le composant. Il est responsable d'une partie du DOM. Il peut contenir d'autres composants et donc être contenu par son parent. Le mode de communication entre les différents composants est imposé par Angular. De multiples possibilités sont offertes.
+
+Un composant possède deux facettes :
+
+- la vue (_template_) : du code HTML spécifiant le rendu du composant,
+- le modèle : le code Typescript ou Javascript manipulant les données.
+
+Les intéractions entre vue et modèle sont gérées par le framework grâce au _data-binding_. Celui-ci est assuré grâce au mécanisme des _zones_ hérité du monde _Dart_.
+
+Une application est donc un arbre de composants.
+
+Les composants sont regroupés en modules pour former des entités cohérentes traitées par le runtime Angular.
+
+La mise en place des composants dans une application Angular est prise en charge par le mécanisme d'_injection de dépendance_. Angular fournit aux composants les objets nécessaires à leur fonctionnement. Ainsi chaque composant est naturellement aisément testable, et la structure de l'application reste claire.
+
+Angular fournit aussi de nombreuses bibliothèques permettant de faire notamment des requêtes _http_, le _routage_, les _animations_ etc.
+
+Angular offre aussi des outils d'_AOT_ qui consistent à optimiser la phase de compilation pour générer des fichiers javascript les plus légers possible.
+
+=== Exercice
+
+Faire l'exercice de création d'un projet Angular dans les Travaux Pratiques.
+
+=== Gestion d'une appli Angular
+
+Il est possible de configurer un projet Angular entièrement à la main (voir exercice 1 dans Travaux Pratiques).
+
+Angular fournit aussi un outil en ligne de commande pour gérer les différents aspects d'un projet : `angular-cli`.
+
+Description | Commande
+===========|============
+Création d'un projet | `ng new NOM_PROJET`
+Démarrage de l'application | `ng serve`
+Créer un nouveau composant | `ng generate component COMPONENT_NAME`
+Plugin Github Pages | `ng github-pages:deploy`
+
+== Les templates
 
 == Programme
 
@@ -162,465 +962,3 @@ Form reactive (code-driven) https://angular.io/docs/ts/latest/guide/reactive-for
 
 Form validation https://angular.io/docs/ts/latest/cookbook/form-validation.html
 
-
-
-
-
-
-
-== This presentation is online!
-
-http://lteconsulting.fr/angular2boot-gwtcon2016/[lteconsulting.fr/angular2boot-gwtcon2016]
-
-_works on your phone too ;)_
-
-Demo code available at
-
-- https://github.com/ltearno/tour-of-heroes[github.com/ltearno/tour-of-heroes]
-- https://github.com/ltearno/angular2boot-demos[github.com/ltearno/angular2boot-demos]
-
-== Angular 2 Boot?
-
-A new RIA paradigm for Java : programming Angular 2 with Java 8.
-
-**The coolest Java 8 RIA framework in the place ;)**
-
-http://lteconsulting.fr/angular2boot/[lteconsulting.fr/angular2boot]
-
-=== A more technical title...
-
-Integrating Angular 2 and GWT 2.8:
-
-**problems** and **solutions**...
-
-=== Why do that?
-
-I want to benefit from the **best UI coding paradigms** (Data binding, DI, ...).
-
-I want **strong typing** and **powerful IDE** tools.
-
-I want to be **more productive**.
-
-I want to be in phase with the **future**.
-
-_(I may want to progressively migrate an existing app)_
-
-=== The problem
-
-Angular 2 natively supports Typescript, Javascript and Dart.
-
-But Java is not in the party, **let's remedy!**
-
-image::angular-languages.png[]
-
-
-[data-background="images/ingredients.jpg"]
-== The recipe
-
-&nbsp;
-
-=== Angular 2
-
-- non invasive,
-- modern architecture, simple and effective.
-
-=== GWT 2.8 Core
-
-- **Java 8** (strong typing, lambdas, streams, ...)
-- **JsInterop** (easy integration with JS)
-- **SuperDevMode** (incremental fast compile on reload)
-- Optimized compilation for production (js size, efficiency)
-
-=== JSR 269
-
-- Java Annotation Processing API,
-- Code generation integrated within Java compilation,
-- Boilerplate code generation.
-
-=== Spring Boot
-
-- Standalone server application (µ-service friendly),
-- Easy to start with,
-- Rich API,
-- _Note: Angular2Gwt works with **any** backend_.
-
-
-
-
-
-== Angular
-
-Angular 1 was released in 2009.
-
-A full rewrite gave birth to Angular 2 in 2016.
-
-Much better and simpler architecture !
-
-=== Angular 2 fundamentals
-
-- Components,
-- Dependency Injection,
-- Data binding and change detection.
-
-=== Components
-
-Most basic building block of the application.
-
-A component is a class with:
-
-- a _view_ (an HTML template),
-- and a _model_ (data and methods).
-
-Interaction between view and model through _data binding_.
-
-=== Components
-
-Each component is responsible for a part of the DOM tree.
-
-Components also form a tree.
-
-_A bit like the GWT Widgets..._
-
-Components interacts with each other through cleanly defined ways.
-
-=== Components tree
-
-image::angular-components.png[]
-
-
-=== Dependency Injection
-
-Sharing services between components.
-
-Lifecycle and dependencies are managed by Angular.
-
-Each component has a Dependency Injector.
-
-Those also form a tree.
-
-
-=== Data binding
-
-Angular uses Zone.js to track changes.
-
-Zones == _asynchronous TLS_.
-
-Preserve an execution context across asynchronous calls.
-
-_(done by patching most of the browsers async functions)_
-
-
-
-
-
-== GWT in Angular2Boot
-
-- Only uses the compiler,
-- JsInterop used a lot,
-- No widgets, no `User` module (unless you want to mix legacy GWT and Angular).
-
-Because that's how future will look like.
-
-
-
-== JSR 269 - Pluggable Annotation Processing API
-
-_Shown here last year!_
-
-Standard API for code generation in Java.
-
-_(Used to generate the boiler plate code Angular requires.)_
-
-Registered _annotation processors_ receive the program's AST 
-and can then generate files (sources, byte-code or resources) which are part of the compilation.
-
-Integrated with the Java compiler.
-
-=== GOOD POINTS
-
-Generated code is visible and debuggable,
-
-You can reference the generated code in your code.
-
-No overhead at runtime.
-
-(Does not depend on byte code: GWT compatible)
-
-
-=== Just one more thing
-
-A processor can break the compilation by outputting errors.
-
-It can also provide the user with tips by outputting warnings.
-
-image::error-in-eclipse.png[]
-
-
-
-
-
-
-
-== Angular2Boot
-
-=== The basics
-
-=== Java/Javascript communication
-
-We need to make the java application communicate with the javascript Angular 2 runtime.
-
-JsInterop can do that.
-
-=== Feeding Angular with metadatas
-
-Angular requires metadata on components (_DI, routing, inputs/ouputs, ..._) 
-and uses ES7/Typescript **decorators** (ex *@Component()*) for this purpose.
-
-Those decorators alter component's constructor at runtime so that less _boilerplate_ code is required.
-
-=== In Java?
-
-Annotations can play the role of decorators (ex *@Component*).
-
-Those are processed at **compile** time.
-
-And generate RTTI code for Angular.
-
-=== How?
-
-- JSR-269 is used to generate RTTI,
-- Use Angular JS API through JsInterop to provide the RTTI.
-- Fetch Java class compiled JS constructor at runtime,
-- Patch it with Angular required metadata,
-- Provide the patched constructor function to Angular.
-
-=== Typescript written component
-
-[source,javascript]
-----
-@Component( { selector: "my-hero-detail",
-  templateUrl: "hero-detail.component.html",
-  styleUrls: "hero-detail.component.css" } )
-export class HeroDetailComponent
-{
-  @Input() hero = null;
-  @Output() updated = new EventEmitter();
-
-  HeroDetailComponent( private HeroService heroService ) {}
-
-  ngOnInit() { ... }
-
-  // ...
-}
-----
-
-=== Java equivalent
-
-[source,java]
-----
-@Component( selector = "my-hero-detail",
-  templateUrl = "hero-detail.component.html",
-  styleUrls = "hero-detail.component.css" )
-@JsType
-public class HeroDetailComponent implements OnInit
-{
-  @Input public Hero hero = null;
-  @Output public EventEmitter<Hero> updated = new EventEmitter<>();
-
-  private HeroService heroService;
-	
-  public HeroDetailComponent( HeroService heroService )
-  {
-    this.heroService = heroService;
-  }
-
-  @Override
-  public void ngOnInit() { ... }
-
-  // ...
-}
-----
-
-
-=== Consistent syntax
-
-The developper should be able to read JS documentation and know _how_ to code in Java.
-
-In brief, we want syntax consistency.
-
-
-=== Architecture
-
-[%notitle]
-[data-transition=none]
-[data-background="images/archi-survol.png"]
-[data-background-size=contain]
-=== .
-
-[%notitle]
-[data-transition=none]
-[data-background-size=contain]
-[data-background="images/archi-compil.png"]
-=== .
-
-[%notitle]
-[data-transition=none]
-[data-background-size=contain]
-[data-background="images/archi-runtime.png"]
-=== .
-
-[%notitle]
-[data-transition=none]
-[data-background-size=contain]
-[data-background="images/archi-sdm.png"]
-=== .
-
-=== Now, the problems
-
-=== Module loading problem
-
-GWT is not SystemJS (ES7 modules) friendly.
-
-Need to generate a bundle with all Angular inside (you can choose/build your bundle depending on what you need).
-
-=== The instanceof problem
-
-Angular checks at runtime that components are valid.
-
-With SuperDevMode, code is loaded in an external frame thus breaking `instanceof` operator.
-
-Few places needed to be patched _(for dev mode only)_.
-
-=== Building Angular
-
-Angular 2 requires a strict environment to be built.
-
-Docker to the rescue!
-
-=> From RC6 to 2.0 final: 1 hour of work!
-
-=== Legacy GWT Widgets integration
-
-Works both ways :
-
-- GWT widgets inside an Angular2Boot application: `WidgetAdapterPanel`.
-- Angular 2 components in a legacy GWT application: `AngularComponentContainerWidget`.
-
-=== Testing
-
-- Unit tests,
-- Integration tests.
-
-=== Unit tests
-
-Difficult to use the `GWTTestCase` facility
-
-HTMLUnit does not support Angular 2 runtime (not ES6 compatible)
-
-More, GWT uses Jetty as a testing backend but we want to be able to use **any** backend (eg. SpringBoot).
-
-No real solution yet...
-
-=== Integration tests
-
-Using **Selenium WebDriver** and **Spring** integration testing facilities, it is done easily!
-
-== Future work, ideas
-
-=== PWA application
-
-Thanks Mañolo, you inspired me ;)
-
-=== Generate UI code from model objects
-
-Code generation is not easy in Javascript but really easy in Java.
-
-(see last year http://www.lteconsulting.fr/annotation-processing/#/[GWTCon talk on JSR-269]).
-
-=== Generate service access code from backend interface
-
-Code generation, again...
-
-=== TS definitions generation 
-
-Generate TS descriptions of Java components for easy integration of Java components into a TS Angular application.
-
-=== Angular in Nashorn for server-side rendering (Angular Universal)
-
-=== Angular2Boot with NativeScript
-
-=== Module loading
-
-Not easy!
-
-Best is maybe to wait for GWT3 (J2Cl) which will be more ES7 module friendly.
-
-Will allow more AOT compilation optimizations (Angular AOT compiler may be able to work on the generated code).
-
-Better integration with JS build and packaging tools.
-
-
-
-== Conclusions
-
-=== Javascript and Java commmunities need to exchange!
-
-- WebPack inspired by GWT's code splitting,
-- Problems solved by Java since 20 years should inspire JS!
-- Dynamism of the JS ecosystem should inpire Java!
-
-=== Use cases
-
-- 100% Java applications (small or big),
-- Service implementations in Java (strongly typed Web service interfacing),
-- JS, Typescript and Java integration,
-- Would fit well with JBoss Forge and JHipster...
-
-=== How cool is that?
-
-- Tested on few projects, was very impressive! Workflow is really comfortable.
-- Dead simple bootstrapping (only one maven dep, simpler than Angular 2 itself!).
-- GWT compilation without User module (Widgets) is dead fast.
-- Gives GWT a second youth! (only uses the core).
-- Optimizations done by GWT are still very powerful: fast application, small download.
-
-
-=== Easy to try
-
-[source]
-----
-mvn archetype:generate \
-  -DarchetypeGroupId=fr.lteconsulting \
-  -DarchetypeArtifactId=angular2-gwt.archetype \
-  -DarchetypeVersion=1.6
-  
-mvn clean install # produces an executable fat jar
-
-java -jar target/YOUR_ARTIFACT_ID.jar
-----
-
-_No excuse not to try !!!_
-
-=== Compile on reload
-
-[source]
-----
-# Backend
-mvn spring-boot:run
-
-# Frontend
-mvn gwt:run-codeserver
-----
-
-
-== Demo
-
-== Thanks, it was a pleasure!
-
-Maybe you have questions?
-
-Try it!
-
-http://lteconsulting.fr/angular2boot/[lteconsulting.fr/angular2boot]
-
-Twitter: https://twitter.com/ltearno[@ltearno]
