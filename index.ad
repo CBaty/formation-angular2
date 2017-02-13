@@ -821,6 +821,33 @@ Plugin Github Pages | `ng github-pages:deploy`
 
 == Les templates
 
+Une template est la partie _vue_ d'un composant.
+
+Elle s'écrit en HTML avec une syntaxe étendue pour les fonctionnalités d'Angular.
+
+La template d'un composant peut s'écrire dans le fichier du composant lui-même (attribut `template` du décorateur `@Component`).
+
+Elle peut aussi être écrite dans un fichier HTML à part, en précisant le chemin de celui-ci dans l'attribut `templateUrl` du décorateur `@Composant`.
+
+=== Interpolation
+
+Angular permet d'injecter très facilement des données du composant dans sa template.
+
+Exemple :
+
+[source]
+----
+import {Component} from '@angular/core'
+
+@Component({
+    selector: 'angular-app',
+    template: '<h1>Hello {{userName}} !</h1>'
+})
+export class AngularAppComponent {
+  userName: string = 'Monsieur Développeur'
+}
+----
+
 == Programme
 
 * Jour 1
