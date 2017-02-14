@@ -796,6 +796,8 @@ Une application est donc un arbre de composants.
 
 Les composants sont regroupés en modules pour former des entités cohérentes traitées par le runtime Angular.
 
+Un module de _bootstrap_ lui-même référençant un composant de _bootstrap_ est utilisé pour le démarrage de l'application. Ensuite le cycle de vie des composants est pris en charge par le framework Angular.
+
 La mise en place des composants dans une application Angular est prise en charge par le mécanisme d'_injection de dépendance_. Angular fournit aux composants les objets nécessaires à leur fonctionnement. Ainsi chaque composant est naturellement aisément testable, et la structure de l'application reste claire.
 
 Angular fournit aussi de nombreuses bibliothèques permettant de faire notamment des requêtes _http_, le _routage_, les _animations_ etc.
@@ -819,7 +821,21 @@ Démarrage de l'application | `ng serve`
 Créer un nouveau composant | `ng generate component COMPONENT_NAME`
 Plugin Github Pages | `ng github-pages:deploy`
 
-== Les templates
+== Composant
+
+C'est la brique fondamentale d'une application Angular. Chaque composant de votre application sera une classe décorée avec `@Composant`. Celui-ci reçoit un objet avec des propriétés pour chaque option :
+
+- `selector` : nom de l'élément HTML qui déclenche l'injection du composant dans l'application.
+- `template` : la vue du composant, écrite en HTML avec une syntaxe additionnelle spécifique à Angular.
+
+D'autres options sont facultatives:
+
+- `templateUrl` : à utiliser à la place de `template` pour déclarer la vue dans un fichier externe.
+- `styles` : un tableau de styles CSS spécifiques au composant.
+- `styleUrls` : un tableau de lien vers des feuilles externes.
+- `providers` : un tableau de classes fournies en tant que dépendances à sa descendance.
+
+=== Les templates
 
 Une template est la partie _vue_ d'un composant.
 
@@ -831,7 +847,7 @@ Elle peut aussi être écrite dans un fichier HTML à part, en précisant le che
 
 === Interpolation
 
-Angular permet d'injecter très facilement des données du composant dans sa template.
+Angular permet d'injecter très facilement les données du composant dans sa template.
 
 Exemple :
 
@@ -847,6 +863,679 @@ export class AngularAppComponent {
   userName: string = 'Monsieur Développeur'
 }
 ----
+
+Dans la partie template, l'expression `{{userName}}` demande à Angular d'effectuer l'interpolation de la variable `userName` en utilisant l'instance du composant comme contexte d'évaluation. Le flux HTML inséré dans la page sera donc `<h1>Hello Monsieur Développeur !</h1>`.
+
+=== Interpolation
+
+L'interpolation ne se limite pas à vider le contenu d'une variable dans le flux HTML. On peut accéder aux éléments imbriqués d'un objet, ou encore fournir des expressions dans l'élément d'interpolation `{{ }}`.
+
+[source]
+----
+import {Component} from '@angular/core'
+
+@Component({
+    selector: 'angular-app',
+    template: '<h1>Hello {{user?.name}} !</h1>'
+})
+export class AngularAppComponent {
+  user = { id: 5, name: 'Monsieur Développeur' }
+}
+----
+
+L'expression `{{user?.name}}` utilise l'opérateur de navigation sûr, qui renvoie `null` si la variable `user` vaut `null` (au lieu de provoquer une exception du type "cannot access to property XXX for undefined").
+
+=== Le binding de propriétés DOM
+
+La syntaxe `{{}}` est en fait un raccourci vers la fonctionnalité de _liaison de propriété_.
+
+La syntaxe une fois développée correspond en fait à :
+
+[source,language=html]
+----
+<p>{{ user.name }}</p>
+
+<p [textContent]="user.name">
+----
+
+On se rend compte que la syntaxe d'interpolation ne fait en fait que positionner la valeur de l'attribut DOM `textContent` de notre élément.
+
+Et l'ensemble complet des attributs DOM est accessible avec cette syntaxe `[attributDom]="expression évaluée dans le contexte du composant"`.
+
+Il est par exemple possible de faire :
+
+[source]
+----
+import {Component} from '@angular/core'
+
+@Component({
+    selector: 'angular-app',
+    template: `
+      <h1 [hidden]="!user">Hello {{user?.name}} !</h1> <1>
+      <users-list></users-list>`
+})
+export class AngularAppComponent {
+  user = { id: 5, name: 'Monsieur Développeur' }
+}
+----
+<1> Lie la propriété DOM `hidden` (propriété standard) à la valeur de l'expression `!user` dans le contexte du composant.
+
+Donc, ces deux syntaxes sont équivalentes (notez l'appel de fonction !) :
+
+[source]
+----
+<users-list users="{{getUsersList()}}"></users-list>
+<users-list [users]="getUsersList()"></users-list>
+----
+
+=== Evénements
+
+La syntaxe des template permet de définir les liens entre les événements que produit le navigateur et les méthodes de votre composant à déclencher.
+
+Par exemple, pour déclencher la méthode `onButtonClick()` du composant, on écrit :
+
+[source]
+----
+<button (click)="onButtonClick()">Cliquez-moi !</button>
+----
+
+Voilà l'exemple d'un composant plus complet :
+
+[source]
+----
+import {Component} from '@angular/core'
+
+@Component({
+    selector: 'angular-app',
+    template: `
+      <h1>Hello</h1>
+      <button (click)="onButtonClick()">Cliquez-moi !</button>
+      <p>{{users.length}}</p>`
+})
+export class AngularAppComponent {
+  users = []
+
+  onButtonClick() {
+    this.users.push({})
+  }
+}
+----
+
+Cette syntaxe pour capter les événements fonctionne aussi bien avec :
+
+- les éléments DOM natifs (pour récupérer _click_, _focus_, ...)
+- les web composants,
+- les composants Angular (les composants peuvent emettre des événements qui peuvent être captés par le composant parent)
+
+L'événement généré est accessible avec la _pseudo-variable_ `$event` :
+
+[source]
+----
+<button (click)="onButtonClick($event)">Cliquez-moi !</button>
+----
+
+La méthode appelée peut ensuite utiliser l'événement :
+
+[source]
+----
+onButtonClick(event) {
+  event.stopPropagation()
+  event.preventDefault()
+}
+----
+
+Angular prend aussi en charge les événements clavier et permet un traitement de pointe :
+
+[source]
+----
+<textarea (keydown.space)="onSpacePress()">Press space!</textarea>
+----
+
+Ici la méthode `onSpacePress` ne sera appelée que lorsque la touche `space` sera actionnée. Ceci fonctionne aussi avec les combinaisons de touches (par exemple `keydown.alt.space`).
+
+=== Variables locales
+
+Il est possible de déclarer des variables au sein d'une template afin de référencer des éléments de cette template. Par exemple :
+
+[source]
+----
+<input type="text" #monInput> <1>
+<p>La valeur de la zone est {{monInput.value}}</p>
+----
+<1> Crée la variable locale `monInput` de type `HTMLInputElement` référençant le champ de saisie.
+
+=== Directives structurelles
+
+Les directives sont des composants légers ne possédant pas de vue propre. Elles permettent de modifier le comportement d'un élément.
+
+Angular fournit un mécanisme de _directives structurelles_ qui permet de modifier la _structure_ DOM de la vue du composant en fonction des données du composant. Ceci permet entre autre de générer des éléments DOM pour chaque élément dans une liste de votre composant etc...
+
+L'utilisation des directives structurelles est marquée par un astérisque (*) devant le nom de la directive.
+
+=== `NgIf`
+
+Directive permettant d'afficher ou pas une template en fonction de l'évaluation d'une expression.
+
+[source]
+----
+<div *ngIf="user">
+  Bonjour {{user.name}}
+</div>
+----
+
+=== `NgFor`
+
+La directive `NgFor` permet de répéter une template pour chacun des éléments d'une collection. Voici comment afficher une liste de produits :
+
+[source]
+----
+<div>
+  <h3>Produits</h3>
+  <div *ngFor="let produit of produits; let i=index">
+    <div>{{produit.nom}}</div>
+    <div>{{produit.prix}}</div>
+  </div>
+</div>
+----
+
+L'expression `let i=index` est facultative et on peut alors retirer le point-virgule. Cette expression capte dans la variable locale `i` la variable `index` exportée par la directive `NgFor`.
+
+`NgFor` exporte aussi d'autres variables : `even`, `odd`, `first` et `last`.
+
+=== `NgSwitch`
+
+Cette directive permet d'afficher un template en fonction de la valeur d'une expression en entrée.
+
+[source]
+----
+<div [ngSwitch]="messageCount">
+  <p *ngSwitchCase="0">You have no message</p>
+  <p *ngSwitchCase="1">You have a message</p>
+  <p *ngSwitchDefault>You have some messages</p>
+</div>
+----
+
+=== Directives structurelles avancées
+
+La notation `*ngFor` ou `*ngIf` est en réalité un raccourcis vers la syntaxe primitive des templates d'Angular.
+
+Le code suivant :
+
+[source]
+----
+<div *ngFor="let produit of produits; let i=index">
+  <div>{{produit.nom}}</div>
+  <div>{{produit.prix}}</div>
+</div>
+----
+
+Génère ceci :
+
+[source]
+----
+<template ngFor let-produit [ngForOf]="produits">
+  <div>
+    <div>{{produit.nom}}</div>
+    <div>{{produit.prix}}</div>
+  </div>
+</template>
+----
+
+Les directives structurelles s'appuient en effet sur l'élément HTML `template` pour gérer les modèles à générer.
+
+=== Directives fournies par Angular
+
+Angular fournit quelques directives utiles dans certains cas.
+
+`NgStyle` permet d'affecter plusieurs propriétés CSS en un seul attribut :
+
+[source]
+----
+<div [ngStyle]="{fontWeight: fontWeight, color: color}">I've got style</div>
+----
+
+`NgClass` permet de faire la même chose avec les classes CSS :
+
+[source]
+----
+<div [ngClass]="{'awesome-div': isAnAwesomeDiv(), 'colored-div': isAColoredDiv()}">I've got style</div>
+----
+
+=== Injecter des composants dans les templates
+
+A partir du moment où un composant est déclaré dans le module de l'application ou que celui-ci est importé à partir d'un autre module, on peut demander la création du composant en insérant dans la template une balise dont le nom correspond au _selecteur_ du composant à insérer.
+
+[source]
+----
+import {Component} from '@angular/core'
+
+// Ce composant doit être déclaré dans notre module (dans la partie `declarations` du décorateur `NgModule`)
+@Component({
+    selector: 'users-list',
+    template: `UNE LISTE D'UTILISATEURS`
+})
+export class UsersListComponent {
+}
+
+@Component({
+    selector: 'angular-app',
+    template: `
+      <h1>Hello {{user?.name}} !</h1>
+      <users-list></users-list>`
+})
+export class AngularAppComponent {
+  user = { id: 5, name: 'Monsieur Développeur' }
+}
+----
+
+=== Résumé
+
+Les templates Angular permettent d'exprimer les vues des composants en HTML standard.
+
+Une syntaxe additionnelle, assez légère permet de spécifier les liaisons entre la vue et les données et comportements du composant. Le mécanisme fourni par Angular est très bien pensé et s'adapte aussi bien aux noeuds HTML standards, aux autres composants Angular et aux _Web Components_.
+
+Interpolation  |  `{{expression}}`
+Liaison de propriété  |  `[propriete]`
+Liaison d'événement  |  `(evenement)`
+Variable locale  |  `#variable`
+Directives structurelles  |  `*directive`
+
+== Communication entre composants
+
+La communication entre les différents composants d'une application Angular est clairement définie. Elle permet au mécanisme du _data binding_ de détecter le flots des changements dans les états des composants efficacement.
+
+Quand un composant souhaite recevoir des données provenant de son parent, il déclare des _entrées_.
+
+Quand un composant souhaite emettre des informations à destination de son parent, il déclare des _sorties_.
+
+=== `@Input`
+
+Le décorateur `@Input` est utilisé pour déclarer une entrée dans un composant.
+
+[source]
+----
+@Component({
+  selector: 'produit',
+  template: '<div>{{produit | json}}</div>'
+})
+export class ProduitComponent {
+  @Input() produit
+}
+----
+
+Le parent peut ensuite fournir une valeur à cette entrée en utilisant le mécanisme des templates.
+
+[source]
+----
+@Component({
+  selector: 'produits,
+  template: `
+<ul>
+  <li *ngFor='let p of produits'><produit [produit]='p'></produit></li>
+<ul>`
+})
+export class ProduitsComponent {
+  ...
+  produits = [{...}, {...}]
+}
+----
+
+On peut définir un nom d'entrée différent de celui de la propriété à laquelle elle est liée :
+
+[source]
+----
+@Input('produit') p
+----
+
+Et on peut bien sûr mettre à profit les accesseurs ES6 :
+
+[source]
+----
+@Input() set produits(value) {
+  ...
+}
+----
+
+=== `@Output`
+
+Pour qu'un composant puisse envoyer des informations à son parent, il doit emettre des événements. Cela s'appelle une _sortie_.
+
+A chaque sortie du composant correspond une propriété du type `EventEmitter`. Cet objet est un _Observable_ particulier implémenté pour les besoins d'Angular. Il permet au producteur d'information d'emettre des événements et au consommateur de s'abonner au flux d'événements.
+
+On déclare la sortie dans le composant :
+
+[source]
+----
+@Component(...)
+export class EmailComponent {
+  @Output() markedAsRead = new EventEmitter<EMail>() <1>
+
+  onClick() {
+    this.markedAsRead.emit(this.email) <2>
+  }
+}
+----
+<1> déclaration de la sortie qui est nommée d'après la propriété.
+<2> emission d'un événement contenant un référence à l'email du composant.
+
+On consomme l'information ainsi :
+
+[source]
+----
+@Component({
+  template: `
+<email *ngFor='let email of emails' (markedAsRead)='doSomething($event)'></email>` <1>
+})
+export class SommaireComponent {
+  doSomething(email) { <2>
+    ...
+  }
+}
+----
+<1> on s'abonne à la sortie du composant avec la syntaxe standard des templates. Pour passer la donnée de l'événement à la fonction on utilise le mot-clé consacré `$event`.
+<2> on reçoit la donnée de l'événement dans la fonction.
+
+== Injection de dépendances
+
+L'injection de dépendance est un patron de conception dans lequel un composant applicatif ne construit pas les composants dont il dépend mais les reçoit de l'extérieur (généralement par le constructeur ou un accesseur).
+
+Ce pattern implique qu'un autre composant est en charge de fournir les dépendances des composants, c'est l'injecteur de dépendances.
+
+Ce pattern améliore la séparation des responsabilités (consommateur et producteur) et facilite la testabilité de chaque composant. Chaque composant "déclare" les composants dont il a besoin.
+
+Le modèle suivi par Angular est le suivant :
+
+- chaque composant possède son propre injecteur de dépendances et peut lui ajouter des services.
+- les injecteurs de dépendances sont organisés hiérarchiquement (parent/enfants).
+- les composants déclarent les dépendances dont ils ont besoin dans leur constructeur.
+
+=== Injecter un service dans un composant
+
+Le service est la classe qui fournit un service :
+
+[source]
+----
+@Injectable() <1>
+export class DataService {
+  produits() {
+    return [{id:3, nom:"Livre"}]
+  }
+}
+----
+<1> le décorateur `@Injectable` permettra plus tard d'injecter des dépendances dans la classe `DataService`.
+
+Pour la rendre disponible dans l'application entière, nous allons la déclarer dans l'injecteur racine :
+
+[source]
+----
+@NgModule({
+    imports: [BrowserModule],
+    declarations: [AngularAppComponent],
+    providers: [DataService], <1>
+    bootstrap: [AngularAppComponent]
+})
+export class AppModule {
+}
+----
+<1> ceci enregistre la classe `DataService` dans le panel des classes que peut fournir l'injecteur de dépendances.
+
+Pour demander une instance de cette classe, on procède ainsi :
+
+[source]
+----
+@Component({...})
+export class MonComposant {
+  constructor(private DataService dataService) {
+  }
+
+  uneMethode() {
+    this.dataService.getData()
+  }
+}
+----
+
+Une seule instance par injecteur est créée, pour chaque classe fournie. Les injecteurs étant organisés en hiérarchie, la recherche des dépendances se fait en remontant l'arbre des injecteurs.
+
+Un injecteur enregistre les dépendances qu'il sait résoudre en relation avec leur _clé_.
+
+Les composants aussi peuvent enregistrer des classes dans leur injecteur de dépendances. Ceci se fait avec l'attribut `providers` du décorateur `@Composant` :
+
+[source]
+----
+@Component({
+  providers: [AutreService] <1>
+})
+export class MonComposant {
+}
+----
+<1> ici le composant `MonComposant` ajoute à son injecteur la classe `AutreService`. Celle-ci sera donc disponible dans les composants fils de celui-ci.
+
+=== Injection paramétrée
+
+Le moteur d'injection de dépendances d'Angular permet sa configuration.
+
+La configuration précédente aurait pu être écrite dans sa forme complète :
+
+[source]
+----
+providers: [
+  {provide: DataService, useClass: DataService} <1>
+]
+----
+<1> `provide` désigne le _token_ et `useClass` est le service fourni.
+
+Une seule instance du service est créée par token.
+
+Si on veut demander l'injection d'une autre classe pour le même token, on peut écrire :
+
+[source]
+----
+providers: [
+  {provide: DataService, useClass: MockDataService} <1>
+]
+----
+<1> le service mocké est utilisé pour les tests.
+
+=== Injection de valeurs
+
+Les injecteurs de dépendances peuvent aussi injecter des valeurs ou n'importe quel autre objet javascript. Comme dans ce cas, la clé de dépendance n'est pas une classe, il faut utiliser un `OpaqueToken` :
+
+[source]
+----
+// Dans un fichier à part
+
+import { OpaqueToken } from '@angular/core'
+
+export let APP_CONFIG = new OpaqueToken('app.config');
+
+// Dans un module ou un composant on enregistre le fournisseur :
+
+providers: [
+  {provide:APP_CONFIG, useValue:{production: false, title: 'Sandrero'}}
+]
+----
+
+On peut ensuite demander la fourniture de la dépendance :
+
+[source]
+----
+@Component(...)
+export class AngularAppComponent {
+    constructor( @Inject(APP_CONFIG) private config: { production; title; }) {
+    }
+}
+----
+
+=== Injection avec alias
+
+Il est possible de réutiliser une instance fournie même si sa classe est déjà enregistrée avec une autre clé. Ceci est fait avec la propriété `useExisting`.
+
+[source]
+----
+[ NewLogger,
+  // Alias OldLogger w/ reference to NewLogger
+  { provide: OldLogger, useExisting: NewLogger}
+]
+----
+
+=== Injection avec fabrique
+
+Si on veut soit même décider de la classe à fournir dynamiquement, il est possible de donner à l'injecteur une fonction _fabrique_ (_factory_) dont le rôle est de créer la dépendance.
+
+[source]
+----
+const IS_PROD = true;
+
+// dans le module
+providers: [
+  LogService,
+  {
+    // clé du service fourni
+    provide: DataService,
+    
+    // dépendances nécessaires pour la création du service DataService
+    deps: [LogService],
+
+    // la fonction factory reçoit les dépendances déclarées dans `deps` afin de pouvoir initialiser
+    // le service qu'elle produit.
+    useFactory: logService => IS_PROD ? new DataService(logService) : new MockDataService(logService)
+  }
+]
+----
+
+=== Les directives
+
+Une directive ajoute un comportement aux éléments du DOM. Elle est attachée à volonté sur les éléments des templates. Plusieurs directives différentes peuvent être attachées au même élément DOM.
+
+Le décorateur correspondant est `@Directive`.
+
+Les directives possèdent un _sélecteur_ qui permet à Angular de savoir quand l'activer. C'est la même syntaxe que les sélecteurs CSS (`div`, `.info`, `[state]`, `.info:not(.urgent)`, ...) avec quelques interdictions.
+
+La directive est la classe mère des composants, ceux-ci en hérite de toutes les fonctionnalités.
+
+[source]
+----
+@Directive( selector = "[myHighlight]" )
+export class HighlightDirective
+{
+	defaultColor = "red"
+	highlightColor = null
+
+	constructor(private elementRef: ElementRef, private renderer: Renderer) {
+	}
+	
+  @Input() set highlightColor(color) {
+		this.highlightColor = color
+	}
+
+	@Input() set defaultColor(colorName) {
+		this.defaultColor = this.colorName ? this.colorName : this.defaultColor
+	}
+
+	@HostListener() mouseenter() {
+		this.highlight(this.highlightColor ? this.highlightColor : this.defaultColor)
+	}
+
+	@HostListener() mouseleave() {
+		this.highlight(null)
+	}
+
+	private highlight(String color) {
+		this.renderer.setElementStyle(this.elementRef.nativeElement(), "backgroundColor", color)
+	}
+}
+----
+
+
+
+== Pipes
+
+Un _pipe_ permet de transformer les informations à afficher dans la vue au sein d'une template.
+
+Quelques pipes sont fournies par Angular :
+
+`json` affiche la donnée en format _JSON_.
+
+[source]
+----
+<div>{{ users | json }}</div>
+----
+
+`slice` permet d'extraire une partie d'une collection ou d'une chaine de caractères.
+
+[source]
+----
+<div>{{ users | slice:0:2 | json }}</div>
+----
+
+`uppercase` et `lowercase` changent la casse des chaines de caractères.
+
+`number` permet de formatter un nombre, avec le format des paramètres suivants : `{integerDigits}.{minFractionDigits}-{maxFractionDigits}`.
+
+[source]
+----
+<p>{{ 5.13 | number:'.1-1' }}</p>
+<!-- affichera '5.1' -->
+----
+
+`percent` affiche un pourcentage.
+
+`currency` affiche une devise.
+
+`date` formatte une date.
+
+`async` permet d'attendre l'arrivée des données d'une `Promise` ou d'un `Observable`.
+
+[source]
+----
+@Component({
+  selector: 'test-async',
+  template: `<div>{{ promesse | async }}</div>`
+})
+export class TestAsyncComponent {
+  promesse = new Promise(resolve => {
+    window.setTimeout(() => resolve('BONJOUR!'), 1000);
+  });
+}
+----
+
+=== Création d'une pipe
+
+Il est bien sûr possible d'implémenter ses propres pipes.
+
+[source]
+----
+import { PipeTransform, Pipe } from '@angular/core';
+
+@Pipe({name: 'fromNow'})
+export class FromNowPipe implements PipeTransform {
+  transform(value, args) {
+    // do something here
+  }
+}
+----
+
+Une fois déclarée dans le module, elle est utilisable dans les template avec le mot-clé `formNow`.
+
+== Services du framework
+
+=== Title
+
+=== Http
+
+== Tests
+
+=== Tests unitaires
+
+Avec _Jasmine_.
+
+== Style des compodants et encapsulation
+
+== Cycle de vie des composants et hooks
+
+== Créer un composant par programmation
+
+== RxJs
 
 == Programme
 

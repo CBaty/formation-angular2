@@ -193,3 +193,36 @@ Aller à l'adresse `http://localhost:8080`
 
 Normalement le message "Hello !" doit apparaître après chargement et initialisation de l'application.
 
+== Exercice 1
+
+Je veux écrire un composant PoniesComponent, affichant une liste de poneys. Chacun de ces poneys
+devrait être représenté par son propre composant PonyComponent, mais nous n’avons pas encore vu
+comment passer des paramètres à un composant. Donc, pour l’instant, nous allons nous contenter
+d’afficher une simple liste. La liste devra s’afficher seulement si elle n’est pas vide, et j’aimerais
+avoir un peu de couleur sur les lignes paires. Et nous voulons pouvoir rafraîchir cette liste d’un
+simple clic sur un bouton.
+
+Ecrire le composant qui affiche une liste de produits
+
+[source]
+----
+import { Component } from '@angular/core';
+@Component({
+selector: 'ns-ponies',
+template: `<button (click)="refreshPonies()">Refresh</button>
+<ul>
+<li *ngFor="let pony of ponies; let isEven=even"
+[style.color]="isEven ? 'green' : 'black'">
+{{pony.name}}
+</li>
+</ul>`
+})
+export class PoniesComponent {
+ponies: Array<any> = [{ name: 'Rainbow Dash' }, { name: 'Pinkie Pie' }];
+refreshPonies() {
+this.ponies = [{ name: 'Fluttershy' }, { name: 'Rarity' }];
+}
+}
+----
+
+
