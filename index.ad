@@ -27,6 +27,8 @@ Twitter: https://twitter.com/ltearno[@ltearno]
 
 Web: http://www.lteconsulting.fr[www.lteconsulting.fr]
 
+Speaker à Java One, Devoxx, GDG, JUG, GWTCon...
+
 == ECMASCRIPT 6
 
 Spécification standardisée du Javascript : ECMAScript.
@@ -744,7 +746,7 @@ Les décorateurs utilisent la forme `@expression`, dans laquelle `expression` es
 
 Utilisés intensément par Angular pour décrire des méta données sur les composants. En conjonction avec la bibliothèque `reflect-metadata` qui devrait être incessament sous peu intégrée dans le standard Javascript.
 
-Pour plus d'informations, consultez cette page https://www.typescriptlang.org/docs/handbook/decorators.html.
+Pour plus d'informations, consultez cette page https://www.typescriptlang.org/docs/handbook/decorators.html pour les décorateurs et celle-ci pour la bibliothèque _reflect-metadata_ https://rbuckton.github.io/reflect-metadata/.
 
 Un décorateur peut avoir la forme
 [source,language=javascript]
@@ -779,9 +781,15 @@ Un projet très connu recense un grand nombre de fichiers de déclarations de ty
 
 == Angular
 
-=== Kezaco ?
+=== Qu'est-ce que c'est ?
 
 Angular est un framework RIA orienté composant.
+
+Angular 2 est la réécriture repensée de AngularJS, qui a connu un succès incroyable et a pu apprendre de ses erreurs grâce au nombre de ses déploiements. Il est optimisée pour les performances et la rapidité et propose des outils évolués améliorant la productivité.
+
+Site web : https://angular.io/
+
+=== Architecture
 
 La brique élémentaire d'une application Angular est le composant. Il est responsable d'une partie du DOM. Il peut contenir d'autres composants et donc être contenu par son parent. Le mode de communication entre les différents composants est imposé par Angular. De multiples possibilités sont offertes.
 
@@ -790,9 +798,11 @@ Un composant possède deux facettes :
 - la vue (_template_) : du code HTML spécifiant le rendu du composant,
 - le modèle : le code Typescript ou Javascript manipulant les données.
 
-Les intéractions entre vue et modèle sont gérées par le framework grâce au _data-binding_. Celui-ci est assuré grâce au mécanisme des _zones_ hérité du monde _Dart_.
+Les intéractions entre vue et modèle sont gérées par le framework grâce au _data-binding_. Celui-ci est assuré entre autres grâce au mécanisme des _zones_ hérité du monde _Dart_.
 
-Une application est donc un arbre de composants.
+Une application est donc conceptuellement un arbre de composants.
+
+=== Architecture
 
 Les composants sont regroupés en modules pour former des entités cohérentes traitées par le runtime Angular.
 
@@ -808,32 +818,110 @@ Angular offre aussi des outils d'_AOT_ qui consistent à optimiser la phase de c
 
 Faire l'exercice de création d'un projet Angular dans les Travaux Pratiques.
 
-=== Gestion d'une appli Angular
+=== `angular-cli` pour la gestion d'une appli Angular
 
 Il est possible de configurer un projet Angular entièrement à la main (voir exercice 1 dans Travaux Pratiques).
 
-Angular fournit aussi un outil en ligne de commande pour gérer les différents aspects d'un projet : `angular-cli`.
+Mais cela est fastidieux et Angular propose aussi un outil en ligne de commande pour gérer les différents aspects d'un projet : `angular-cli`.
 
-Description | Commande
-===========|============
-Création d'un projet | `ng new NOM_PROJET`
-Démarrage de l'application | `ng serve`
-Créer un nouveau composant | `ng generate component COMPONENT_NAME`
-Plugin Github Pages | `ng github-pages:deploy`
+[cols="2*"]
+|===
+|Description
+|Commande
+
+|Création d'un projet
+|`ng new NOM_PROJET`
+
+|Démarrage de l'application
+|`ng serve`
+
+|Créer un nouveau composant
+|`ng generate component COMPONENT_NAME`
+
+|Plugin Github Pages
+|`ng github-pages:deploy`
+|===
+
+=== Concepts clé d'Angular
+
+Angular 2 est une grosse bête, on peut séparer quelques parties importantes :
+
+- les _Modules_,
+- les _Composants_,
+- les _Templates_,
+- le _Data-binding_,
+- l'_Injection de dépendances_,
+- les _Métadonnées_,
+- les _Directives_,
+- les _Services_.
+
+[%notitle]
+[data-background="images/overview.png"]
+[data-background-size=contain]
+=== .
+
+=== Mais ce n'est pas tout !
+
+Angular est un framework déjà très riche. Voici en vrac quelques autres fonctionnalités offertes :
+
+- les _Animations_,
+- les _Formulaires_,
+- la communication _Http_,
+- les _hooks_ de cycle de vie,
+- les _pipes_,
+- le _routeur_,
+- des outils pour _tester_ vos applications.
+
+== Modules
+
+Un module décrit un ensemble fonctionnel et cohérent de code.
+
+Une application Angular possède au moins un module, le module _racine_ que l'on appelle en général `AppModule`.
+
+Concrètement un module sera représenté par une classe décorée avec `@NgModule`. Ce décorateur prend les paramètres suivants :
+
+- `declarations` : la liste des composants, directives et pipes contenues dans le module,
+- `exports` : une sous-liste de `declarations` définissant les composants accessibles à d'autres modules,
+- `imports` : liste des modules que l'on souhaite utiliser dans ce module,
+- `providers` : liste des fournisseurs de service pour ce module,
+- `bootstrap` : le composant racine du module, qui sera utilisé pour créer la vue principale de l'application.
+
+=== Exemple
+
+Voici un simple module :
+
+[source]
+----
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+@NgModule({
+  imports:      [ BrowserModule ],
+  providers:    [ Logger ],
+  declarations: [ AppComponent ],
+  exports:      [ AppComponent ],
+  bootstrap:    [ AppComponent ]
+})
+export class AppModule { }
+----
+
+Angular fournit une partie de ses fonctionnalités optionnelles sous forme de modules (`BrowserModule`, `FormModule`, `Http`...).
 
 == Composant
 
-C'est la brique fondamentale d'une application Angular. Chaque composant de votre application sera une classe décorée avec `@Composant`. Celui-ci reçoit un objet avec des propriétés pour chaque option :
+C'est la brique fondamentale d'une application Angular, regroupant une vue HTML et un comportement Typescript. Chaque composant de votre application sera une classe décorée avec `@Composant`. Celui-ci reçoit un objet avec des propriétés pour chaque option :
 
 - `selector` : nom de l'élément HTML qui déclenche l'injection du composant dans l'application.
 - `template` : la vue du composant, écrite en HTML avec une syntaxe additionnelle spécifique à Angular.
 
 D'autres options sont facultatives:
 
-- `templateUrl` : à utiliser à la place de `template` pour déclarer la vue dans un fichier externe.
+- `templateUrl` : à utiliser à la place de `template` pour déclarer la vue dans un fichier externe (https://angular.io/docs/ts/latest/cookbook/component-relative-paths.html[attention aux chemins]).
 - `styles` : un tableau de styles CSS spécifiques au composant.
 - `styleUrls` : un tableau de lien vers des feuilles externes.
 - `providers` : un tableau de classes fournies en tant que dépendances à sa descendance.
+
+Ce n'est pas le développeur qui crée les composants mais Angular grâce au mécanisme d'injection de dépendances et aux méta-données fournies dans les décorateurs.
 
 === Les templates
 
@@ -864,7 +952,9 @@ export class AngularAppComponent {
 }
 ----
 
-Dans la partie template, l'expression `{{userName}}` demande à Angular d'effectuer l'interpolation de la variable `userName` en utilisant l'instance du composant comme contexte d'évaluation. Le flux HTML inséré dans la page sera donc `<h1>Hello Monsieur Développeur !</h1>`.
+Dans la partie template, l'expression `{{userName}}` demande à Angular d'effectuer l'interpolation de la variable `userName` en utilisant l'instance du composant comme contexte d'évaluation.
+
+Le flux HTML inséré dans la page sera donc `<h1>Hello Monsieur Développeur !</h1>`.
 
 === Interpolation
 
@@ -902,6 +992,8 @@ On se rend compte que la syntaxe d'interpolation ne fait en fait que positionner
 
 Et l'ensemble complet des attributs DOM est accessible avec cette syntaxe `[attributDom]="expression évaluée dans le contexte du composant"`.
 
+=== Binding de propriétés
+
 Il est par exemple possible de faire :
 
 [source]
@@ -920,6 +1012,8 @@ export class AngularAppComponent {
 ----
 <1> Lie la propriété DOM `hidden` (propriété standard) à la valeur de l'expression `!user` dans le contexte du composant.
 
+=== Binding de propriétés
+
 Donc, ces deux syntaxes sont équivalentes (notez l'appel de fonction !) :
 
 [source]
@@ -928,7 +1022,7 @@ Donc, ces deux syntaxes sont équivalentes (notez l'appel de fonction !) :
 <users-list [users]="getUsersList()"></users-list>
 ----
 
-=== Evénements
+=== La liaison d'evénements
 
 La syntaxe des template permet de définir les liens entre les événements que produit le navigateur et les méthodes de votre composant à déclencher.
 
@@ -961,6 +1055,8 @@ export class AngularAppComponent {
 }
 ----
 
+=== La liaison d'evénements
+
 Cette syntaxe pour capter les événements fonctionne aussi bien avec :
 
 - les éléments DOM natifs (pour récupérer _click_, _focus_, ...)
@@ -984,6 +1080,8 @@ onButtonClick(event) {
 }
 ----
 
+=== La liaison d'evénements
+
 Angular prend aussi en charge les événements clavier et permet un traitement de pointe :
 
 [source]
@@ -992,6 +1090,17 @@ Angular prend aussi en charge les événements clavier et permet un traitement d
 ----
 
 Ici la méthode `onSpacePress` ne sera appelée que lorsque la touche `space` sera actionnée. Ceci fonctionne aussi avec les combinaisons de touches (par exemple `keydown.alt.space`).
+
+=== La liaison double
+
+La liaison double combine la liaison dévénements et la liaison de propriétés. Ceci se fait avec la directive `NgModel`.
+
+Ceci permet de lier dans les deux sens notamment un champ de saisie avec une propriété de la classe du composant :
+
+[source]
+----
+<input [(ngModel)]="hero.name">
+----
 
 === Variables locales
 
@@ -1085,7 +1194,7 @@ Les directives structurelles s'appuient en effet sur l'élément HTML `template`
 
 === Directives fournies par Angular
 
-Angular fournit quelques directives utiles dans certains cas.
+Angular fournit quelques directives utiles.
 
 `NgStyle` permet d'affecter plusieurs propriétés CSS en un seul attribut :
 
@@ -1134,11 +1243,25 @@ Les templates Angular permettent d'exprimer les vues des composants en HTML stan
 
 Une syntaxe additionnelle, assez légère permet de spécifier les liaisons entre la vue et les données et comportements du composant. Le mécanisme fourni par Angular est très bien pensé et s'adapte aussi bien aux noeuds HTML standards, aux autres composants Angular et aux _Web Components_.
 
-Interpolation  |  `{{expression}}`
-Liaison de propriété  |  `[propriete]`
-Liaison d'événement  |  `(evenement)`
-Variable locale  |  `#variable`
-Directives structurelles  |  `*directive`
+[cols="2*"]
+|===
+|Interpolation 
+|`{{expression}}`
+
+|Liaison de propriété 
+|`[propriete]`
+
+|Liaison d'événement
+|`(evenement)`
+
+|Variable locale
+|`#variable`
+
+|Directives structurelles
+|`*directive`
+|===
+
+cheat-sheet.pdf[Feuille de triche...]
 
 == Communication entre composants
 
@@ -1446,7 +1569,13 @@ export class HighlightDirective
 }
 ----
 
+=== Relation entre Directive, Composant et Directive Structurelle
 
+La _Directive_ est le concept de base. Il existe en fait trois sortes de directives :
+
+- les _directives d'attribut_ permettant d'altérer le comportement d'un noeud DOM,
+- les _directives structurelles_ modifient le layout en ajoutant, retirant ou remplaçant des éléments dans le DOM.
+- et les _Composants_ sont des directives qui possèdent une _template_,
 
 == Pipes
 
