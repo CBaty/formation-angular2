@@ -177,7 +177,7 @@ Compilation du projet
 
 Pour lancer le compilateur Typescript en mode surveillance des fichiers (les fichiers sources sont recompilés automatiquemen à chaque changement), on lance :
 
-`tsc --watch`
+`tsc`
 
 Installation d'un mini serveur HTTP
 

@@ -1,10 +1,12 @@
 import { Component, Inject } from '@angular/core'
-import { APP_CONFIG } from './app.config'
+
 @Component({
     selector: 'angular-app',
-    template: '<h1>Hello copain ! {{config | json}}</h1>'
+    template: `
+    <h1>Hello</h1>
+    <div>{{user.nom}}</div>
+    <h3>{{user.id}}</h3>`
 })
 export class AngularAppComponent {
-    constructor( @Inject(APP_CONFIG) private config: { production; title; }) {
-    }
+    user = { id: 3, nom: "toto" }
 }

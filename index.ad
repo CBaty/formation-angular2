@@ -27,6 +27,8 @@ Twitter: https://twitter.com/ltearno[@ltearno]
 
 Web: http://www.lteconsulting.fr[www.lteconsulting.fr]
 
+**LTE Consulting** société de Développement, Conseil et Formation.
+
 Speaker à Java One, Devoxx, GDG, JUG, GWTCon...
 
 == ECMASCRIPT 6
@@ -219,6 +221,19 @@ Utilisée avec l'affectation destructurée des variables, cette construction s'�
 const { timeout = 1000 } = httpOptions
 ----
 
+=== Interpolation dans les chaines de caractères
+
+L'interpolation de chaines est maintenant facilitée en ES6 grâce aux patrons de chaine :
+
+[source,language=javascript]
+----
+var description = user.name.toUpperCase() + ' (' + user.id + ')';
+
+// devient
+
+let description = `${user.name.toUpperCase()} (${user.id})`
+----
+
 === Les classes
 
 L'introduction des classes en Javascript se fait par l'ajout d'une syntaxe équivalente à un _sucre syntaxique_ pour le moteur d'exécution JS. En effet javascript repose sur un modèle d'héritage par prototype qui permet de simuler l'héritage de classes.
@@ -244,7 +259,7 @@ let livre = new Livre('Les frameworks JS')
 
 ----
 <1> la fonction spéciale `constructor` est appelée lorsque l'objet est créé.
-<2> l'utilisation de `private` ou `public` crée automatiquement un attribut dans la classe (Typescript seulement ?).
+<2> l'utilisation de `private` ou `public` crée automatiquement un attribut dans la classe (**Typescript seulement**).
 
 === Accesseurs
 
@@ -301,6 +316,28 @@ class Mamifere extends Animal {
 ----
 <1> le mot-clé `super` permet de faire référence au constructeur de la classe parente.
 <2> le mot-clé `super` permet de faire référence à l'implémentation de la fonction dans la classe parente.
+
+=== _fat arrow functions_
+
+Comme il est extrêmement fréquent d'écrire des fonctions de rappel (_callbacks_), la syntaxe d'ES6 intègre un nouvel élément permettant de déclarer des fonctions de manière plus concise. C'est l'opérateur _fat arrow_ :
+
+[source,language=javascript]
+----
+let maFonction = (arg1, arg2) => arg1 + arg2 <1>
+
+let autreFonction = (arg1) => { <2>
+  ...
+  return result
+}
+----
+<1> pas besoin du mot-clé `return` si la valeur retournée est directe.
+<2> sinon on déclare un bloc comme d'habitude.
+
+ATTENTION Les fonctions _fat arrow_ présentent un différence notable avec les fonctions traditionnelles : le mot-clé `this` garde sa valeur au moment où la _fat arrow_ function est créée. Aucun `this` particulier n'est attaché aux _fat arrow functions_...
+
+=== `Set` et `Map`
+
+Javascript intègre désormais les structures de données `Set` et `Map`.
 
 === Les promises
 
@@ -379,42 +416,7 @@ let rejectedPromise = Promise.reject('description de l erreur') <2>
 
 L'API des promesses est plus riche et flexible que le seul aperçu montré ici. Une documentation plus complète est disponible ici : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise.
 
-Combinées avec les _fat arrow functions_ décrites dans le chapitre suivant, les _Promises_ sont très puissantes pour clarifier l'enchainement de traitements asynchrones.
-
-=== _fat arrow functions_
-
-Comme il est extrêmement fréquent d'écrire des fonctions de rappel (_callbacks_), la syntaxe d'ES6 intègre un nouvel élément permettant de déclarer des fonctions de manière plus concise. C'est l'opérateur _fat arrow_ :
-
-[source,language=javascript]
-----
-let maFonction = (arg1, arg2) => arg1 + arg2 <1>
-
-let autreFonction = (arg1) => { <2>
-  ...
-  return result
-}
-----
-<1> pas besoin du mot-clé `return` si la valeur retournée est directe.
-<2> sinon on déclare un bloc comme d'habitude.
-
-ATTENTION Les fonctions _fat arrow_ présentent un différence notable avec les fonctions traditionnelles : le mot-clé `this` garde sa valeur au moment où la _fat arrow_ function est créée. Aucun `this` particulier n'est attaché aux _fat arrow functions_...
-
-=== `Set` et `Map`
-
-Javascript intègre désormais les structures de données `Set` et `Map`.
-
-=== Interpolation dans les chaines de caractères
-
-L'interpolation de chaines est maintenant facilitée en ES6 grâce aux patrons de chaine :
-
-[source,language=javascript]
-----
-var description = user.name.toUpperCase() + ' (' + user.id + ')';
-
-// devient
-
-let description = `${user.name.toUpperCase()} (${user.id})`
-----
+Combinées avec les _fat arrow functions_, les _Promises_ sont très puissantes pour clarifier l'enchainement de traitements asynchrones.
 
 === Les modules
 
@@ -814,6 +816,36 @@ Angular fournit aussi de nombreuses bibliothèques permettant de faire notamment
 
 Angular offre aussi des outils d'_AOT_ qui consistent à optimiser la phase de compilation pour générer des fichiers javascript les plus légers possible.
 
+=== Concepts clé d'Angular
+
+Angular 2 paut être vu comme la composition des éléments suivants :
+
+- les _Modules_,
+- les _Composants_,
+- les _Templates_,
+- le _Data-binding_,
+- l'_Injection de dépendances_,
+- les _Métadonnées_,
+- les _Directives_,
+- les _Services_.
+
+[%notitle]
+[data-background="images/overview.png"]
+[data-background-size=contain]
+=== .
+
+=== Mais ce n'est pas tout !
+
+Angular est un framework déjà très riche. Voici en vrac quelques autres fonctionnalités offertes :
+
+- les _Animations_,
+- les _Formulaires_,
+- la communication _Http_,
+- les _hooks_ de cycle de vie,
+- les _pipes_,
+- le _routeur_,
+- des outils pour _tester_ vos applications.
+
 === Exercice
 
 Faire l'exercice de création d'un projet Angular dans les Travaux Pratiques.
@@ -842,41 +874,11 @@ Mais cela est fastidieux et Angular propose aussi un outil en ligne de commande 
 |`ng github-pages:deploy`
 |===
 
-=== Concepts clé d'Angular
-
-Angular 2 est une grosse bête, on peut séparer quelques parties importantes :
-
-- les _Modules_,
-- les _Composants_,
-- les _Templates_,
-- le _Data-binding_,
-- l'_Injection de dépendances_,
-- les _Métadonnées_,
-- les _Directives_,
-- les _Services_.
-
-[%notitle]
-[data-background="images/overview.png"]
-[data-background-size=contain]
-=== .
-
-=== Mais ce n'est pas tout !
-
-Angular est un framework déjà très riche. Voici en vrac quelques autres fonctionnalités offertes :
-
-- les _Animations_,
-- les _Formulaires_,
-- la communication _Http_,
-- les _hooks_ de cycle de vie,
-- les _pipes_,
-- le _routeur_,
-- des outils pour _tester_ vos applications.
-
 == Modules
 
 Un module décrit un ensemble fonctionnel et cohérent de code.
 
-Une application Angular possède au moins un module, le module _racine_ que l'on appelle en général `AppModule`.
+Une application Angular possède au moins un module, son module _racine_.
 
 Concrètement un module sera représenté par une classe décorée avec `@NgModule`. Ce décorateur prend les paramètres suivants :
 
@@ -905,11 +907,11 @@ import { BrowserModule } from '@angular/platform-browser';
 export class AppModule { }
 ----
 
-Angular fournit une partie de ses fonctionnalités optionnelles sous forme de modules (`BrowserModule`, `FormModule`, `Http`...).
+Angular fournit une partie de ses fonctionnalités optionnelles sous forme de modules (`FormModule`, `Http`...).
 
 == Composant
 
-C'est la brique fondamentale d'une application Angular, regroupant une vue HTML et un comportement Typescript. Chaque composant de votre application sera une classe décorée avec `@Composant`. Celui-ci reçoit un objet avec des propriétés pour chaque option :
+C'est la brique fondamentale d'une application Angular, regroupant une vue HTML et un comportement Typescript. Côté code, un composant est une classe décorée avec `@Composant`. Celui-ci reçoit un objet avec des propriétés pour chaque option :
 
 - `selector` : nom de l'élément HTML qui déclenche l'injection du composant dans l'application.
 - `template` : la vue du composant, écrite en HTML avec une syntaxe additionnelle spécifique à Angular.
@@ -920,6 +922,8 @@ D'autres options sont facultatives:
 - `styles` : un tableau de styles CSS spécifiques au composant.
 - `styleUrls` : un tableau de lien vers des feuilles externes.
 - `providers` : un tableau de classes fournies en tant que dépendances à sa descendance.
+
+Et encore d'autres (`animations`, `encapsulation`, `interpolation`, `moduleId`, `viewProviders`).
 
 Ce n'est pas le développeur qui crée les composants mais Angular grâce au mécanisme d'injection de dépendances et aux méta-données fournies dans les décorateurs.
 
@@ -988,13 +992,13 @@ La syntaxe une fois développée correspond en fait à :
 <p [textContent]="user.name">
 ----
 
-On se rend compte que la syntaxe d'interpolation ne fait en fait que positionner la valeur de l'attribut DOM `textContent` de notre élément.
+La syntaxe d'interpolation ne fait en fait que positionner la valeur de l'attribut DOM `textContent` de l'élément.
 
 Et l'ensemble complet des attributs DOM est accessible avec cette syntaxe `[attributDom]="expression évaluée dans le contexte du composant"`.
 
 === Binding de propriétés
 
-Il est par exemple possible de faire :
+Il est donc par exemple possible de faire :
 
 [source]
 ----
@@ -1010,7 +1014,7 @@ export class AngularAppComponent {
   user = { id: 5, name: 'Monsieur Développeur' }
 }
 ----
-<1> Lie la propriété DOM `hidden` (propriété standard) à la valeur de l'expression `!user` dans le contexte du composant.
+<1> Lie la propriété DOM https://developer.mozilla.org/fr/docs/Web/HTML/Attributs_universels/hidden[`hidden`] (propriété standard) à la valeur de l'expression `!user` dans le contexte du composant.
 
 === Binding de propriétés
 
@@ -1019,6 +1023,7 @@ Donc, ces deux syntaxes sont équivalentes (notez l'appel de fonction !) :
 [source]
 ----
 <users-list users="{{getUsersList()}}"></users-list>
+
 <users-list [users]="getUsersList()"></users-list>
 ----
 
@@ -1082,14 +1087,14 @@ onButtonClick(event) {
 
 === La liaison d'evénements
 
-Angular prend aussi en charge les événements clavier et permet un traitement de pointe :
+Angular prend aussi en charge les événements clavier et permet un traitement spécifique :
 
 [source]
 ----
 <textarea (keydown.space)="onSpacePress()">Press space!</textarea>
 ----
 
-Ici la méthode `onSpacePress` ne sera appelée que lorsque la touche `space` sera actionnée. Ceci fonctionne aussi avec les combinaisons de touches (par exemple `keydown.alt.space`).
+Ici la méthode `onSpacePress` ne sera appelée que lorsque la touche `space` sera actionnée. Ceci fonctionne aussi avec les combinaisons de touches (par exemple `keydown.shift.space`).
 
 === La liaison double
 
@@ -1102,6 +1107,8 @@ Ceci permet de lier dans les deux sens notamment un champ de saisie avec une pro
 <input [(ngModel)]="hero.name">
 ----
 
+Nous découvrirons plus en détail ce mécanisme dans le chapître sur les formulaires.
+
 === Variables locales
 
 Il est possible de déclarer des variables au sein d'une template afin de référencer des éléments de cette template. Par exemple :
@@ -1109,6 +1116,7 @@ Il est possible de déclarer des variables au sein d'une template afin de réfé
 [source]
 ----
 <input type="text" #monInput> <1>
+
 <p>La valeur de la zone est {{monInput.value}}</p>
 ----
 <1> Crée la variable locale `monInput` de type `HTMLInputElement` référençant le champ de saisie.
@@ -1117,7 +1125,7 @@ Il est possible de déclarer des variables au sein d'une template afin de réfé
 
 Les directives sont des composants légers ne possédant pas de vue propre. Elles permettent de modifier le comportement d'un élément.
 
-Angular fournit un mécanisme de _directives structurelles_ qui permet de modifier la _structure_ DOM de la vue du composant en fonction des données du composant. Ceci permet entre autre de générer des éléments DOM pour chaque élément dans une liste de votre composant etc...
+Angular propose aussi les _directives structurelles_ qui permettent de modifier la _structure_ du DOM d'un composant en fonction de ses données. Ceci permet entre autre de générer des éléments DOM pour chaque élément dans une liste de votre composant etc...
 
 L'utilisation des directives structurelles est marquée par un astérisque (*) devant le nom de la directive.
 
@@ -1166,7 +1174,7 @@ Cette directive permet d'afficher un template en fonction de la valeur d'une exp
 
 === Directives structurelles avancées
 
-La notation `*ngFor` ou `*ngIf` est en réalité un raccourcis vers la syntaxe primitive des templates d'Angular.
+La notation `*ngFor` ou `*ngIf` est en réalité un raccourci vers la syntaxe primitive des templates d'Angular.
 
 Le code suivant :
 
@@ -1178,7 +1186,7 @@ Le code suivant :
 </div>
 ----
 
-Génère ceci :
+Est équivalent à ceci :
 
 [source]
 ----
@@ -1190,7 +1198,7 @@ Génère ceci :
 </template>
 ----
 
-Les directives structurelles s'appuient en effet sur l'élément HTML `template` pour gérer les modèles à générer.
+Les directives structurelles s'appuient en effet sur l'élément HTML5 `template` pour gérer les modèles à générer.
 
 === Directives fournies par Angular
 
@@ -1237,7 +1245,7 @@ export class AngularAppComponent {
 }
 ----
 
-=== Résumé
+=== Synthèse
 
 Les templates Angular permettent d'exprimer les vues des composants en HTML standard.
 
@@ -1261,11 +1269,13 @@ Une syntaxe additionnelle, assez légère permet de spécifier les liaisons entr
 |`*directive`
 |===
 
-cheat-sheet.pdf[Feuille de triche...]
+http://lteconsulting.fr/angular/cheat-sheet.pdf[Feuille de triche...]
 
 == Communication entre composants
 
-La communication entre les différents composants d'une application Angular est clairement définie. Elle permet au mécanisme du _data binding_ de détecter le flots des changements dans les états des composants efficacement.
+La communication entre les différents composants d'une application Angular est clairement définie.
+
+Cela permet au mécanisme du _data binding_ de détecter efficacement le flots des changements dans les états des composants.
 
 Quand un composant souhaite recevoir des données provenant de son parent, il déclare des _entrées_.
 
@@ -1279,7 +1289,7 @@ Le décorateur `@Input` est utilisé pour déclarer une entrée dans un composan
 ----
 @Component({
   selector: 'produit',
-  template: '<div>{{produit | json}}</div>'
+  template: '<div>{{produit.id}}</div>'
 })
 export class ProduitComponent {
   @Input() produit
@@ -1321,11 +1331,9 @@ Et on peut bien sûr mettre à profit les accesseurs ES6 :
 
 === `@Output`
 
-Pour qu'un composant puisse envoyer des informations à son parent, il doit emettre des événements. Cela s'appelle une _sortie_.
+On déclare un _sortie_ pour permettre à un composant d'envoyer des informations vers son parent.
 
-A chaque sortie du composant correspond une propriété du type `EventEmitter`. Cet objet est un _Observable_ particulier implémenté pour les besoins d'Angular. Il permet au producteur d'information d'emettre des événements et au consommateur de s'abonner au flux d'événements.
-
-On déclare la sortie dans le composant :
+A chaque sortie correspond un `EventEmitter`. C'est un _Observable_ implémenté pour les besoins d'Angular. Il permet au producteur d'information d'emettre des événements et au consommateur de s'abonner au flux d'événements.
 
 [source]
 ----
@@ -1401,6 +1409,8 @@ export class AppModule {
 }
 ----
 <1> ceci enregistre la classe `DataService` dans le panel des classes que peut fournir l'injecteur de dépendances.
+
+=== Injecter un service dans un composant
 
 Pour demander une instance de cette classe, on procède ainsi :
 
@@ -1493,7 +1503,7 @@ export class AngularAppComponent {
 
 Il est possible de réutiliser une instance fournie même si sa classe est déjà enregistrée avec une autre clé. Ceci est fait avec la propriété `useExisting`.
 
-[source]
+[source,language=javascript]
 ----
 [ NewLogger,
   // Alias OldLogger w/ reference to NewLogger
@@ -1526,7 +1536,7 @@ providers: [
 ]
 ----
 
-=== Les directives
+== Les directives
 
 Une directive ajoute un comportement aux éléments du DOM. Elle est attachée à volonté sur les éléments des templates. Plusieurs directives différentes peuvent être attachées au même élément DOM.
 
@@ -1541,31 +1551,31 @@ La directive est la classe mère des composants, ceux-ci en hérite de toutes le
 @Directive( selector = "[myHighlight]" )
 export class HighlightDirective
 {
-	defaultColor = "red"
-	highlightColor = null
+  defaultColor = "red"
+  highlightColor = null
 
-	constructor(private elementRef: ElementRef, private renderer: Renderer) {
-	}
-	
+  constructor(private elementRef: ElementRef, private renderer: Renderer) {
+  }
+
   @Input() set highlightColor(color) {
-		this.highlightColor = color
-	}
+    this.highlightColor = color
+  }
 
-	@Input() set defaultColor(colorName) {
-		this.defaultColor = this.colorName ? this.colorName : this.defaultColor
-	}
+  @Input() set defaultColor(colorName) {
+    this.defaultColor = this.colorName ? this.colorName : this.defaultColor
+  }
 
-	@HostListener() mouseenter() {
-		this.highlight(this.highlightColor ? this.highlightColor : this.defaultColor)
-	}
+  @HostListener() mouseenter() {
+    this.highlight(this.highlightColor ? this.highlightColor : this.defaultColor)
+  }
 
-	@HostListener() mouseleave() {
-		this.highlight(null)
-	}
+  @HostListener() mouseleave() {
+    this.highlight(null)
+  }
 
-	private highlight(String color) {
-		this.renderer.setElementStyle(this.elementRef.nativeElement(), "backgroundColor", color)
-	}
+  private highlight(String color) {
+    this.renderer.setElementStyle(this.elementRef.nativeElement(), "backgroundColor", color)
+  }
 }
 ----
 
@@ -1612,6 +1622,8 @@ Quelques pipes sont fournies par Angular :
 `currency` affiche une devise.
 
 `date` formatte une date.
+
+=== Pipes
 
 `async` permet d'attendre l'arrivée des données d'une `Promise` ou d'un `Observable`.
 
