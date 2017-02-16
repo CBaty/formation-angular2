@@ -1587,6 +1587,202 @@ La _Directive_ est le concept de base. Il existe en fait trois sortes de directi
 - les _directives structurelles_ modifient le layout en ajoutant, retirant ou remplaçant des éléments dans le DOM.
 - et les _Composants_ sont des directives qui possèdent une _template_,
 
+== Formulaires
+
+Il existe deux façon d'écrire des forumaires avec Angular :
+
+- les formulaires conduits par _template_,
+- les formulaires conduits par le _code_.
+
+Le second est pllus puissant que le premier mais nécessite un peu plus de code pour sa mise en place.
+
+=== Template-driven forms
+
+Plusieurs étapes :
+
+- importer `FormsModule`,
+- création du _modèle_,
+- création du composant _formulaire_,
+- création de la _template_ pour le composant,
+- liaison du modèle avec chaque contrôle du formaulaire (directive `ngModel`),
+- alimentation des attributs _name_ des contrôles,
+- _CSS_ pour le retour visuel de la validation,
+- afficher les messages de _validation_,
+- traiter la soumission du formulaire avec la directive `ngSubmit`.
+
+=== Création du modèle
+
+Il s'agit de représenter les données manipulées par le formulaire :
+
+[source]
+----
+export class Hero {
+  constructor(
+    public id: number,
+    public name: string,
+    public power: string,
+    public alterEgo?: string
+  ) {}
+}
+----
+
+=== Composant formulaire
+
+Il s'agit ici de créer le composant responsable de la gestion du formulaire :
+
+[source]
+----
+@Component({
+  selector: 'hero-form',
+  templateUrl: './hero-form.component.html'
+})
+export class HeroFormComponent {
+  powers = ['Really Smart', 'Super Flexible',
+  'Super Hot', 'Weather Changer'];
+
+  model = new Hero(18, 'Dr IQ', this.powers[0], 'Chuck Overstreet');
+
+  submitted = false;
+
+  onSubmit() { this.submitted = true; }
+
+  // TODO: Remove this when we're done
+  get diagnostic() { return JSON.stringify(this.model); }
+}
+----
+
+=== La template
+
+Pour l'instant il ne s'agit que d'un formulaire purement HTML5 (à part le `ngFor` c'est vrai ;) :
+
+[source]
+----
+<div>
+  <h1>Hero Form</h1>
+  {{diagnostic}}
+  <form>
+    <div>
+      <label for="name">Name</label>
+      <input type="text" required id="name">
+    </div>
+
+    <div>
+      <label for="alterEgo">Alter Ego</label>
+      <input type="text" id="alterEgo">
+    </div>
+
+    <div>
+      <label for="power">Hero Power</label>
+      <select id="power" required>
+        <option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
+      </select>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+----
+
+=== Utilisation de la liaison de donnée bidirectionnelle
+
+La directive `ngModel` permet de faire une liaison bidirectionnelle avec les champs de formulaire.
+
+[source]
+----
+<input type="text" id="name"
+       required
+       [(ngModel)]="model.name"
+       name="name">
+----
+
+Ici la syntaxe `[(ngModel)]="model.name"` fait la liaison bidirectionnelle.
+
+Cette directive (`ngModel`) nécessite aussi que l'on alimente l'attribut `name` du noeud DOM.
+
+=== Mise à jour de la template
+
+On place les `ngModel` et _name_ sur tous les champs :
+
+[source]
+----
+<div>
+  <h1>Hero Form</h1>
+  {{diagnostic}}
+  <form>
+    <div>
+      <label for="name">Name</label>
+      <input type="text" required id="name" [(ngModel)]="model.name" name="name">
+    </div>
+
+    <div>
+      <label for="alterEgo">Alter Ego</label>
+      <input type="text" id="alterEgo" [(ngModel)]="model.alterEgo" name="alterEgo">
+    </div>
+
+    <div>
+      <label for="power">Hero Power</label>
+      <select id="power" required  [(ngModel)]="model.power" name="power">
+        <option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
+      </select>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+----
+
+=== Utilisation des classes CSS positionnées par Angular
+
+Angular gère l'état du formulaire et affecte certaines classes aux éléments en fonction de son état :
+
+[cols="3*"]
+|===
+|Etat
+|Oui
+|Non
+
+|Le contrôle a été visité
+|`ng-touched`
+|`ng-untouched`
+
+|La valeur du contrôle a changé
+|`ng-dirty`
+|`ng-pristine`
+
+|La valeur est valide
+|`ng-valid`
+|`ng-invalid`
+|===
+
+Ces classes sont à mettre à profit dans le CSS du composant pour réaliser le feedback visuel...
+
+=== Afficher un message de validation
+
+[source]
+----
+<label for="name">Name</label>
+<input type="text" class="form-control" id="name"
+      required
+      [(ngModel)]="model.name" name="name"
+      #name="ngModel"> <1>
+<div [hidden]="name.valid || name.pristine"
+      class="alert alert-danger">
+      Name is required
+</div>
+----
+<1> La directive `ngModel` exporte la _variable_ `ngModel`.
+
+=== Soumettre le formulaire
+
+[source]
+----
+<form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+
+...
+
+<button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid">Submit</button>
+----
+
 == Pipes
 
 Un _pipe_ permet de transformer les informations à afficher dans la vue au sein d'une template.

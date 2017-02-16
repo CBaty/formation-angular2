@@ -1,0 +1,13 @@
+<h1>{{title}}</h1>
+Nombre : {{list.length}}<br>
+<input type="text" #monInput><br/>
+<button (click)="ajouterElement(monInput.value, monInput)">Ajouter dans la liste</button>
+
+<ul>
+  <li
+    *ngFor="let chaine of list; let odd = odd;"
+    [style.backgroundColor]="odd?oddColor:'green'"
+    [class.toto]="odd">
+    {{chaine}}
+  </li>
+</ul>
