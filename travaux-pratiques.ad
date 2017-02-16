@@ -193,6 +193,7 @@ Aller à l'adresse `http://localhost:8080`
 
 Normalement le message "Hello !" doit apparaître après chargement et initialisation de l'application.
 
+////
 == Exercice 1
 
 Je veux écrire un composant PoniesComponent, affichant une liste de poneys. Chacun de ces poneys
@@ -224,5 +225,5 @@ this.ponies = [{ name: 'Fluttershy' }, { name: 'Rarity' }];
 }
 }
 ----
-
+////
 

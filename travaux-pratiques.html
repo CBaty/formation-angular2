@@ -716,47 +716,10 @@ platformBrowserDynamic().bootstrapModule(AppModule); <b class="conum">(2)</b></c
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_exercice_1">Exercice 1</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Je veux écrire un composant PoniesComponent, affichant une liste de poneys. Chacun de ces poneys
-devrait être représenté par son propre composant PonyComponent, mais nous n’avons pas encore vu
-comment passer des paramètres à un composant. Donc, pour l’instant, nous allons nous contenter
-d’afficher une simple liste. La liste devra s’afficher seulement si elle n’est pas vide, et j’aimerais
-avoir un peu de couleur sur les lignes paires. Et nous voulons pouvoir rafraîchir cette liste d’un
-simple clic sur un bouton.</p>
-</div>
-<div class="paragraph">
-<p>Ecrire le composant qui affiche une liste de produits</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code>import { Component } from '@angular/core';
-@Component({
-selector: 'ns-ponies',
-template: `&lt;button (click)="refreshPonies()"&gt;Refresh&lt;/button&gt;
-&lt;ul&gt;
-&lt;li *ngFor="let pony of ponies; let isEven=even"
-[style.color]="isEven ? 'green' : 'black'"&gt;
-{{pony.name}}
-&lt;/li&gt;
-&lt;/ul&gt;`
-})
-export class PoniesComponent {
-ponies: Array&lt;any&gt; = [{ name: 'Rainbow Dash' }, { name: 'Pinkie Pie' }];
-refreshPonies() {
-this.ponies = [{ name: 'Fluttershy' }, { name: 'Rarity' }];
-}
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-02-15 16:36:36 Paris, Madrid
+Last updated 2017-02-16 08:20:11 Paris, Madrid
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css">
