@@ -764,16 +764,7 @@ export class HeroFormComponent {
 &lt;h3&gt;&lt;i&gt;Just a FormControl&lt;/i&gt;&lt;/h3&gt;
 &lt;label&gt;Name:
   &lt;input [formControl]="name"&gt;
-&lt;/label&gt;</code></pre></div></div></section><section id="_classes_de_contrôles"><h2>Classes de contrôles</h2><div class="paragraph"><p>|==
-|<code>AbstractControl</code>
-|Classe abstraite de base pour les trois autres classes.</p></div>
-<div class="paragraph"><p>|<code>FormControl</code>
-|Surveille la valeur et la validité d&#8217;un contrôle de champ. Il correspond à un noeud <code>&lt;input&gt;</code> ou <code>&lt;select&gt;</code>.</p></div>
-<div class="paragraph"><p>|<code>FormGroup</code>
-|Surveille la valeur et la validité d&#8217;un <em>groupe</em> de contrôles (<code>AbstractControl</code>).</p></div>
-<div class="paragraph"><p>|<code>FormArray</code>
-|Surveille la valeur et la validité d&#8217;une séquence indexée (<code>Array</code>) de contrôles.
-|==</p></div></section><section id="_création_d_un_groupe_de_contrôles"><h2>Création d&#8217;un groupe de contrôles</h2><div class="paragraph"><p>En général un formulaire contient plusieurs contrôles.</p></div>
+&lt;/label&gt;</code></pre></div></div></section><section id="_classes_de_contrôles"><h2>Classes de contrôles</h2><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>AbstractControl</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Classe abstraite de base pour les trois autres classes.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>FormControl</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Surveille la valeur et la validité d&#8217;un contrôle de champ. Il correspond à un noeud <code>&lt;input&gt;</code> ou <code>&lt;select&gt;</code>.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>FormGroup</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Surveille la valeur et la validité d&#8217;un <em>groupe</em> de contrôles (<code>AbstractControl</code>).</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>FormArray</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Surveille la valeur et la validité d&#8217;une séquence indexée (<code>Array</code>) de contrôles.</p></td></tr></tbody></table></section><section id="_création_d_un_groupe_de_contrôles"><h2>Création d&#8217;un groupe de contrôles</h2><div class="paragraph"><p>En général un formulaire contient plusieurs contrôles.</p></div>
 <div class="listingblock"><div class="content"><pre class="highlight"><code>export class HeroDetailComponent2 {
   heroForm = new FormGroup ({
     name: new FormControl()
@@ -809,16 +800,7 @@ export class SendTxComponent {
 }</code></pre></div></div></section><section id="_consulter_le_modèle_et_l_état_d_un_contrôle"><h2>Consulter le modèle et l&#8217;état d&#8217;un contrôle</h2><div class="paragraph"><p>La fonction <code>get()</code> permet d&#8217;accéder à la valeur du modèle. Elle accepte les notations '.'.</p></div>
 <div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;p&gt;Street value: {{ heroForm.get('address.street').value}}&lt;/p&gt;</code></pre></div></div>
 <div class="paragraph"><p>L&#8217;objet obtenu avec <code>get()</code> contient les propriétés suivantes :</p></div>
-<div class="paragraph"><p>|==
-|<code>value</code>
-|Modèle</p></div>
-<div class="paragraph"><p>|<code>status</code>
-|Etat de validation : <code>VALID</code>, <code>INVALID</code>, <code>PENDING</code>, <code>DISABLED</code></p></div>
-<div class="paragraph"><p>|<code>pristine</code>/<code>dirty</code>
-|Si utilisateur a modifié le modèle initial.</p></div>
-<div class="paragraph"><p>|<code>untouched</code>/<code>touched</code>
-|Si utilisateur est entré dans un contrôle (<code>focus</code>).
-|==</p></div></section><section id="__code_setvalue_code_et_code_patchvalue_code"><h2><code>setValue</code> et <code>patchValue</code></h2><div class="paragraph"><p><code>setValue</code> permet de mettre à jour un groupe complet de contrôle en une seule opération.</p></div>
+<table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:50%"><col style="width:50%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>value</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Modèle</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Etat de validation : <code>VALID</code>, <code>INVALID</code>, <code>PENDING</code>, <code>DISABLED</code></p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>pristine</code>/<code>dirty</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Si utilisateur a modifié le modèle initial.</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock"><code>untouched</code>/<code>touched</code></p></td><td class="tableblock halign-left valign-top"><p class="tableblock">Si utilisateur est entré dans un contrôle (<code>focus</code>).</p></td></tr></tbody></table></section><section id="__code_setvalue_code_et_code_patchvalue_code"><h2><code>setValue</code> et <code>patchValue</code></h2><div class="paragraph"><p><code>setValue</code> permet de mettre à jour un groupe complet de contrôle en une seule opération.</p></div>
 <div class="listingblock"><div class="content"><pre class="highlight"><code>this.heroForm.setValue({
   name:    this.hero.name,
   address: this.hero.addresses[0] || new Address()

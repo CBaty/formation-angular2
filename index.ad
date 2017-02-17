@@ -1823,7 +1823,7 @@ Le constructeur de `FormControl` accepte trois paramètres : la valeur initiale 
 === Classes de contrôles
 
 [cols="2*"]
-|==
+|===
 |`AbstractControl`
 |Classe abstraite de base pour les trois autres classes.
 
@@ -1835,7 +1835,7 @@ Le constructeur de `FormControl` accepte trois paramètres : la valeur initiale 
 
 |`FormArray`
 |Surveille la valeur et la validité d'une séquence indexée (`Array`) de contrôles.
-|==
+|===
 
 === Création d'un groupe de contrôles
 
@@ -1909,7 +1909,7 @@ La fonction `get()` permet d'accéder à la valeur du modèle. Elle accepte les 
 L'objet obtenu avec `get()` contient les propriétés suivantes :
 
 [cols="2*"]
-|==
+|===
 |`value`
 |Modèle
 
@@ -1921,7 +1921,7 @@ L'objet obtenu avec `get()` contient les propriétés suivantes :
 
 |`untouched`/`touched`
 |Si utilisateur est entré dans un contrôle (`focus`).
-|==
+|===
 
 === `setValue` et `patchValue`
 
