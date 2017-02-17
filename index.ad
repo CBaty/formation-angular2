@@ -2296,7 +2296,165 @@ InMemoryWebApiModule.forRoot(HeroData)
 
 === Tests unitaires
 
-Avec _Jasmine_.
+Angular utilise _Jasmine_ et fournit des outils adaptés à ce framework de test.
+
+=== Jasmine
+
+Un test _Jasmine_ s'écrit dans un fichier dont le nom correspond au composant à tester avec en suffixe `.spec.ts`.
+
+[source]
+----
+describe('Test suite', () => {
+  let service = new Service()
+
+  beforeEach(()=>{
+    // initialisation...
+    spyOn(service, 'getUsers').and.returnValue([{id:3,name:'toto'}])
+  })
+
+  // afterEach
+
+  it('should construct a User', () => {
+    const user = new User('Bertrand', 25);
+    expect(user.name).toBe('Bertrand');
+    expect(pony.age).not.toBe(21);
+
+    service.getUsers()
+    expect(service.getUsers).toHaveBeenCalled()
+  });
+
+  it(...)
+});
+----
+
+=== Execution
+
+On utilise l'outil _Karma_ développé par l'équipe d'Angular, qui permet de lancer les tests unitaires dans le navigateur.
+
+Avec _angular-cli_, c'est aussi simple que cela :
+
+[source]
+----
+ng test
+----
+
+=== Injection de dépendances
+
+Lorsqu'on teste des composants, on a besoin de leur fournir leurs dépendances (elles arrivent par le constructeur).
+
+Angular fournit des outils s'intégrant à _Jasmine_ permettant d'intégrer le mécanisme DI d'Angular dans les tests.
+
+La classe principale de cet outil est la classe `TestBed`.
+
+[source]
+----
+import { TestBed } from '@angular/core/testing';
+
+describe('DataService', () => {
+  let service: DataService
+
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [DateService]
+  }))
+
+  beforeEach(() => service = TestBed.get(DateService))
+
+  it('should return data when list() is called', () => {
+    expect(service.list().length).toBe(2)
+  });
+});
+----
+
+=== Asynchronicité
+
+[source]
+----
+describe('DateService', () => {
+  let service: DateService
+
+  beforeEach(() => TestBed.configureTestingModule({
+    { provide: LocalStorageService, useClass: FakeLocalStorage },
+    providers: [DateService, AutreService]
+  }))
+
+  beforeEach(() => service = TestBed.get(DateService))
+
+  it('should return a promise of 2 races', async(() => { <1>
+    service.list().then(items => {
+      expect(items.length).toBe(2) <2>
+    })
+  }))
+
+  it('', ()=>{
+    localStorage.get.and.returnValue([{ name: 'Toulouse' }, { name: 'Paris' }])
+
+    // AutreService dépend de LocalStorageService
+    let autreService = TestBed.get(AutreService)
+    let villes = autreService.getVilles()
+
+    expect(LocalStorageService.get).toHaveBeenCalledWith('cities')
+  })
+})
+----
+<1> la fonction `async` permet de déclarer que le test est asynchrone.
+<2> l'appel à `expect` se fait donc dans la callback de l'appel asynchrone.
+
+=== Tester un composant
+
+On utilise encore `TestBed`, avec la fonction `createComponent()`. Celle-ci retourne un objet `ComponentFixture` qui représente le composant créé pour le test.
+
+[source]
+----
+import { TestBed } from '@angular/core/testing'
+import { LicorneComponent } from './licorne.component'
+
+describe('LicorneComponent', () => {
+  it('should have an image', () => {
+    TestBed.configureTestingModule({
+      declarations: [LicorneComponent]
+    })
+
+    const fixture = TestBed.createComponent(LicorneComponent)
+
+    const licorneComponent = fixture.componentInstance
+
+    licorneComponent.licorne = { name: 'toto', image: 'toto.png' }
+
+    // déclenchement de la détection des changements
+    fixture.detectChanges()
+
+    const element = fixture.nativeElement;
+    expect(element.querySelector('img').getAttribute('src')).toBe('toto.png');
+  })
+})
+----
+
+On peut espionner les sorties en _spyant_ la méthode `emit` de la sortie.
+
+=== Surcharge de template
+
+Il est possible lorsqu'on teste un composant de venir modifier sa template.
+
+Ceci se fait avec la fonction `TestBed.overrideComponent()`
+
+=== Tests End to End
+
+Ces tests s'appuient sur l'outil _Protractor_.
+
+On utilise toujours _Jasmine_ pour écrire les tests, mais en utilisant l'API de _Protractor_ pour piloter le navigateur.
+
+[source]
+----
+describe('Home', () => {
+  it('should display title, tagline and logo', () => {
+    browser.get('/')
+
+    expect(element.all(by.css('img')).count()).toEqual(1)
+    expect($('h1').getText()).toContain('My super application')
+    expect($('small').getText()).toBe('How cool is that?')
+  })
+})
+----
 
 == Style des compodants et encapsulation
 
