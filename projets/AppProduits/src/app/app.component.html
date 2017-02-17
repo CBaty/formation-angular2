@@ -1,13 +1,13 @@
-<h1>{{title}}</h1>
-Nombre : {{list.length}}<br>
-<input type="text" #monInput><br/>
-<button (click)="ajouterElement(monInput.value, monInput)">Ajouter dans la liste</button>
+<h1>Licornes</h1>
 
-<ul>
-  <li
-    *ngFor="let chaine of list; let odd = odd;"
-    [style.backgroundColor]="odd?oddColor:'green'"
-    [class.toto]="odd">
-    {{chaine}}
-  </li>
-</ul>
+<button (click)="addLicorne()">Add a Licorne</button>
+
+<div style="display:flex; flex-flow:row nowrap;">
+  <div style="margin: 10px;">
+    <licorne-list [licornes]="licornes" (selection)="onSelectedLicorne($event)"></licorne-list>
+  </div>
+
+  <div style="margin: 10px;">
+    <licorne-editor *ngIf="selectedLicorne" [licorne]="selectedLicorne" [powers]="powers"></licorne-editor>
+  </div>
+</div>
