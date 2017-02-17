@@ -1288,7 +1288,7 @@ Le décorateur `@Input` est utilisé pour déclarer une entrée dans un composan
 [source]
 ----
 @Component({
-  selector: 'produit',
+  selector: 'app-produit',
   template: '<div>{{produit.id}}</div>'
 })
 export class ProduitComponent {
@@ -1304,7 +1304,7 @@ Le parent peut ensuite fournir une valeur à cette entrée en utilisant le méca
   selector: 'produits,
   template: `
 <ul>
-  <li *ngFor='let p of produits'><produit [produit]='p'></produit></li>
+  <li *ngFor='let p of produits'><app-produit [produit]='p'></app-produit></li>
 <ul>`
 })
 export class ProduitsComponent {
@@ -1355,7 +1355,7 @@ On consomme l'information ainsi :
 ----
 @Component({
   template: `
-<email *ngFor='let email of emails' (markedAsRead)='doSomething($event)'></email>` <1>
+<app-email *ngFor='let email of emails' (markedAsRead)='doSomething($event)'></app-email>` <1>
 })
 export class SommaireComponent {
   doSomething(email) { <2>
@@ -1596,7 +1596,9 @@ Il existe deux façon d'écrire des forumaires avec Angular :
 
 Le second est pllus puissant que le premier mais nécessite un peu plus de code pour sa mise en place.
 
-=== Template-driven forms
+== Template-driven forms
+
+Le module à importer est `FormsModule`.
 
 Plusieurs étapes :
 
@@ -1604,7 +1606,7 @@ Plusieurs étapes :
 - création du _modèle_,
 - création du composant _formulaire_,
 - création de la _template_ pour le composant,
-- liaison du modèle avec chaque contrôle du formaulaire (directive `ngModel`),
+- liaison du modèle avec chaque contrôle du formulaire (directive `ngModel`),
 - alimentation des attributs _name_ des contrôles,
 - _CSS_ pour le retour visuel de la validation,
 - afficher les messages de _validation_,
@@ -1783,6 +1785,279 @@ Ces classes sont à mettre à profit dans le CSS du composant pour réaliser le 
 <button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid">Submit</button>
 ----
 
+== Template guidée par le code
+
+Le module à importer est `ReactiveFormsModule`.
+
+Le principe est de créer côté code une hiérarchie de `FormControl` (objets contrôlant un champ). Ces objets sont ensuite liés à la template du composant.
+
+Du coup toutes les informations du formulaires dont controllables depuis le code, et vous pouvez influer sur tous les aspects de la validation.
+
+Contrairement aux formulaires par template, ici on ne va pas amener le formulaire à modifier directement le modèle mais plutôt à produire un modèle et laisser le modèle original immutable.
+
+https://angular.io/docs/ts/latest/guide/reactive-forms.html[Documentation officielle...]
+
+=== Création d'un `FormControl`
+
+[source]
+----
+export class HeroDetailComponent1 {
+  name = new FormControl(); <1>
+}
+----
+<1> création d'un `FormControl` nommé `name`.
+
+Le constructeur de `FormControl` accepte trois paramètres : la valeur initiale du champ, un tableau de validateurs, et un tableau de validateurs asynchrones.
+
+=== Création de la template
+
+[source]
+----
+<h2>Hero Detail</h2>
+<h3><i>Just a FormControl</i></h3>
+<label>Name:
+  <input [formControl]="name">
+</label>
+----
+
+=== Classes de contrôles
+
+[cols="2*"]
+|==
+|`AbstractControl`
+|Classe abstraite de base pour les trois autres classes.
+
+|`FormControl`
+|Surveille la valeur et la validité d'un contrôle de champ. Il correspond à un noeud `<input>` ou `<select>`.
+
+|`FormGroup`
+|Surveille la valeur et la validité d'un _groupe_ de contrôles (`AbstractControl`).
+
+|`FormArray`
+|Surveille la valeur et la validité d'une séquence indexée (`Array`) de contrôles.
+|==
+
+=== Création d'un groupe de contrôles
+
+En général un formulaire contient plusieurs contrôles.
+
+[source]
+----
+export class HeroDetailComponent2 {
+  heroForm = new FormGroup ({
+    name: new FormControl()
+  });
+}
+----
+
+La structure logique du formulaire est _mappée_ dans la template :
+
+[source]
+----
+<h2>Hero Detail</h2>
+<h3><i>FormControl in a FormGroup</i></h3>
+<form [formGroup]="heroForm" novalidate> <1>
+  <div>
+    <label>Name:
+      <input formControlName="name">
+    </label>
+  </div>
+</form>
+----
+<1> `novalidate` demande au navigateur de ne pas procéder aux validations standard.
+
+=== Le modèle du formulaire
+
+Contrairement aux formulaires par template, le modèle initial n'est pas mis à jour automatiquement. A la place, les données sont générées dans les `FormControl`.
+
+- la propriété `value` du contrôle représente le modèle,
+- sa propriété `status` représente son état de validation.
+
+=== `FormBuilder`
+
+C'est une classe d'aide pour construire des hiérarchies de contrôles :
+
+[source]
+----
+@Component({...})
+export class SendTxComponent {
+  constructor(private fb: FormBuilder) {
+    this.createForm();
+  }
+
+  txForm: FormGroup
+
+  createForm() {
+    this.txForm = this.fb.group({
+      serviceId: [0, Validators.required],
+      commandId: [0, Validators.required],
+      data: this.fb.array([])
+    })
+  }
+}
+----
+
+=== Consulter le modèle et l'état d'un contrôle
+
+La fonction `get()` permet d'accéder à la valeur du modèle. Elle accepte les notations '.'.
+
+[source]
+----
+<p>Street value: {{ heroForm.get('address.street').value}}</p>
+----
+
+L'objet obtenu avec `get()` contient les propriétés suivantes :
+
+[cols="2*"]
+|==
+|`value`
+|Modèle
+
+|`status`
+|Etat de validation : `VALID`, `INVALID`, `PENDING`, `DISABLED`
+
+|`pristine`/`dirty`
+|Si utilisateur a modifié le modèle initial.
+
+|`untouched`/`touched`
+|Si utilisateur est entré dans un contrôle (`focus`).
+|==
+
+=== `setValue` et `patchValue`
+
+`setValue` permet de mettre à jour un groupe complet de contrôle en une seule opération.
+
+[source]
+----
+this.heroForm.setValue({
+  name:    this.hero.name,
+  address: this.hero.addresses[0] || new Address()
+});
+----
+
+`patchValue` permet de mettre à jour les champs individuellement.
+
+[source]
+----
+this.heroForm.patchValue({
+  name: this.hero.name
+});
+----
+
+=== `reset`
+
+Pour remettre l'état du formulaire à zéro, on utilise la fonction `reset()`.
+
+[source]
+----
+ngOnChanges() {
+  this.heroForm.reset({
+    name: this.hero.name,
+    address: this.hero.addresses[0] || new Address()
+  });
+}
+----
+
+=== `FormArray`
+
+Permet de présenter un nombre de contrôles variables à l'utilisateur.
+
+Création :
+
+[source]
+----
+this.heroForm = this.fb.group({
+  name: ['', Validators.required ],
+  secretLairs: this.fb.array([]),
+  power: '',
+  sidekick: ''
+});
+----
+
+Initialisation :
+
+[source]
+----
+setAddresses(addresses: Address[]) {
+  const addressFGs = addresses.map(address => this.fb.group(address));
+  const addressFormArray = this.fb.array(addressFGs);
+  this.heroForm.setControl('secretLairs', addressFormArray);
+}
+----
+
+Consultation :
+
+[source]
+----
+get secretLairs(): FormArray {
+  return this.heroForm.get('secretLairs') as FormArray;
+};
+----
+
+=== Affichage
+
+[source]
+----
+<div formArrayName="secretLairs">
+  <div *ngFor="let address of secretLairs.controls; let i=index" [formGroupName]="i" >
+    <!-- The repeated address template -->
+    <input formControlName="street">
+    <input formControlName="city">
+  </div>
+</div>
+----
+
+=== Ajout suppression dans la liste de contrôles
+
+[source]
+----
+addLair() {
+  this.secretLairs.push(this.fb.group(new Address()));
+}
+----
+
+Idem pour la suppression...
+
+=== Observation des changements
+
+Les contrôles de formulaire fournissent des `Observables` permettant d'être mis au courant des modifications.
+
+[source]
+----
+nameChangeLog: string[] = [];
+
+logNameChange() {
+  const nameControl = this.heroForm.get('name');
+  nameControl.valueChanges.forEach(
+    (value: string) => this.nameChangeLog.push(value)
+  );
+}
+----
+
+=== Récupération du modèle
+
+[source]
+----
+prepareSaveHero(): Hero {
+  const formModel = this.heroForm.value;
+
+  // deep copy of form model lairs
+  const secretLairsDeepCopy: Address[] = formModel.secretLairs.map(
+    (address: Address) => Object.assign({}, address)
+  );
+
+  // return new `Hero` object containing a combination of original hero value(s)
+  // and deep copies of changed form model values
+  const saveHero: Hero = {
+    id: this.hero.id,
+    name: formModel.name as string,
+    // addresses: formModel.secretLairs // <-- bad!
+    addresses: secretLairsDeepCopy
+  };
+  return saveHero;
+}
+----
+
 == Pipes
 
 Un _pipe_ permet de transformer les informations à afficher dans la vue au sein d'une template.
@@ -1852,13 +2127,170 @@ export class FromNowPipe implements PipeTransform {
 }
 ----
 
-Une fois déclarée dans le module, elle est utilisable dans les template avec le mot-clé `formNow`.
+Une fois déclarée dans le module, elle est utilisable dans les template avec le mot-clé `fromNow`.
+
+== Inclure une bibliothèque externe avec Angular-CLI
+
+=== Une bibliothèque non-Angular
+
+Avoir la bibliothèque dans le répertoire du projet, par exemple en faisant : `npm install --save bootstrap`.
+
+Si le projet est configuré avec _angular-cli_, ajouter les chemins relatifs aux fichiers _CSS_ et/ou _JS_ dans les champs prévus à cet effet dans le fichier `angular-cli.json`.
+
+[source]
+----
+"apps": [
+    {
+      ...
+      "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.css"
+      ],
+      "scripts": [
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js"
+      ]
+    }
+  ],
+----
+
+=== Inclure une bibliothèque prévue pour Angular
+
+Rapatriement de la dépendance (et enregistrement dans _package.json_) :
+
+[source]
+----
+npm install --save @angular/material
+----
+
+Utilisation des modules de la bibliothèque :
+
+[source]
+----
+import { MaterialModule } from '@angular/material';
+
+@NgModule({
+  imports: [
+    ...
+    MaterialModule.forRoot()
+  ],
+  ...
+})
+----
+
+Inclusion des CSS en tant que module _webpack_. Dans le fichier `styles.css` :
+
+[source]
+----
+@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
+@import '~https://fonts.googleapis.com/icon?family=Material+Icons';
+----
 
 == Services du framework
 
 === Title
 
-=== Http
+== Http
+
+Le modules de fonctionnalités http sont disponibles : `HttpModule` et `JsonpModule` (dans le package `@angular/http`).
+
+=== `get`
+
+Exemple d'utilisation :
+
+[source]
+----
+import { Injectable }              from '@angular/core';
+import { Http, Response }          from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import { Hero } from './hero';
+
+@Injectable()
+export class HeroService {
+  private heroesUrl = 'app/heroes';  // URL to web API
+  constructor (private http: Http) {}
+  getHeroes (): Observable<Hero[]> {
+    return this.http.get(this.heroesUrl)
+                    .map(this.extractData)
+                    .catch(this.handleError);
+  }
+  private extractData(res: Response) {
+    let body = res.json();
+    return body.data || { };
+  }
+  private handleError (error: Response | any) {
+    // In a real world app, we might use a remote logging infrastructure
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
+  }
+}
+----
+
+=== Envoi de données
+
+[source]
+----
+addHero (name: string): Observable<Hero> {
+  let headers = new Headers({ 'Content-Type': 'application/json' });
+  let options = new RequestOptions({ headers: headers });
+
+  return this.http.post(this.heroesUrl, { name }, options)
+                  .map(this.extractData)
+                  .catch(this.handleError);
+}
+----
+
+=== Promise
+
+Les méthodes du module Http répondent naturellemet des `Observables. Si vous préférez travaillez avec les Promise, pas de problème, la fonction `toPromise()` permet de convertir l'observable retourné en une promesse :
+
+[source]
+----
+return this.http.post(this.heroesUrl, { name }, options)
+             .toPromise()
+             .then(this.extractData)
+             .catch(this.handleError);
+----
+
+=== JSON-P
+
+Le module `JsonpModule` permet de prendre en charge facilement les services de type JSON-P.
+
+Voir la https://angular.io/docs/ts/latest/guide/server-communication.html[documentation officielle].
+
+=== Mocker le backend
+
+[source]
+----
+import { InMemoryDbService } from 'angular-in-memory-web-api';
+export class HeroData implements InMemoryDbService {
+  createDb() {
+    let heroes = [
+      { id: 1, name: 'Windstorm' },
+      { id: 2, name: 'Bombasto' },
+      { id: 3, name: 'Magneta' },
+      { id: 4, name: 'Tornado' }
+    ]
+
+    return {heroes}
+  }
+}
+----
+
+Ensuite il suffit d'injecter ce provider dans le module de l'application :
+
+[source]
+----
+InMemoryWebApiModule.forRoot(HeroData)
+----
 
 == Tests
 
@@ -1868,7 +2300,51 @@ Avec _Jasmine_.
 
 == Style des compodants et encapsulation
 
+== Transclusion
+
 == Cycle de vie des composants et hooks
+
+Il est possible de demander au runtime Angular d'exécuter des fonctions spécifiques de nos composants à différentes étapes du cycle de vie des composants. Pour ceci il suffit à un composant d'implémenter certaines méthodes (prédéfinies dans des interfaces Typescript).
+
+[cols="2*"]
+|===
+|Méthode de Hook
+|Utilisation
+
+|`ngOnChanges`
+|A chaque fois qu'une entrée (`@Input`) change de valeur. Reçoit une liste de `SimpleChanges`.
+
+|`ngOnInit`
+|Appellé une fois après le premier `ngOnChanges`.
+
+|`ngDoCheck`
+|Détection et gestion des changements custom. Offre la possibilité de faire un traitement pendant le cycle de détection des changements.
+
+|`ngAfterViewInit`
+|Après l'initialisation de la vue et des vues enfant.
+
+|`ngOnDestroy`
+|A la destruction du composant.
+|===
+
+D'autres encore : `ngAfterContentInit`, `ngAfterContentChecked`, `ngAfterViewChecked`
+
+== Fonctionnement du _data-binding_
+
+Il s'agit de relier automatiquement le rendu des vues aux données de l'application, et de prendre en charge le rafraîchissement dand les deux sens (vue vers modèle et modèle vers vue). Les vues sont fonction des données présentes dans les composants.
+
+La gestion du data-binding dans Angular implique deux choses :
+
+- savoir _quand_ les changements ont lieu,
+- savoir _quels_ changements ont eu lieu.
+
+Pour le premier point, Angular utilise le projet _ZoneJS_, qui patche toutes les fonctions asynchrones de l'API du navigateur. Ceci lui permet de maintenir un _contexte d'exécution_ au long de traitements asynchrones successifs. Il est également possible de mettre en place des _hooks_ correspondant aux différentes phases des traitements (début, fin, ...).
+
+Dès qu'un événement a lieu dans l'application, Angular déclenche un cycle de détection des changements dans l'arborescence des composants de l'application.
+
+Cette phase, comme très consommatrice de resources par nature, est assez optimisée dans Angular. Les fonctions de détection des changements sont _compilées_ en sites d'appels monomorphiques permettant aux machines virtuelles de produire des optimisations... optimales.
+
+Une petite ballade dans https://github.com/angular/angular[les sources] de la bête vaut le détour.
 
 == Créer un composant par programmation
 
@@ -1877,45 +2353,45 @@ Avec _Jasmine_.
 == Programme
 
 * Jour 1
-Installation / introduction
-Philosophie du framework
-Installation minimale
+    Installation / introduction
+    Philosophie du framework
+    Installation minimale
 Ecosystème
-TypeScript et ES2015, Modules ES6
-Types
-Classes
-Modules
--- déclaration d'un module : imports et exports
--- lazy loading des modules avec le router
--- les providers d'un module
-Promesses
-Décorateurs
-Outils
-Composants
-Définition
-Décorateur
-Vue
-Contrôleur
-Composants natifs
-Cycle de vie
-Directives : structurelles et d'attribut
-IOC : injection de dépendances : par type et hiérarchique
-Providers
+    TypeScript et ES2015, Modules ES6
+    Types
+    Classes
+    Modules
+    -- déclaration d'un module : imports et exports
+    -- lazy loading des modules avec le router
+    -- les providers d'un module
+    Promesses
+    Décorateurs
+    Outils
+    Composants
+    Définition
+    Décorateur
+    Vue
+    Contrôleur
+    Composants natifs
+    Cycle de vie
+    Directives : structurelles et d'attribut
+    IOC : injection de dépendances : par type et hiérarchique
+    Providers
 
 * Jour 2
-Pipes
-Pipes natifs
-Écrire un pipe
-Formulaires
--- créer un formulaire
--- validation et erreurs
--- template-driven forms
--- model-driven forms
--- formulaires dynamiques
--- créer ses propres validateurs
--- Control et ControlGroup
--- FormBuilder
-Contrôles
+    Pipes
+    Pipes natifs
+    Écrire un pipe
+    Formulaires
+    -- créer un formulaire
+    -- validation et erreurs
+    -- template-driven forms
+    -- model-driven forms
+    -- formulaires dynamiques
+    -- créer ses propres validateurs
+    -- Control et ControlGroup
+    -- FormBuilder
+    Contrôles
 Validateurs
 Observateurs
 ngModel
@@ -1926,12 +2402,12 @@ RxJS : introduction
 -- principes des opérations sur les Observables
 -- ReactiveX avec RxJS
 -- lien avec les promesses
-Services
-Créer un service
-Injection de service
-Template : interpolation/expression, "Binding" et filtres.
-Directives de transformation : ngIf, ngFor, ngSwitch...
-Evènements utilisateur.
+    Services
+    Créer un service
+    Injection de service
+    Template : interpolation/expression, "Binding" et filtres.
+    Directives de transformation : ngIf, ngFor, ngSwitch...
+    Evènements utilisateur.
 
 * Jour 3
 Service HTTP
@@ -1969,9 +2445,9 @@ Rendu côté serveur
 Rendu dans les Web Workers
 Application mobile
 
-Zones
-Directives avancées
-Injection de dépendances avancée
+    Zones
+    Directives avancées
+    Injection de dépendances avancée
 
 OPTIONNELS (5 jours)
 
