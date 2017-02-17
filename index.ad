@@ -2291,6 +2291,12 @@ InMemoryWebApiModule.forRoot(HeroData)
 
 == Tests
 
+Les mécanismes de test d'Angular reposent sur trois briques :
+
+- _Jasmine_: utilitaire standard pour écrire des test en JS.
+- _Karma_ : outil développé pour Angular permettant d'effectuer des tests _Jasmine_ dans un navigateur.
+- _Protractor_ : utilitaire standard pour faire des tests intégration en JS (pilotage navigateur).
+
 === Tests unitaires
 
 Angular utilise _Jasmine_ et fournit des outils adaptés à ce framework de test.
