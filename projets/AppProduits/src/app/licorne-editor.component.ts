@@ -1,5 +1,6 @@
 import {Component, Input} from "@angular/core";
 import {Licorne, Power} from "./app.model";
+import {DataService} from "./data.service";
 @Component({
   selector: 'licorne-editor',
   template: `
@@ -23,5 +24,9 @@ import {Licorne, Power} from "./app.model";
 export class LicorneEditorComponent {
   @Input() licorne: Licorne
 
-  @Input() powers: Power[]
+  powers: Power[]
+
+  constructor(private dataService: DataService) {
+    this.powers = dataService.powers()
+  }
 }

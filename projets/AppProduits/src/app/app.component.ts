@@ -1,5 +1,6 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {Licorne, Power} from "./app.model";
+import {DataService} from "./data.service";
 
 @Component({
   selector: 'app-root',
@@ -7,19 +8,16 @@ import {Licorne, Power} from "./app.model";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  powers: Power[] = [
-    new Power(1, "Flies"),
-    new Power(2, "Simws"),
-    new Power(3, "Walks")
-  ]
+  powers: Power[]
 
-  licornes: Licorne[] = [
-    new Licorne(1, "Toto", this.powers[0]),
-    new Licorne(2, "Titi", this.powers[0]),
-    new Licorne(3, "Tutu", this.powers[0]),
-  ]
+  licornes: Licorne[]
 
   selectedLicorne: Licorne
+
+  constructor(private dataService: DataService) {
+    this.powers = dataService.powers()
+    this.licornes = dataService.licornes()
+  }
 
   onSelectedLicorne(licorne) {
     this.selectedLicorne = licorne

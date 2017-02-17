@@ -1418,7 +1418,7 @@ Pour demander une instance de cette classe, on procède ainsi :
 ----
 @Component({...})
 export class MonComposant {
-  constructor(private DataService dataService) {
+  constructor(private dataService: DataService) {
   }
 
   uneMethode() {

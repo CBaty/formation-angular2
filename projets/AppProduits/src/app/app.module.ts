@@ -1,12 +1,13 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {HttpModule} from '@angular/http';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 import {LicorneListComponent} from "./licorne-list.component";
 import {LicorneDisplayComponent} from "./licorne-display.component";
 import {LicorneEditorComponent} from "./licorne-editor.component";
+import {DataService} from "./data.service";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,12 @@ import {LicorneEditorComponent} from "./licorne-editor.component";
     FormsModule,
     HttpModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    DataService
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
-export class AppModule { }
+export class AppModule {
+}
