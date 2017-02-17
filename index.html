@@ -925,26 +925,23 @@ import { Hero } from './hero';
 @Injectable()
 export class HeroService {
   private heroesUrl = 'app/heroes';  // URL to web API
+
   constructor (private http: Http) {}
+
   getHeroes (): Observable&lt;Hero[]&gt; {
     return this.http.get(this.heroesUrl)
                     .map(this.extractData)
                     .catch(this.handleError);
   }
+
   private extractData(res: Response) {
     let body = res.json();
     return body.data || { };
   }
+
   private handleError (error: Response | any) {
-    // In a real world app, we might use a remote logging infrastructure
     let errMsg: string;
-    if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-    } else {
-      errMsg = error.message ? error.message : error.toString();
-    }
+    ...
     console.error(errMsg);
     return Observable.throw(errMsg);
   }
@@ -955,7 +952,7 @@ export class HeroService {
   return this.http.post(this.heroesUrl, { name }, options)
                   .map(this.extractData)
                   .catch(this.handleError);
-}</code></pre></div></div></section><section id="_promise"><h2>Promise</h2><div class="paragraph"><p>Les méthodes du module Http répondent naturellemet des <code>Observables. Si vous préférez travaillez avec les Promise, pas de problème, la fonction `toPromise()</code> permet de convertir l&#8217;observable retourné en une promesse :</p></div>
+}</code></pre></div></div></section><section id="_promise"><h2>Promise</h2><div class="paragraph"><p>Les méthodes du module Http retournent naturellemet des <code>Observables</code>. Si vous préférez travailler avec les <code>Promise</code>, pas de problème, la fonction <code>toPromise()</code> permet de convertir l&#8217;observable retourné en une promesse :</p></div>
 <div class="listingblock"><div class="content"><pre class="highlight"><code>return this.http.post(this.heroesUrl, { name }, options)
              .toPromise()
              .then(this.extractData)
