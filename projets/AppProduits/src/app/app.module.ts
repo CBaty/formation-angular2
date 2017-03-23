@@ -8,6 +8,7 @@ import {LicorneListComponent} from "./licorne-list.component";
 import {LicorneDisplayComponent} from "./licorne-display.component";
 import {LicorneEditorComponent} from "./licorne-editor.component";
 import {DataService} from "./data.service";
+import {LogService} from "./log.service";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {DataService} from "./data.service";
     HttpModule
   ],
   providers: [
-    DataService
+    DataService,
+    LogService
   ],
   bootstrap: [
     AppComponent

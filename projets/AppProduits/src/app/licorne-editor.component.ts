@@ -1,8 +1,7 @@
-import {Component, Input, ViewChild} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {Licorne, Power} from "./app.model";
 import {DataService} from "./data.service";
-import {listenerCount} from "cluster";
-import {FormControl, NgForm} from "@angular/forms";
+
 @Component({
   selector: 'licorne-editor',
   template: `
@@ -29,6 +28,6 @@ export class LicorneEditorComponent {
   powers: Power[]
 
   constructor(private dataService: DataService) {
-    this.powers = dataService.powers()
+    dataService.powers().then(powers => this.powers = powers as Power[])
   }
 }

@@ -1,4 +1,8 @@
 import {Power, Licorne} from "./app.model";
+import {LogService} from "./log.service";
+import {Injectable} from "@angular/core";
+import {Http} from "@angular/http";
+import 'rxjs/add/operator/toPromise';
 
 const POWERS: Power[] = [
   new Power(1, "Flies"),
@@ -12,12 +16,21 @@ const LICORNES: Licorne[] = [
   new Licorne(3, "Tutu", POWERS[0]),
 ]
 
+@Injectable()
 export class DataService {
+  constructor(private logService: LogService, private http: Http) {
+  }
+
   powers() {
-    return POWERS
+    this.logService.log("GET POWERS")
+    return this.http.get('assets/toto.json')
+      .toPromise()
+      .then(response => response.json().data as Power[])
+      .catch(err => console.log(err))
   }
 
   licornes() {
+    this.logService.log("GET LICORNES")
     return LICORNES
   }
 }
