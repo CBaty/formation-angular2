@@ -1,0 +1,11 @@
+<h1>Mon premier verger</h1>
+
+<div *ngIf='!winner'>
+  <die *ngIf='canRollDice' [nbFaces]='state.fruits.length + 2' (diceRolled)='onDieRolled($event)'></die>
+  <crow [position]='state.crowPosition'></crow>
+  <trees [fruits]='state.fruits' [chooseTree]='chooseTree' (chosen)='onChooseTree($event)'></trees>
+</div>
+
+<div *ngIf='winner'>
+  C'est terminé, le gagnant est {{winner}}.
+</div>
