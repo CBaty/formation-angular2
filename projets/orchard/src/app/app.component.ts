@@ -17,12 +17,11 @@ export class AppComponent {
   }
 
   chooseTree = false;
+  winner = null;
 
   get canRollDice() {
     return !this.chooseTree;
   }
-
-  winner = null;
 
   onDieRolled(dieValue) {
     if (dieValue < this.state.fruits.length) {
@@ -52,5 +51,15 @@ export class AppComponent {
   checkPlayerWins() {
     if (this.state.fruits.every(nb => nb == 0))
       this.winner = 'VOUS';
+  }
+
+  restart() {
+    this.state = {
+      crowPosition: 4,
+      fruits: [4, 4, 4, 4]
+    }
+
+    this.chooseTree = false;
+    this.winner = null;
   }
 }
